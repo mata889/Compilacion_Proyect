@@ -1,0 +1,23 @@
+digraph {
+"18,Start" -> "19,Flecha";
+"18,Start" -> "20,Braca";
+"18,Start" -> "17,body";
+"17,body" -> "2,Declaracion Simple";
+"2,Declaracion Simple" -> "3,Variable";
+"3,Variable" -> "4,var";
+"2,Declaracion Simple" -> "1,Numero";
+"2,Declaracion Simple" -> "5,ID";
+"5,ID" -> "6,id";
+"2,Declaracion Simple" -> "1,Declaracion Puntoc";
+"1,Declaracion Puntoc" -> "1,;";
+"17,body" -> "10,Declaracion Simple";
+"10,Declaracion Simple" -> "11,Variable";
+"11,Variable" -> "12,var";
+"10,Declaracion Simple" -> "9,Char";
+"10,Declaracion Simple" -> "13,ID";
+"13,ID" -> "14,od";
+"10,Declaracion Simple" -> "9,Declaracion Puntoc";
+"9,Declaracion Puntoc" -> "9,;";
+"18,Start" -> "21,Bracc";
+
+}

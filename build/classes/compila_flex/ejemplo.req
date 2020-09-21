@@ -1,0 +1,34 @@
+start->{
+	var num=0;
+	var x= l;
+	var arreglo =array(1) [0,1,2,3] ;
+	for(i in 1...Array.length() )->
+<
+		catch(char,lectura);
+throw(Hola Mundo);
+throwDown(Hola mundo+i);
+num++;
+>
+var cont=0;
+block(cont)->
+	0 <
+	cont++;
+	throwln(Se ha subid el contador);
+>
+1<
+	cont++;
+	throwln(Se ha subid el contador);
+>
+default<
+	throwDown(No subio el contador)
+>
+end
+if(cont >0 ~ contador <2 )<
+	thrownDown(Es mayor a 0 pero no mayor a 2);
+>eif(cont=2)<
+	throwDown(Es dos);
+>e<
+	throwDown(es mayor que dos )
+>
+
+}

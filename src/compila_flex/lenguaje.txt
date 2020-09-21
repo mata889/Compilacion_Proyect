@@ -1,0 +1,4 @@
+start->[
+	var num id;
+	var letter od;
+]
