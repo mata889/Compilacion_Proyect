@@ -74,7 +74,7 @@ commentarios_der="/#"
     "word"          { System.out.println("word");return new Symbol(sym.WORD,yycolumn,yyline,yytext()); }
     "bool"          { System.out.println("bool");return new Symbol(sym.VERDAD,yycolumn,yyline,yytext()); }
     "var"           { System.out.println("var");return new Symbol(sym.VAR,yycolumn,yyline,yytext()); }
-    //"new"           { System.out.println("new");return new Symbol(sym.NEW,yycolumn,yyline,yytext()); }
+    "new"           { System.out.println("new");return new Symbol(sym.NEW,yycolumn,yyline,yytext()); }
     "for"           { System.out.println("for");return new Symbol(sym.FOR,yycolumn,yyline,yytext()); }
     "wle"           { System.out.println("wle");return new Symbol(sym.WLE,yycolumn,yyline,yytext()); }
     "in"            { System.out.println("in");return new Symbol(sym.IN,yycolumn,yyline,yytext()); }
@@ -89,7 +89,7 @@ commentarios_der="/#"
     "throw"         { System.out.println("throw");return new Symbol(sym.THROW,yycolumn,yyline,yytext()); }
     "throwDown"     { System.out.println("throwDown");return new Symbol(sym.THROWDOWN,yycolumn,yyline,yytext()); }
     "catch"         { System.out.println("catch");return new Symbol(sym.CATCH,yycolumn,yyline,yytext()); }
-    //"array"         { System.out.println("array");return new Symbol(sym.ARRAY,yycolumn,yyline,yytext()); }
+    "Array"         { System.out.println("Array");return new Symbol(sym.ARRAY,yycolumn,yyline,yytext()); }
     {BOOL}          { System.out.println("bool");return new Symbol(sym.BOOL,yycolumn,yyline,yytext()); }
     {LETTER}        { System.out.println("letter");return new Symbol(sym.LETTER,yycolumn,yyline,yytext()); }
     {NUM}           { System.out.println("num");return new Symbol(sym.NUM,yycolumn,yyline,yytext()); }

@@ -1,12 +1,5 @@
 start->[
-	var num id;
-	var letter od;
-	func num Recursiva (letter Zeta)[
-		wle(expresion)->
-		<
-		var num Zeta=1;
-		>
-	reply(Zeta)
-	]
-
+    var num id;
+    var letter od;
+    var stupids = new Array(2)[letter];
 ]
