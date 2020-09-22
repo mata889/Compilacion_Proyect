@@ -1,4 +1,17 @@
 start->[
 	var num id;
 	var letter od;
+	for(initial in 1...3)->
+	<
+		var num cont = 1;
+	>
+	if(cont :>0 ~ chuper:<69 )<
+		throwDown(mayor);
+	>eif(cont:=2)<
+		throwDown(menor);
+	>else<
+		throwDown(sepa);
+	>
+	catch(char,lectura);
+
 ]

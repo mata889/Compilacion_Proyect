@@ -139,7 +139,68 @@ declara_simple::= VAR:v type:t ID:ide declara_puntoc:dc
 
 funciones::= FUNC type ID PARENTESISA parametro PARENTESISC BRACKETA body REPLY PARENTESISA parametro PARENTESISC BRACKETC;
 
-CicloFor::= FOR PARENTESISA ID IN NUM PUNTO PUNTO PUNTO NUM PARENTESISC FLECHA ABRIRC body CERRARC;
+CicloFor::= FOR PARENTESISA ID:ide IN NUM:n PUNTO PUNTO PUNTO NUM:n1 PARENTESISC FLECHA ABRIRC body:b CERRARC
+{:
+        Nodo ciclo = new Nodo("CicloFor",parser.token);
+        parser.token++;
+
+        Nodo fore= new Nodo("For",parser.token);
+        parser.token++;
+        ciclo.addHijo(fore);
+        
+    /*
+        Nodo parentesisa=new Nodo("(",parser.token);
+        parser.token++;
+        ciclo.addHijo(parentesisa);
+        
+*/
+        Nodo ID=new Nodo("Id",parser.token);
+        parser.token++;
+        ID.addHijo(ide.toString(),parser.token);
+        
+        ciclo.addHijo(ID);
+        parser.token++;
+
+        Nodo in=new Nodo("in",parser.token);
+        parser.token++;
+        ciclo.addHijo(in);
+
+        Nodo num1=new Nodo("num",parser.token);
+        parser.token++;
+        num1.addHijo(n.toString(),parser.token);
+        parser.token++;
+        ciclo.addHijo(num1);
+
+        Nodo punto=new Nodo("...",parser.token);
+        parser.token++;
+        ciclo.addHijo(punto);
+        
+        Nodo num2=new Nodo("num",parser.token);
+        parser.token++;
+        num2.addHijo(n1.toString(),parser.token);
+        parser.token++;
+        ciclo.addHijo(num2);
+/*
+        Nodo parentesisc=new Nodo(")",parser.token);
+        parser.token++;
+        ciclo.addHijo(parentesisc);
+
+        Nodo flecha=new Nodo("->",parser.token);
+        parser.token++;
+        ciclo.addHijo(flecha);
+
+        Nodo abrirc=new Nodo("<",parser.token);
+        parser.token++;
+        ciclo.addHijo(abrirc);
+*/
+        ciclo.addHijo((Nodo)b);
+/*
+        Nodo cerrarc=new Nodo(">",parser.token);
+        parser.token++;
+        ciclo.addHijo(cerrarc);
+*/
+        RESULT= ciclo;
+:};
 //body
 body::= proposition:p body:b  {:
         Nodo bodyn = new Nodo("body",  parser.token);
@@ -170,10 +231,25 @@ proposition::= WLE expression FLECHA ABRIRC proposition CERRARC
     parser.token++;
     node.addHijo((Nodo)d);
     
-    RESULT = d;
+    RESULT = node;
 :}
-    |   CicloFor
-    |   ifState
+    |   CicloFor:cf
+{:
+    Nodo node = new Nodo("CicloFor",parser.token);
+    parser.token++;
+    node.addHijo((Nodo)cf);
+
+    RESULT = node;
+:}
+    |   ifState:ife
+{:
+    /*
+    Nodo node = new Nodo("IF",parser.token);
+    parser.token++;
+    node.addHijo((Nodo)ife);
+    */
+    RESULT = ife;
+:}
     |   ID:id ASSIGNMENT expression:e PUNTOC
 {:
 
@@ -198,17 +274,172 @@ proposition::= WLE expression FLECHA ABRIRC proposition CERRARC
 
     RESULT = node;
 :}
-    |   block_switch
-    |   print
-    |   catch;
+    |   block_switch:b
+{:
+    RESULT=b;
+:}
+    |   print:p
+{:
+    RESULT=p;
+:}
+    |   catch:c
+{:
+    RESULT=c;
+:};
 //impresiones
-print::= THROW PARENTESISA ID PARENTESISC PUNTOC
-    |   THROW PARENTESISA valores PARENTESISC PUNTOC
-    |   THROWDOWN PARENTESISA ID PARENTESISC PUNTOC
-    |   THROWDOWN PARENTESISA valores PARENTESISC PUNTOC;
+print::= THROW PARENTESISA ID:ide PARENTESISC PUNTOC
+{:
+    Nodo node=new Nodo("Print",parser.token);
+    parser.token++;
+
+    Nodo thro=new Nodo("Throw",parser.token);
+    parser.token++;
+    node.addHijo(thro);
+
+    Nodo parentesisa=new Nodo("(",parser.token);
+    parser.token++;
+    node.addHijo(parentesisa);
+
+    Nodo id=new Nodo("ID",parser.token);
+    parser.token++;
+
+    id.addHijo(ide.toString(),parser.token);
+    node.addHijo(id); 
+    parser.token++;
+
+    Nodo parentesisc=new Nodo(")",parser.token);
+    parser.token++;
+    node.addHijo(parentesisc);
+
+    Nodo puntoc=new Nodo(";",parser.token);
+    parser.token++;
+    node.addHijo(puntoc);
+
+    RESULT=node;
+:}
+    |   THROW PARENTESISA valores:v PARENTESISC PUNTOC
+{:
+    Nodo node=new Nodo("Print",parser.token);
+    parser.token++;
+
+    Nodo thro=new Nodo("Throw",parser.token);
+    parser.token++;
+    node.addHijo(thro);
+
+    Nodo parentesisa=new Nodo("(",parser.token);
+    parser.token++;
+    node.addHijo(parentesisa);
+
+    node.addHijo((Nodo)v);
+
+    Nodo parentesisc=new Nodo(")",parser.token);
+    parser.token++;
+    node.addHijo(parentesisc);
+
+    Nodo puntoc=new Nodo(";",parser.token);
+    parser.token++;
+    node.addHijo(puntoc);
+
+    RESULT=node;
+:}
+    |   THROWDOWN PARENTESISA ID:ide PARENTESISC PUNTOC
+{:
+       Nodo node=new Nodo("Print",parser.token);
+    parser.token++;
+
+    Nodo thro=new Nodo("ThrowDOWN",parser.token);
+    parser.token++;
+    node.addHijo(thro);
+
+    Nodo parentesisa=new Nodo("(",parser.token);
+    parser.token++;
+    node.addHijo(parentesisa);
+
+    Nodo id=new Nodo("ID",parser.token);
+    parser.token++;
+
+    id.addHijo(ide.toString(),parser.token);
+    node.addHijo(id); 
+    parser.token++;
+
+    Nodo parentesisc=new Nodo(")",parser.token);
+    parser.token++;
+    node.addHijo(parentesisc);
+
+    Nodo puntoc=new Nodo(";",parser.token);
+    parser.token++;
+    node.addHijo(puntoc);
+
+    RESULT=node;
+:}
+    |   THROWDOWN PARENTESISA valores:v PARENTESISC PUNTOC
+{:
+    Nodo node=new Nodo("Print",parser.token);
+    parser.token++;
+
+    Nodo thro=new Nodo("ThrowDown",parser.token);
+    parser.token++;
+    node.addHijo(thro);
+
+    Nodo parentesisa=new Nodo("(",parser.token);
+    parser.token++;
+    node.addHijo(parentesisa);
+
+    node.addHijo((Nodo)v);
+
+    Nodo parentesisc=new Nodo(")",parser.token);
+    parser.token++;
+    node.addHijo(parentesisc);
+
+    Nodo puntoc=new Nodo(";",parser.token);
+    parser.token++;
+    node.addHijo(puntoc);
+
+    RESULT=node;
+:};
 
 //scanner     
-catch::= CATCH PARENTESISA ID COMMA ID PARENTESISC PUNTOC;
+catch::= CATCH PARENTESISA ID:ide COMMA ID:ide2 PARENTESISC PUNTOC
+{:
+    Nodo node=new Nodo("Empieza el catch",parser.token);
+    parser.token++;
+
+    Nodo catche=new Nodo("Catch",parser.token);
+    parser.token++;
+    node.addHijo(catche);
+
+    Nodo parentesisa=new Nodo("(",parser.token);
+    parser.token++;
+    node.addHijo(parentesisa); 
+
+    Nodo id=new Nodo("ID",parser.token);
+    parser.token++;
+
+    id.addHijo(ide.toString(),parser.token);
+    node.addHijo(id); 
+    parser.token++;
+
+    Nodo comma=new Nodo(",",parser.token);
+    parser.token++;
+    node.addHijo(comma); 
+
+    Nodo id_2=new Nodo("ID",parser.token);
+    parser.token++;
+
+    id_2.addHijo(ide2.toString(),parser.token);
+    node.addHijo(id_2); 
+    parser.token++;
+
+    Nodo parentesisc=new Nodo(")",parser.token);
+    parser.token++;
+    node.addHijo(parentesisc);
+
+    Nodo puntoc=new Nodo(";",parser.token);
+    parser.token++;
+    node.addHijo(puntoc);
+
+    RESULT=node;
+:};
 
 //tipo
 type::= VERDAD
@@ -246,56 +477,520 @@ declara_puntoc::= PUNTOC
 
     RESULT = node;
 :}
-    |   asigna:as;
+    |   asigna:as
+{:
+    /*Nodo node =new Nodo("Asignacion",parser.token);
+    node.addHijo((Nodo)as);
+    parser.token++;*/
+
+    RESULT = as;
+:};
 
 //asignacion
-asigna::= ASSIGNMENT valores PUNTOC
-    |   ASSIGNMENT ID PUNTOC
-    |   vacio PUNTOC;
+asigna::= ASSIGNMENT valores:v PUNTOC
+{:
+    Nodo node=new Nodo("asignacion",parser.token);
+    parser.token++;
+
+    Nodo assignment=new Nodo("=",parser.token);
+    node.addHijo(assignment);
+    parser.token++;
+
+    node.addHijo((Nodo)v);
+
+    Nodo puntoc=new Nodo(";",parser.token);
+    node.addHijo(puntoc);
+    parser.token++;
+
+    RESULT= node;
+:}
+    |   ASSIGNMENT ID:ide PUNTOC
+{:
+    Nodo node=new Nodo("asignacion",parser.token);
+    parser.token++;
+
+    Nodo assignment=new Nodo("=",parser.token);
+    node.addHijo(assignment);
+    parser.token++;  
+
+    Nodo id=new Nodo("ID",parser.token);
+    parser.token++;
+
+    id.addHijo(ide.toString(),parser.token);
+    node.addHijo(id); 
+    parser.token++;
+
+    Nodo puntoc=new Nodo(";",parser.token);
+    node.addHijo(puntoc);
+    parser.token++;
+
+    RESULT= node;
+:}
+    |   vacio PUNTOC
+{:
+    Nodo node=new Nodo("asignacion",parser.token);
+    parser.token++;
+
+    Nodo puntoc=new Nodo(";",parser.token);
+    node.addHijo(puntoc);
+    parser.token++;
+
+    RESULT= node;
+:};
 
 //array
 declara_array::= VAR ID ASSIGNMENT NEW ARRAY PARENTESISA NUM PARENTESISC BRACKETA type BRACKETC;
 
 //valores
-valores::= NUM
-    |   BOOL
-    |   LETTER;
+valores::= NUM:n
+{:
+    Nodo node=new Nodo("Valores",parser.token);
+    parser.token++;
+    node.addHijo(n.toString(),parser.token);
+    parser.token++;
+
+    RESULT = node;
+:}
+    |   BOOL:b
+{:
+    Nodo node=new Nodo("Valores",parser.token);
+    parser.token++;
+    node.addHijo(b.toString(),parser.token);
+    parser.token++;
+
+    RESULT = node;
+:}
+    |   LETTER:l
+{:
+    Nodo node=new Nodo("Valores",parser.token);
+    parser.token++;
+    node.addHijo(l.toString(),parser.token);
+    parser.token++;
+
+    RESULT = node;
+:};
 
 //if
 
-ifState::= IF PARENTESISA expression PARENTESISC ABRIRC proposition CERRARC eif;
+ifState::= IF PARENTESISA expression:e PARENTESISC ABRIRC proposition:p CERRARC eif:ei
+{:
+    Nodo node=new Nodo("Empiezo IF",parser.token);
+    parser.token++;
 
-eif::= EIF expression ABRIRC proposition CERRARC eif
-    |   ELSE ABRIRC proposition CERRARC
+    Nodo ife=new Nodo("IF",parser.token);
+    parser.token++;
+    node.addHijo(ife);
+
+    Nodo parentesisa=new Nodo("(",parser.token);
+    parser.token++;
+    node.addHijo(parentesisa);
+
+    node.addHijo((Nodo)e);
+
+    Nodo parentesisc=new Nodo(")",parser.token);
+    parser.token++;
+    node.addHijo(parentesisc);
+
+    Nodo abrirc=new Nodo("<",parser.token);
+    parser.token++;
+    node.addHijo(abrirc);
+
+    node.addHijo((Nodo)p);
+
+    Nodo cerrarc=new Nodo(">",parser.token);
+    parser.token++;
+    node.addHijo(cerrarc);
+
+    node.addHijo((Nodo)ei);
+
+    RESULT=node;
+:};
+
+eif::= EIF expression:e ABRIRC proposition:p CERRARC eif:eife
+{:
+    Nodo node=new Nodo("Else if",parser.token);
+    parser.token++;
+
+    Nodo ei=new Nodo("eif",parser.token);
+    parser.token++;
+    node.addHijo(ei);
+
+    node.addHijo((Nodo)e);
+
+    Nodo abrirc=new Nodo("<",parser.token);
+    parser.token++;
+    node.addHijo(abrirc);
+
+    node.addHijo((Nodo)p);
+
+    Nodo cerrarc=new Nodo(">",parser.token);
+    parser.token++;
+    node.addHijo(cerrarc);
+
+    if(eife!=null){
+        node.addHijitos(((Nodo)eife).getHijos());
+    }
+
+    RESULT= node;
+:}
+    |   ELSE ABRIRC proposition:p CERRARC
+{:
+    Nodo node=new Nodo("Else if",parser.token);
+    parser.token++;
+
+    Nodo ei=new Nodo("else",parser.token);
+    parser.token++;
+    node.addHijo(ei);
+
+    Nodo abrirc=new Nodo("<",parser.token);
+    parser.token++;
+    node.addHijo(abrirc);
+
+    node.addHijo((Nodo)p);
+
+    Nodo cerrarc=new Nodo(">",parser.token);
+    parser.token++;
+    node.addHijo(cerrarc);
+
+    RESULT=node;
+:}
     |   {::};
 
 //bloque switch
-block_switch::= BLOCK PARENTESISA ID PARENTESISC FLECHA cases END;
+//siwthc sale null.point exception nose porque
+block_switch::= BLOCK PARENTESISA ID:ide PARENTESISC FLECHA cases:c END
+{:
+   
+    Nodo node=new Nodo("Bloque Switch",parser.token);
+    parser.token++;
 
-cases::= CASE ID ABRIRC body CERRARC cases
-    |   CASE valores ABRIRC body CERRARC cases
-    |   DEFAULT ABRIRC body CERRARC ;
+    Nodo block=new Nodo("Block",parser.token);
+    parser.token++;
+    node.addHijo(block);
+
+    Nodo parentesisa=new Nodo("(",parser.token);
+    parser.token++;
+    node.addHijo(parentesisa);
+
+    Nodo id=new Nodo("Id",parser.token);
+    parser.token++;
+
+    id.addHijo(ide.toString(),parser.token);
+    parser.token++;
+    node.addHijo(id);
+
+    Nodo parentesisc=new Nodo(")",parser.token);
+    parser.token++;
+    node.addHijo(parentesisc);
+
+    Nodo flecha=new Nodo("->",parser.token);
+    parser.token++;
+    node.addHijo(flecha);
+
+    if(c!=null){
+        node.addHijitos(((Nodo)c).getHijos());
+    }
+
+    Nodo end=new Nodo("end",parser.token);
+    parser.token++;
+    node.addHijo(end);
+
+    RESULT = node;
+
+:};
+
+cases::= CASE ID:ide ABRIRC body:b CERRARC cases:c
+{:
+    Nodo node=new Nodo("Cases",parser.token);
+    parser.token++;
+
+    Nodo cas=new Nodo("Case",parser.token);
+    parser.token++;
+    node.addHijo(cas);
+
+    Nodo id=new Nodo("Id",parser.token);
+    parser.token++;
+
+    id.addHijo(ide.toString(),parser.token);
+    parser.token++;
+    node.addHijo(id);
+
+    Nodo abrirc=new Nodo("<",parser.token);
+    parser.token++;
+    node.addHijo(abrirc);
+
+    node.addHijo((Nodo)b);
+
+    Nodo cerrac=new Nodo(">",parser.token);
+    parser.token++;
+    node.addHijo(cerrac);
+
+    if(c!=null){
+        node.addHijitos(((Nodo)c).getHijos());
+    }
+
+    RESULT = node;
+
+:}
+    |   CASE valores:v ABRIRC body:b CERRARC cases:c
+{:
+    Nodo node=new Nodo("Cases",parser.token);
+    parser.token++;
+
+    Nodo cas=new Nodo("Case",parser.token);
+    parser.token++;
+    node.addHijo(cas);
+
+    node.addHijo((Nodo)v);
+
+    Nodo abrirc=new Nodo("<",parser.token);
+    parser.token++;
+    node.addHijo(abrirc);
+
+    node.addHijo((Nodo)b);
+
+    Nodo cerrac=new Nodo(">",parser.token);
+    parser.token++;
+    node.addHijo(cerrac);
+
+    if(c!=null){
+        node.addHijitos(((Nodo)c).getHijos());
+    }
+
+    RESULT= node;
+:}
+    |   DEFAULT ABRIRC body:b CERRARC 
+{:
+    Nodo node=new Nodo("Cases",parser.token);
+    parser.token++;
+
+    Nodo defaulte=new Nodo("Default",parser.token);
+    parser.token++;
+    node.addHijo(defaulte);
+
+    Nodo abrirc=new Nodo("<",parser.token);
+    parser.token++;
+    node.addHijo(abrirc);
+
+    node.addHijo((Nodo)b);
+
+    Nodo cerrac=new Nodo(">",parser.token);
+    parser.token++;
+    node.addHijo(cerrac);
+
+    RESULT=node;
+
+:};
 //expresiones
-expression::= expression_simple
-    |   expression_simple OPER expression;
+expression::= expression_simple:es
+{:
+    /*Nodo node =new Nodo("expression simple",parser.token);
+    parser.token++;
+    node.addHijo((Nodo)es);
+    */
+    RESULT=es;
+:}
+    |   expression_simple:es OPER expression:ex
+{:
+    Nodo node =new Nodo("expression simple",parser.token);
+    parser.token++;
+    node.addHijo((Nodo)es);
 
-expression_simple::= termino
-    |   signo termino
-    |   expression_simple OPEA_SUM termino;
+    Nodo oper=new Nodo("Operador Relacional",parser.token);
+    parser.token++;
+    node.addHijo(oper);
 
-termino::= factor
-    |   termino OPEA_MULT factor;
+    if(ex!=null){
+        node.addHijitos(((Nodo)es).getHijos());
+    }
+    
+    RESULT=node;
+:};
+
+expression_simple::= termino:t
+{:
+    /*
+    Nodo node=new Nodo("Expresion simpel",parser.token);
+    parser.token++;
+
+    node.addHijo((Nodo)t);
+    */
+    RESULT=t;
+:}
+    |   signo:s termino:t
+{:
+    Nodo node=new Nodo("Expresion simple",parser.token);
+    parser.token++;
+
+    node.addHijo((Nodo)s);
+    node.addHijo((Nodo)t);
+
+    RESULT=node;
+:}
+    |   expression_simple:exs OPEA_SUM:op termino:t
+{:
+    Nodo node=new Nodo("Expresion simple",parser.token);
+    parser.token++;
+
+    if(exs!=null){
+        node.addHijitos(((Nodo)exs).getHijos());
+    }
+
+    Nodo opea_sum=new Nodo("Operacion de Suma/Resta",parser.token);
+    parser.token++;
+    opea_sum.addHijo(op.toString(),parser.token);
+    parser.token++;
+    node.addHijo(opea_sum);
+
+    node.addHijo((Nodo)t);
+
+    RESULT=node;
+:};
+
+termino::= factor:f
+{:
+    RESULT=f;
+:}
+    |   termino:t OPEA_MULT:op factor:f
+{:
+    Nodo node =new Nodo("Termino",parser.token);
+    parser.token++;
+
+    if(t!=null){
+        node.addHijitos(((Nodo)t).getHijos());
+    }
+    Nodo opea_mult=new Nodo("Operador de Multiplicacion/Division",parser.token);
+    parser.token++;
+
+    opea_mult.addHijo(op.toString(),parser.token++);
+    parser.token++;
+
+    node.addHijo(opea_mult);
+
+    node.addHijo((Nodo)f);
+
+    RESULT=node;
+
+:};
 //tener cuidado con el not
-factor::= ID
-    |   ID PARENTESISA list_expression PARENTESISC
-    |   valores
-    |   PARENTESISA expression PARENTESISC
-    |   NOT factor;
+factor::= ID:ide
+{:
+    Nodo node=new Nodo("factor",parser.token);
+    parser.token++;
+
+    Nodo id=new Nodo("ID",parser.token);
+    parser.token++;
+
+    id.addHijo(ide.toString(),parser.token);
+    parser.token++;
+    node.addHijo(id);
+
+    RESULT=node;
+:}
+    |   ID:ide PARENTESISA list_expression:list PARENTESISC
+{:
+    Nodo node=new Nodo("factor",parser.token);
+    parser.token++;
+
+    Nodo id=new Nodo("ID",parser.token);
+    parser.token++;
+
+    id.addHijo(ide.toString(),parser.token);
+    parser.token++;
+    node.addHijo(id);
+    /*
+    Nodo parentesisa=new Nodo("(",parser.token);
+    parser.token++;
+    node.addHijo(parentesisa);
+    */
+
+    node.addHijo((Nodo)list);
+    /*
+    Nodo parentesisc=new Nodo(")",parser.token);
+    parser.token++;
+    node.addHijo(parentesisc);
+    */
+    RESULT=node;
+:}
+    |   valores:v
+{:
+    /*Nodo node=new Nodo("factor",parser.token);
+    parser.token++;
+    node.addHijo((Nodo)v);*/
+    RESULT=v;
+:}
+    |   PARENTESISA expression:e PARENTESISC
+{:
+    Nodo node=new Nodo("factor",parser.token);
+    parser.token++;
+    /*
+    Nodo parentesisa=new Nodo("(",parser.token);
+    parser.token++;
+    node.addHijo(parentesisa);
+    */
+    node.addHijo((Nodo)e);
+    /*
+    Nodo parentesisc=new Nodo(")",parser.token);
+    parser.token++;
+    node.addHijo(parentesisc);
+    */
+    RESULT=node;
+:}
+    |   NOT:n factor:f
+{:
+    Nodo node=new Nodo("factor",parser.token);
+    parser.token++;
+
+    Nodo not=new Nodo("Not",parser.token);
+    parser.token++;
+    not.addHijo(n.toString(),parser.token);
+
+    if(f!=null){
+        node.addHijitos(((Nodo)f).getHijos());
+    }
+
+    RESULT=node;
+:};
 
 /*factor_for ::= ID
 	| NUM
 	| signo NUM;
 */
-signo ::= OPEA_SUM;
+signo ::= OPEA_SUM:op
+{:
+    Nodo node= new Nodo("Signo",parser.token);
+    parser.token++;
 
-list_expression::= expression | list_expression COMMA expression;
+    Nodo opea_sum=new Nodo("Operacion Suma/Resta",parser.token);
+    parser.token++;
+    opea_sum.addHijo(op.toString(),parser.token);
+    parser.token++;
+
+    node.addHijo(opea_sum);
+
+    RESULT=node;
+:};
+
+list_expression::= expression:e
+{:
+    Nodo node=new Nodo("Expresiones",parser.token);
+    parser.token++;
+    node.addHijo((Nodo)e);
+
+    RESULT=e;
+:} | list_expression:list COMMA expression:e
+{:
+    Nodo node=new Nodo("Expresiones",parser.token);
+    parser.token++;
+
+    if(list!=null){
+        node.addHijitos(((Nodo)list).getHijos());
+    }
+    Nodo coma=new Nodo(",",parser.token);
+    parser.token++;
+    node.addHijo(coma);
+
+    node.addHijo((Nodo)e);
+    
+    RESULT=node;
+:};
