@@ -433,7 +433,6 @@ class CUP$AnalizadorSIntactico$actions {
 		int bright = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-1)).right;
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-1)).value;
 		
-    System.out.println("entro el payaso");
     Nodo start = new Nodo("Start",token);
     parser.token ++;
     
@@ -477,7 +476,6 @@ class CUP$AnalizadorSIntactico$actions {
 		int dcright = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.peek()).right;
 		Object dc = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSIntactico$stack.peek()).value;
 		
-        System.out.println("Salio de decl simple");
         Nodo decl = new Nodo("Declaracion Simple",  parser.token);
         parser.token++;
 
@@ -510,6 +508,61 @@ class CUP$AnalizadorSIntactico$actions {
           case 3: // funciones ::= FUNC type ID PARENTESISA parametro PARENTESISC BRACKETA body REPLY PARENTESISA parametro PARENTESISC BRACKETC 
             {
               Object RESULT =null;
+		int tleft = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-11)).left;
+		int tright = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-11)).right;
+		Object t = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-11)).value;
+		int ideleft = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-10)).left;
+		int ideright = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-10)).right;
+		Object ide = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-10)).value;
+		int pleft = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-8)).left;
+		int pright = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-8)).right;
+		Object p = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-8)).value;
+		int bleft = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-5)).left;
+		int bright = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-5)).right;
+		Object b = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-5)).value;
+		int p2left = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-2)).left;
+		int p2right = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-2)).right;
+		Object p2 = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-2)).value;
+		
+    Nodo node= new Nodo("Funciones",parser.token);
+    parser.token++;
+
+    Nodo funciones=new Nodo("Funcion",parser.token);
+    parser.token++;
+    node.addHijo(funciones);
+
+    node.addHijo((Nodo)t);
+
+    Nodo id=new Nodo("ID",parser.token);
+    parser.token++;
+
+    id.addHijo(ide.toString(),parser.token);
+    node.addHijo(id);
+    parser.token++;
+
+    Nodo parentesisa=new Nodo("(",parser.token);
+    parser.token++;
+    node.addHijo(parentesisa);
+
+    node.addHijo((Nodo)p);
+
+    Nodo parentesisc=new Nodo(")",parser.token);
+    parser.token++;
+    node.addHijo(parentesisc);
+
+    Nodo bracketa=new Nodo("[",parser.token);
+    parser.token++;
+    node.addHijo(bracketa);
+
+    node.addHijo((Nodo)b);
+
+    Nodo reply=new Nodo("Reply",parser.token);
+    parser.token++;
+    node.addHijo(reply);
+
+    node.addHijo((Nodo)p2);
+
+    RESULT= node;
 
               CUP$AnalizadorSIntactico$result = parser.getSymbolFactory().newSymbol("funciones",14, ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-12)), ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.peek()), RESULT);
             }
@@ -632,6 +685,17 @@ class CUP$AnalizadorSIntactico$actions {
 		int bleft = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.peek()).left;
 		int bright = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.peek()).right;
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSIntactico$stack.peek()).value;
+		
+    Nodo funciones=new Nodo("Funciones",parser.token);
+    parser.token++;
+
+    funciones.addHijo((Nodo)f);
+
+    if(b!=null){
+        funciones.addHijitos(((Nodo)b).getHijos());
+    }
+
+    RESULT= funciones;
 
               CUP$AnalizadorSIntactico$result = parser.getSymbolFactory().newSymbol("body",5, ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-1)), ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.peek()), RESULT);
             }
@@ -650,6 +714,26 @@ class CUP$AnalizadorSIntactico$actions {
           case 8: // parametro ::= type ID 
             {
               Object RESULT =null;
+		int tleft = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-1)).left;
+		int tright = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-1)).right;
+		Object t = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-1)).value;
+		int idleft = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.peek()).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.peek()).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSIntactico$stack.peek()).value;
+		
+    Nodo node=new Nodo("Parametro",parser.token);
+    parser.token++;
+
+    node.addHijo((Nodo)t);
+
+    Nodo ID = new Nodo("ID",parser.token);
+    parser.token++;
+
+    ID.addHijo(id.toString(),parser.token);
+    node.addHijo(ID);
+    parser.token++;
+
+    RESULT=node;
 
               CUP$AnalizadorSIntactico$result = parser.getSymbolFactory().newSymbol("parametro",6, ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-1)), ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.peek()), RESULT);
             }
@@ -659,6 +743,21 @@ class CUP$AnalizadorSIntactico$actions {
           case 9: // parametro ::= ID 
             {
               Object RESULT =null;
+		int idleft = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.peek()).left;
+		int idright = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.peek()).right;
+		Object id = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSIntactico$stack.peek()).value;
+		
+    Nodo node=new Nodo("Parametro",parser.token);
+    parser.token++;
+
+    Nodo ID = new Nodo("ID",parser.token);
+    parser.token++;
+
+    ID.addHijo(id.toString(),parser.token);
+    node.addHijo(ID);
+    parser.token++;
+
+    RESULT=node;
 
               CUP$AnalizadorSIntactico$result = parser.getSymbolFactory().newSymbol("parametro",6, ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.peek()), RESULT);
             }
@@ -668,6 +767,26 @@ class CUP$AnalizadorSIntactico$actions {
           case 10: // proposition ::= WLE expression FLECHA ABRIRC proposition CERRARC 
             {
               Object RESULT =null;
+		int eleft = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-4)).left;
+		int eright = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-4)).right;
+		Object e = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-4)).value;
+		int pleft = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-1)).left;
+		int pright = ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-1)).right;
+		Object p = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-1)).value;
+		
+    Nodo node = new Nodo("Proposicion",parser.token);
+    parser.token++;
+
+    Nodo whil=new Nodo("while",parser.token);
+    parser.token++;
+    node.addHijo(whil);
+
+    node.addHijo((Nodo)e);
+
+    node.addHijo((Nodo)p);
+
+    RESULT= node;
+
 
               CUP$AnalizadorSIntactico$result = parser.getSymbolFactory().newSymbol("proposition",11, ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.elementAt(CUP$AnalizadorSIntactico$top-5)), ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.peek()), RESULT);
             }
