@@ -1,18 +1,15 @@
 start->[
-    var num id;
-    var letter od;
-
-
-	for(initial in 1...3)->
-	<
-		catch(char,lectura);
-		throw(Hola);
-		throwDown(HolaComOEstas);
-		var num cont = 1;
+    var num contador=0;
+    for(cuenta in 0...5)->
+    <
+        var num vamos=9;
+        if(vamos :>0  contador:<69 )<
+		    throwDown(mayor)
+	    >eif(cont:=2)<
+		    throwDown(menor);
+	    >else<
+		    throwDown(sepa);
 	>
 
-	func num Recursiva (letter Zeta)[
-		var num cheq;
-	reply(Recursiva(letter xexe))
-    ]
+    >
 ]
