@@ -1,0 +1,6 @@
+start->[
+	var num mata;
+	#/ loco yo no se que pedo esta pasando por aqui /# 
+	var num san;
+	var num erick;
+]
