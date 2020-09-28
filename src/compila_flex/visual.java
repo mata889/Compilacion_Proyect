@@ -274,7 +274,7 @@ public class visual extends javax.swing.JFrame {
                 ej.escribirArchivo(ej.print(root));
                 ta_output.setText("Funciono");
             }else{
-                 ta_output.setText("No funciono");
+                 ta_output.setText("No funciono. Si fue un error irecuperable porfavor cerrar y abrir el visual otra vez");
             }
         }catch(Exception e){
             e.printStackTrace();

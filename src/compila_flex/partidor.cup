@@ -913,7 +913,12 @@ eif::= EIF expression:e ABRIRC proposition:p CERRARC eif:eife
  
     RESULT=node;
 :}
-    |   {::};
+    |   
+{:
+    Nodo node = new Nodo("Vacio",parser.token);
+    parser.token++;
+    RESULT=node;
+:};
 
 //bloque switch
 //siwthc sale null.point exception nose porque

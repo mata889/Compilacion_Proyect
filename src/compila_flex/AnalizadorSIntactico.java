@@ -2061,6 +2061,10 @@ class CUP$AnalizadorSIntactico$actions {
             {
               Object RESULT =null;
 		
+    Nodo node = new Nodo("Vacio",parser.token);
+    parser.token++;
+    RESULT=node;
+
               CUP$AnalizadorSIntactico$result = parser.getSymbolFactory().newSymbol("eif",10, ((java_cup.runtime.Symbol)CUP$AnalizadorSIntactico$stack.peek()), RESULT);
             }
           return CUP$AnalizadorSIntactico$result;
