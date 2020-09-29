@@ -824,6 +824,16 @@ list_valores::= arrayData:ad COMMA list_valores:lv
     parser.token++;
     node.addHijo((Nodo)ad);
     RESULT=node;
+:}
+| bracket_valores:b COMMA bracket_valores:b1
+{:
+    Nodo node=new Nodo("bracket-segunda dimension",parser.token);
+    parser.token++;
+
+    node.addHijo((Nodo)b);
+    node.addHijo((Nodo)b1);
+
+    RESULT=node;
 :};
 
 arrayData::= valores:v
