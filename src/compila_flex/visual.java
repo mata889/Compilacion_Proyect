@@ -315,6 +315,9 @@ public class visual extends javax.swing.JFrame {
             }
         });
     }
+    public static void revision(){
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;

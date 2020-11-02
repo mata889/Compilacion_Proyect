@@ -1,3 +1,4 @@
 start->[
-    var id2= new Array(2)[[1,2],[3,4]];
+	var num id;
+	var arr = new Array(1);	
 ]

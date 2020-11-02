@@ -1,20 +1,17 @@
 digraph {
-"20,Start" -> "19,body";
-"19,body" -> "13,Declara Array";
-"13,Declara Array" -> "14,ID";
-"14,ID" -> "15,id2";
-"13,Declara Array" -> "16,num";
-"16,num" -> "17,2";
-"13,Declara Array" -> "12,bracket-segunda dimension";
-"12,bracket-segunda dimension" -> "5,Valores";
-"5,Valores" -> "0,Valores-num";
-"0,Valores-num" -> "1,1";
-"5,Valores" -> "2,Valores-num";
-"2,Valores-num" -> "3,2";
-"12,bracket-segunda dimension" -> "11,Valores";
-"11,Valores" -> "6,Valores-num";
-"6,Valores-num" -> "7,3";
-"11,Valores" -> "8,Valores-num";
-"8,Valores-num" -> "9,4";
+"16,Start" -> "15,body";
+"15,body" -> "7,Proposicion";
+"7,Proposicion" -> "2,Declaracion Simple";
+"2,Declaracion Simple" -> "3,Variable";
+"3,Variable" -> "4,var";
+"2,Declaracion Simple" -> "0,NUM";
+"2,Declaracion Simple" -> "5,ID";
+"5,ID" -> "6,id";
+"2,Declaracion Simple" -> "1,;";
+"15,body" -> "8,Declara Array";
+"8,Declara Array" -> "9,ID";
+"9,ID" -> "10,arr";
+"8,Declara Array" -> "11,num";
+"11,num" -> "12,1";
 
 }
