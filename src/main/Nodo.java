@@ -1,4 +1,6 @@
-package compila_flex;
+package main;
+
+
 
 import java.util.ArrayList;
 import java.io.FileWriter;

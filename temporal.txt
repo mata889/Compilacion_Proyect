@@ -1,3 +1,0 @@
-start->[
-    var id2= new Array(2)[[1,2],[3,4]];
-]

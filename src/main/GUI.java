@@ -1,4 +1,6 @@
-package compila_flex;
+package main;
+
+
 
 import java.io.File;
 import java.io.FileReader;
@@ -7,12 +9,12 @@ import java.io.PrintWriter;
 import javax.swing.JFileChooser;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
-public class visual extends javax.swing.JFrame {
+public class GUI extends javax.swing.JFrame {
     
     final JFileChooser fc = new JFileChooser();
     File fl;
     
-     public visual() {
+     public GUI() {
         initComponents();
         fc.setCurrentDirectory(new File("./"));
         fc.setFileFilter(new FileNameExtensionFilter("Text", "txt"));
@@ -240,16 +242,19 @@ public class visual extends javax.swing.JFrame {
     private void jb_ejecutarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jb_ejecutarMouseClicked
         // Aqui es donde se ejecutara el codigo
         try{
-            AnalizadorSIntactico p = new AnalizadorSIntactico(new proyecto(new FileReader(fl)));
-            ejecuta ej = new ejecuta();
+            AnalizadorSintactico p = new AnalizadorSintactico(new Lexico(new FileReader(fl)));
+            temp_main ej = new temp_main();
             p.parse();
-            if((proyecto.errores == 0)){ // && (AnalizadorSIntactico.syntacticErrors ==0)
-                Nodo root = AnalizadorSIntactico.arbol;
+            if((Lexico.errores == 0)){ // && (AnalizadorSIntactico.syntacticErrors ==0)
+                Nodo root = AnalizadorSintactico.arbol;
                 
                 //Graficar(recorrido(root));
-                ej.limpiar("");
-                ej.escribirArchivo(ej.print(root));
+                limpiar("");
+                escribirArchivo(print(root));
                 ta_output.setText("Funciono");
+                
+                //Parte semántica
+                ej.recorrido();
             }else{
                  ta_output.setText("No funciono");
             }
@@ -263,15 +268,15 @@ public class visual extends javax.swing.JFrame {
             PrintWriter tempora=new PrintWriter("temporal.txt");
             tempora.println(ta_Codigo.getText());
             tempora.close();
-            AnalizadorSIntactico p = new AnalizadorSIntactico(new proyecto(new FileReader("temporal.txt")));
-            ejecuta ej = new ejecuta();
+            AnalizadorSintactico p = new AnalizadorSintactico(new Lexico(new FileReader("temporal.txt")));
+            temp_main ej = new temp_main();
             p.parse();
-            if((proyecto.errores == 0)){ // && (AnalizadorSIntactico.syntacticErrors ==0)
-                Nodo root = AnalizadorSIntactico.arbol;
+            if((Lexico.errores == 0)){ // && (AnalizadorSIntactico.syntacticErrors ==0)
+                Nodo root = AnalizadorSintactico.arbol;
                 
                 //Graficar(recorrido(root));
-                ej.limpiar("");
-                ej.escribirArchivo(ej.print(root));
+                limpiar("");
+                escribirArchivo(print(root));
                 ta_output.setText("Funciono");
             }else{
                  ta_output.setText("No funciono. Si fue un error irecuperable porfavor cerrar y abrir el visual otra vez");
@@ -281,9 +286,71 @@ public class visual extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButton3MouseClicked
 
-    /**
-     * @param args the command line arguments
-     */
+
+    
+    // ----------------------------------------------------------------
+    // Aquí se encuentran las funciones principales para la compilación
+    // ----------------------------------------------------------------
+    
+    
+    
+    // ---------------------------------------------------------------
+    // Funciones secundarias para el manejo del GUI
+    // ---------------------------------------------------------------
+    public static void limpiar(String v){
+        FileWriter fichero = null;
+        PrintWriter pw = null;
+        try{
+            fichero = new FileWriter("src/AST/AST.dot");
+            pw = new PrintWriter(fichero);
+            pw.print(v);
+        }catch(Exception e){
+
+        }finally{
+            try{
+                if(null!=fichero){
+                    fichero.close();
+                }
+            }catch(Exception e){
+                
+            }
+        }
+    }
+     
+    public static void escribirArchivo(String v){
+        FileWriter fichero = null;
+        PrintWriter pw = null;
+        try{
+            fichero = new FileWriter("src/AST/AST.dot",true);
+            pw = new PrintWriter(fichero);
+            pw.print("digraph {\n");
+            pw.print(v);
+            pw.print("\n}");
+        }catch(Exception e){
+        }finally{
+            try{
+                if(null != fichero){
+                    fichero.close();
+                }
+            }catch(Exception e){
+
+            }
+        }
+    }
+    
+    public static String print(Nodo padre ) {
+        String pad = "";
+        String cadena = "";
+        for (Nodo hijo : padre.getHijos()) {
+            if (hijo.valor != null) {
+                cadena += "\"" + padre.getID() + "," + padre.getValor() + "\" -> \"" + hijo.idNodo + "," + hijo.valor + "\";";
+                cadena += "\n";
+                cadena += print(hijo);
+            }
+        }
+        return cadena;
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -298,20 +365,21 @@ public class visual extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(visual.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(visual.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(visual.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(visual.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(GUI.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new visual().setVisible(true);
+                new GUI().setVisible(true);
             }
         });
     }
