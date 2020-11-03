@@ -21,7 +21,7 @@ public class temp_main {
         boolean mvSyn= moverArch("sym.java");
         
         // Ejecutar esto si se llegaron a hacer cambios:
-        // compilar_archivos()
+        compilar_archivos();
         
         // Ejecutar parte léxica y sintáctico:
         // ejecutar();
@@ -79,7 +79,7 @@ public class temp_main {
     public static void ejecutar() {
         System.out.println("*****Inicio Ejecuación*****");
         try {
-            AnalizadorSintactico asin = new AnalizadorSintactico(new Lexico(new FileReader("src/lenguaje.txt")));
+            AnalizadorSintactico asin = new AnalizadorSintactico(new Lexico(new FileReader("src/Test/temporal.txt")));
 
             Object result = asin.parse().value;
             System.out.println("*****Resultados Finales******");
@@ -124,7 +124,7 @@ public class temp_main {
         FileWriter fichero = null;
         PrintWriter pw = null;
         try{
-            fichero = new FileWriter("src/arboles/arbol.dot",true);
+            fichero = new FileWriter("src/AST/AST.dot",true);
             pw = new PrintWriter(fichero);
             pw.print("digraph {\n");
             pw.print(v);

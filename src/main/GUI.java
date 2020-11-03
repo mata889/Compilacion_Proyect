@@ -295,7 +295,6 @@ public class GUI extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton3MouseClicked
 
 
-    
     // ----------------------------------------------------------------
     // Funciones para la SEMÁNTICA del compilador.
     // ----------------------------------------------------------------
