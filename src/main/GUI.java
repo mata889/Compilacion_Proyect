@@ -19,8 +19,7 @@ public class GUI extends javax.swing.JFrame {
         fc.setCurrentDirectory(new File("./"));
         fc.setFileFilter(new FileNameExtensionFilter("Text", "txt"));
     }
-
-    
+   
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -219,6 +218,14 @@ public class GUI extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
+    
+    // ----------------------------------------------------------------
+    // Botones del GUI
+    // ----------------------------------------------------------------
+    
+    // Botón que selecciona un archivo que contenga el código a compilar
     private void jb_fileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jb_fileMouseClicked
         // Boton para seleccionar el archivo---------------------------------------------------------------------
         // Consigue el archivo
@@ -239,25 +246,23 @@ public class GUI extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jb_fileMouseClicked
 
+    // Botón que ejecuta los pasos de compilación del archivo
     private void jb_ejecutarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jb_ejecutarMouseClicked
-        // Aqui es donde se ejecutara el codigo
         try{
+            // Parte léxica y sintáctica:
             AnalizadorSintactico p = new AnalizadorSintactico(new Lexico(new FileReader(fl)));
-            temp_main ej = new temp_main();
             p.parse();
             if((Lexico.errores == 0)){ // && (AnalizadorSIntactico.syntacticErrors ==0)
                 Nodo root = AnalizadorSintactico.arbol;
-                
-                //Graficar(recorrido(root));
                 limpiar("");
                 escribirArchivo(print(root));
                 ta_output.setText("Funciono");
-                
-                //Parte semántica
-                ej.recorrido();
             }else{
                  ta_output.setText("No funciono");
             }
+            
+            // Parte semántica:
+            
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -268,19 +273,22 @@ public class GUI extends javax.swing.JFrame {
             PrintWriter tempora=new PrintWriter("temporal.txt");
             tempora.println(ta_Codigo.getText());
             tempora.close();
+            
+             // Parte léxica y sintáctica:
             AnalizadorSintactico p = new AnalizadorSintactico(new Lexico(new FileReader("temporal.txt")));
             temp_main ej = new temp_main();
             p.parse();
             if((Lexico.errores == 0)){ // && (AnalizadorSIntactico.syntacticErrors ==0)
                 Nodo root = AnalizadorSintactico.arbol;
-                
-                //Graficar(recorrido(root));
                 limpiar("");
                 escribirArchivo(print(root));
                 ta_output.setText("Funciono");
             }else{
                  ta_output.setText("No funciono. Si fue un error irecuperable porfavor cerrar y abrir el visual otra vez");
             }
+            
+            // Parte semántica:
+            
         }catch(Exception e){
             e.printStackTrace();
         }
@@ -289,14 +297,17 @@ public class GUI extends javax.swing.JFrame {
 
     
     // ----------------------------------------------------------------
-    // Aquí se encuentran las funciones principales para la compilación
+    // Funciones para la SEMÁNTICA del compilador.
     // ----------------------------------------------------------------
     
     
     
     // ---------------------------------------------------------------
-    // Funciones secundarias para el manejo del GUI
+    // Funciones secundarias para la creación del AST
     // ---------------------------------------------------------------
+    
+    
+    // Esta función crea el archivo necesario para agregar el AST.
     public static void limpiar(String v){
         FileWriter fichero = null;
         PrintWriter pw = null;
@@ -317,6 +328,22 @@ public class GUI extends javax.swing.JFrame {
         }
     }
      
+    // Esta función toma el nodo padre que contiene la estructura del árbol
+    // y genera el formato al árbol.
+    public static String print(Nodo padre ) {
+        String pad = "";
+        String cadena = "";
+        for (Nodo hijo : padre.getHijos()) {
+            if (hijo.valor != null) {
+                cadena += "\"" + padre.getID() + "," + padre.getValor() + "\" -> \"" + hijo.idNodo + "," + hijo.valor + "\";";
+                cadena += "\n";
+                cadena += print(hijo);
+            }
+        }
+        return cadena;
+    }
+    
+    // Escribe la cadena proporcionada dentro de un archivo previamente creado.
     public static void escribirArchivo(String v){
         FileWriter fichero = null;
         PrintWriter pw = null;
@@ -336,19 +363,6 @@ public class GUI extends javax.swing.JFrame {
 
             }
         }
-    }
-    
-    public static String print(Nodo padre ) {
-        String pad = "";
-        String cadena = "";
-        for (Nodo hijo : padre.getHijos()) {
-            if (hijo.valor != null) {
-                cadena += "\"" + padre.getID() + "," + padre.getValor() + "\" -> \"" + hijo.idNodo + "," + hijo.valor + "\";";
-                cadena += "\n";
-                cadena += print(hijo);
-            }
-        }
-        return cadena;
     }
     
     public static void main(String args[]) {

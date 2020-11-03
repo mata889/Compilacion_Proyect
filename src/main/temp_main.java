@@ -20,6 +20,14 @@ public class temp_main {
         boolean mvAS = moverArch("Lexico.java");
         boolean mvSyn= moverArch("sym.java");
         
+        // Ejecutar esto si se llegaron a hacer cambios:
+        // compilar_archivos()
+        
+        // Ejecutar parte léxica y sintáctico:
+        // ejecutar();
+        
+        // Ejecutar parte semántica
+        
     }
 
     public static void compilar_archivos(){
@@ -41,7 +49,7 @@ public class temp_main {
         System.out.println("Generados Correctamente....."); 
     }
     
-    public static boolean moverArch(String archNombre){
+     public static boolean moverArch(String archNombre){
         boolean efectuado =false;
         File arch = new File(archNombre);
         if (arch.exists()) {
@@ -66,8 +74,9 @@ public class temp_main {
         }
         return efectuado;
     }
-
-     public static void ejecutar_analizador() {
+     
+    // Parte léxica y sintáctica 
+    public static void ejecutar() {
         System.out.println("*****Inicio Ejecuación*****");
         try {
             AnalizadorSintactico asin = new AnalizadorSintactico(new Lexico(new FileReader("src/lenguaje.txt")));
@@ -93,6 +102,22 @@ public class temp_main {
         }
     }
     String msn1 = "";
+    
+  
+    // Semántica
+    public static void recorrido(){
+        /*ArrayList<String> Lista = new ArrayList<>();
+        for(int i=0;i<jsonArray.length();i++){
+            try {
+                JSONObject json = jsonArray.getJSONObject(i);
+                //Aquí se obtiene el dato y es guardado en una lista
+                Lista.add(json.getString("name"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }*/
+    }
+    
     
     
     public static void escribirArchivo(String v){
@@ -151,17 +176,4 @@ public class temp_main {
         }
     }
      
-    
-    public static void recorrido(){
-        /*ArrayList<String> Lista = new ArrayList<>();
-        for(int i=0;i<jsonArray.length();i++){
-            try {
-                JSONObject json = jsonArray.getJSONObject(i);
-                //Aquí se obtiene el dato y es guardado en una lista
-                Lista.add(json.getString("name"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }*/
-    }
 }
