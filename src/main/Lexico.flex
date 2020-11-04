@@ -1,9 +1,10 @@
-package compila_flex;
+package main;
+
 import java_cup.runtime.Symbol;
 %%
 
 %unicode
-%class proyecto
+%class Lexico
 %int
 %line
 %column

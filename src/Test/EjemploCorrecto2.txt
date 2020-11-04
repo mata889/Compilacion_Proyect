@@ -1,5 +1,5 @@
 start->[
-     var num id;
+    var num id;
     if(cont :>0 ~ ejemplo:<69 )<
         throwDown(mayor);
     >eif(cont:=2)<
