@@ -3,21 +3,21 @@ package main;
  *
  * @author Ricardo
  */
-public class variables {
+public class Variables {
     public String tipo;
     public String id;
     public String ambito;
     public String offset;
 
 
-    public variables(String tipo, String id, String ambito) {
+    public Variables(String tipo, String id, String ambito) {
         this.tipo = tipo;
         this.id = id;
         this.ambito = ambito;
     }
     
     //IGNOREN ESTE POR AHORA, ES PARA CUANDO USEMOS ASSEMBLER
-    public variables(String tipo, String id, String ambito, String offset) {
+    public Variables(String tipo, String id, String ambito, String offset) {
         this.tipo = tipo;
         this.id = id;
         this.ambito = ambito;
