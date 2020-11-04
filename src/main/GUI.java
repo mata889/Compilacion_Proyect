@@ -396,6 +396,53 @@ public class GUI extends javax.swing.JFrame {
             }
         });
     }
+    
+        public static void revision(Nodo nd){
+        Nodo raiz = nd;
+        if(raiz != null){
+            String tipo = "";
+            String id = "";
+            for (Nodo hijo : raiz.getHijos()) {
+                if(hijo.getValor().equals("var")){
+                    tipo = hijo.getHijos().get(1).getValor();  
+                }else if(hijo.getValor().equals("ID")){
+                    id += hijo.getHijos().get(0).getValor();
+                    if( verificarV(id) ){
+                        //this.errores_semanticos.add("Error Semántico: La variable '" + id + "' ha sido declarada más de una vez");
+                    }else{
+                        if(tipo.equals("char")){
+                            //this.offset += 1;
+                        }else{
+                            //int mod = 4 - (this.offset %4);
+//                            if (mod == 4) {
+//                                this.offset += 4;
+//                            } else {
+//                                this.offset += 4 + mod;
+//                            }
+                        }
+                        //this.tabla.add(new Variable(tipo, id, this.ambito_actual, this.offset));
+                    }
+                    id = "";
+                }    
+            }
+        }else if(nd.getValor().equals("Funcion")){
+            String tipo_f = "";
+            String id_f = "";
+            //this.offset = 0;
+            for (Nodo hijo : nd.getHijos()) { //450
+
+            }
+        }
+    }
+    //No se que es tabla aqui
+    public static boolean verificarV(String variable){
+        boolean ver = false;
+        for (int i = 0; i < 0; i++) {
+
+        }
+        return ver;
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
