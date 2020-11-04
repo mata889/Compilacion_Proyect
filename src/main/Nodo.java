@@ -12,6 +12,9 @@ public class Nodo {
     public int idNodo;
     public ArrayList<Nodo> hijos = new ArrayList<>();
     
+    Nodo(){
+    }
+            
     Nodo(String valor,  int ref){
         this.valor = valor;
         this.idNodo = ref;
@@ -51,6 +54,12 @@ public class Nodo {
         hijos.add(new Nodo(valor,ref));
     }
 
-
+    public void print(){
+        System.out.println("ID Nodo: "+idNodo+" | Valor: "+valor);
+        System.out.println("Hijos: ");
+        for (Nodo hijo : hijos) {
+            hijo.print();
+        }
+    }
 
 }

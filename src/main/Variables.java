@@ -17,11 +17,11 @@ public class Variables {
     }
     
     //IGNOREN ESTE POR AHORA, ES PARA CUANDO USEMOS ASSEMBLER
-    public Variables(String tipo, String id, String ambito, String offset) {
+    public Variables(String tipo, String id, String ambito, int offset) {
         this.tipo = tipo;
         this.id = id;
         this.ambito = ambito;
-        this.offset = offset;
+        this.offset = ""+offset;
     }
 
     public String getTipo() {
@@ -56,5 +56,7 @@ public class Variables {
         this.offset = offset;
     }
     
-    
+    public String toString(){
+        return "Tipo: "+tipo+" | id: "+id+" | ámbito: "+ambito+" | offset: "+offset;
+    };
 }

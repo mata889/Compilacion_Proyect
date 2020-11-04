@@ -68,38 +68,38 @@ commentarios_der="/#"
 <YYINITIAL>{
     //palabras reservadas
     
-    "start"         { System.out.println("start"); return new Symbol(sym.START,yycolumn,yyline,yytext()); }
-    "num"           { System.out.println("num");return new Symbol(sym.NUMERITO,yycolumn,yyline,yytext()); }
-    "func"          { System.out.println("func");return new Symbol(sym.FUNC,yycolumn,yyline,yytext()); }
-    "reply"         { System.out.println("reply");return new Symbol(sym.REPLY,yycolumn,yyline,yytext()); }  
-    "letter "       { System.out.println("letter");return new Symbol(sym.LETRA,yycolumn,yyline,yytext()); }
-    "word"          { System.out.println("word");return new Symbol(sym.WORD,yycolumn,yyline,yytext()); }
-    "bool"          { System.out.println("bool");return new Symbol(sym.VERDAD,yycolumn,yyline,yytext()); }
-    "var"           { System.out.println("var");return new Symbol(sym.VAR,yycolumn,yyline,yytext()); }
-    "new"           { System.out.println("new");return new Symbol(sym.NEW,yycolumn,yyline,yytext()); }
-    "for"           { System.out.println("for");return new Symbol(sym.FOR,yycolumn,yyline,yytext()); }
-    "wle"           { System.out.println("wle");return new Symbol(sym.WLE,yycolumn,yyline,yytext()); }
-    "in"            { System.out.println("in");return new Symbol(sym.IN,yycolumn,yyline,yytext()); }
-    "if"            { System.out.println("if");return new Symbol(sym.IF,yycolumn,yyline,yytext()); }
-    "eif"           { System.out.println("eif");return new Symbol(sym.EIF,yycolumn,yyline,yytext()); }
-    "else"          { System.out.println("else");return new Symbol(sym.ELSE,yycolumn,yyline,yytext()); }
-    "block"         { System.out.println("block");return new Symbol(sym.BLOCK,yycolumn,yyline,yytext()); }
-    "case"          { System.out.println("case");return new Symbol(sym.CASE,yycolumn,yyline,yytext()); }
-    "end"           { System.out.println("end");return new Symbol(sym.END,yycolumn,yyline,yytext()); }
-    "default"       { System.out.println("default");return new Symbol(sym.DEFAULT,yycolumn,yyline,yytext()); }
-    "catch"         { System.out.println("catch");return new Symbol(sym.CATCH,yycolumn,yyline,yytext()); }
-    "throw"         { System.out.println("throw");return new Symbol(sym.THROW,yycolumn,yyline,yytext()); }
-    "throwDown"     { System.out.println("throwDown");return new Symbol(sym.THROWDOWN,yycolumn,yyline,yytext()); }
-    "catch"         { System.out.println("catch");return new Symbol(sym.CATCH,yycolumn,yyline,yytext()); }
-    "Array"         { System.out.println("Array");return new Symbol(sym.ARRAY,yycolumn,yyline,yytext()); }
-    {BOOL}          { System.out.println("bool");return new Symbol(sym.BOOL,yycolumn,yyline,yytext()); }
-    {LETTER}        { System.out.println("letter");return new Symbol(sym.LETTER,yycolumn,yyline,yytext()); }
-    {NUM}           { System.out.println("num");return new Symbol(sym.NUM,yycolumn,yyline,yytext()); }
-    {id}            { System.out.println("id ");return new Symbol(sym.ID,yycolumn,yyline,yytext()); }
+    "start"         { return new Symbol(sym.START,yycolumn,yyline,yytext()); }
+    "num"           { return new Symbol(sym.NUMERITO,yycolumn,yyline,yytext()); }
+    "func"          { return new Symbol(sym.FUNC,yycolumn,yyline,yytext()); }
+    "reply"         { return new Symbol(sym.REPLY,yycolumn,yyline,yytext()); }  
+    "letter "       { return new Symbol(sym.LETRA,yycolumn,yyline,yytext()); }
+    "word"          { return new Symbol(sym.WORD,yycolumn,yyline,yytext()); }
+    "bool"          { return new Symbol(sym.VERDAD,yycolumn,yyline,yytext()); }
+    "var"           { return new Symbol(sym.VAR,yycolumn,yyline,yytext()); }
+    "new"           { return new Symbol(sym.NEW,yycolumn,yyline,yytext()); }
+    "for"           { return new Symbol(sym.FOR,yycolumn,yyline,yytext()); }
+    "wle"           { return new Symbol(sym.WLE,yycolumn,yyline,yytext()); }
+    "in"            { return new Symbol(sym.IN,yycolumn,yyline,yytext()); }
+    "if"            { return new Symbol(sym.IF,yycolumn,yyline,yytext()); }
+    "eif"           { return new Symbol(sym.EIF,yycolumn,yyline,yytext()); }
+    "else"          { return new Symbol(sym.ELSE,yycolumn,yyline,yytext()); }
+    "block"         { return new Symbol(sym.BLOCK,yycolumn,yyline,yytext()); }
+    "case"          { return new Symbol(sym.CASE,yycolumn,yyline,yytext()); }
+    "end"           { return new Symbol(sym.END,yycolumn,yyline,yytext()); }
+    "default"       { return new Symbol(sym.DEFAULT,yycolumn,yyline,yytext()); }
+    "catch"         { return new Symbol(sym.CATCH,yycolumn,yyline,yytext()); }
+    "throw"         { return new Symbol(sym.THROW,yycolumn,yyline,yytext()); }
+    "throwDown"     { return new Symbol(sym.THROWDOWN,yycolumn,yyline,yytext()); }
+    "catch"         { return new Symbol(sym.CATCH,yycolumn,yyline,yytext()); }
+    "Array"         { return new Symbol(sym.ARRAY,yycolumn,yyline,yytext()); }
+    {BOOL}          { return new Symbol(sym.BOOL,yycolumn,yyline,yytext()); }
+    {LETTER}        { return new Symbol(sym.LETTER,yycolumn,yyline,yytext()); }
+    {NUM}           { return new Symbol(sym.NUM,yycolumn,yyline,yytext()); }
+    {id}            { return new Symbol(sym.ID,yycolumn,yyline,yytext()); }
     //{valorChar}     { return new Symbol(sym.VALORCHAR,yycolumn,yyline,yytext()); }
     {not}           { return new Symbol(sym.NOT,yycolumn,yyline,yytext()); }
     
-    {OpeR}          { System.out.println("operador relacional"); return new Symbol(sym.OPER,yycolumn,yyline,yytext()); }
+    {OpeR}          { return new Symbol(sym.OPER,yycolumn,yyline,yytext()); }
     //{equals}        { return new Symbol(sym.EQUALS,yycolumn,yyline,yytext()); }
     //operador aritmeticos
     {OpeA_sum}      { return new Symbol(sym.OPEA_SUM,yycolumn,yyline,yytext()); }

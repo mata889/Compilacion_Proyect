@@ -1,34 +1,38 @@
 package main;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class temp_main {
+    
     Scanner leer = new Scanner(System.in);
+    static ArrayList<String> errores_semanticos = new ArrayList();
+    static ArrayList<Variables> tabla = new ArrayList();
+    static String ambito_actual = "Start";
+    static int offset = 0;
     
     public static void main (String args[]){
-        compilar_archivos();
-        boolean mvAl = moverArch("AnalizadorLexico.java");
+        /*boolean mvAl = moverArch("AnalizadorLexico.java");
         boolean mvAS = moverArch("Lexico.java");
-        boolean mvSyn= moverArch("sym.java");
+        boolean mvSyn= moverArch("sym.java");*/
         
         // Ejecutar esto si se llegaron a hacer cambios:
-        compilar_archivos();
+        // compilar_archivos();
         
         // Ejecutar parte léxica y sintáctico:
-        // ejecutar();
+       Nodo root = ejecutar();
         
         // Ejecutar parte semántica
+       recorrido(root);
         
-    }
+    }   
 
     public static void compilar_archivos(){
         String archLexico="";
@@ -76,49 +80,100 @@ public class temp_main {
     }
      
     // Parte léxica y sintáctica 
-    public static void ejecutar() {
-        System.out.println("*****Inicio Ejecuación*****");
+    public static Nodo ejecutar() {
+        Nodo root = null;
         try {
-            AnalizadorSintactico asin = new AnalizadorSintactico(new Lexico(new FileReader("src/Test/temporal.txt")));
-
-            Object result = asin.parse().value;
-            System.out.println("*****Resultados Finales******");
-            
+            AnalizadorSintactico asin = new AnalizadorSintactico(new Lexico(new FileReader("src/Test/prueba.txt")));
+            asin.parse();
             //arbol
-            System.out.println("*****Imprimiendo arbol******");
             limpiar("");
-            Nodo root = AnalizadorSintactico.arbol;
+            root = AnalizadorSintactico.arbol;
             escribirArchivo(print(root));
-            try{
-                System.out.println("*****Arbol terminado******");
-            }catch(Exception ex){
-                System.out.println("*****Ha ocurrido un error******");
-            }
-            
-        } catch (FileNotFoundException ex) {
-            System.out.println(ex);
         } catch (Exception ex) {
             System.out.println(ex);
         }
-    }
-    String msn1 = "";
-    
+        return root;
+    }    
   
     // Semántica
-    public static void recorrido(){
-        /*ArrayList<String> Lista = new ArrayList<>();
-        for(int i=0;i<jsonArray.length();i++){
-            try {
-                JSONObject json = jsonArray.getJSONObject(i);
-                //Aquí se obtiene el dato y es guardado en una lista
-                Lista.add(json.getString("name"));
-            } catch (JSONException e) {
-                e.printStackTrace();
+    public static void recorrido(Nodo root){
+        if (root!=null){
+            Nodo body = root.getHijos().get(0); // Aquí entro al body de start.
+            for (Nodo hijo : body.getHijos()) { // Se recorren los hijos del body
+                     
+                // Aquí se encuentran declaraciones de variables con o sin asignación
+                if(hijo.getValor().equals("Proposicion")){
+                    String tipo="", id="";
+                    for (Nodo h : hijo.getHijos().get(0).getHijos()) { //Se toman los hijos de la declaración_simple
+                        if(h.getValor().equals("Caracter")){ //En caso de que sea un caracter
+                            tipo = "caracter";
+                            offset += 1;
+                        }else if (h.getValor().equals("Booleana")){//En caso de que sea un booleano
+                            tipo = "booleano";
+                            offset += 1;
+                        }else if (h.getValor().equals("NUM")){//En caso de que sea un numero
+                            tipo = "numero";
+                            int mod = 4 - (offset % 4);
+                            if (mod == 4) {
+                                offset += 4;
+                            } else {
+                                offset += 4 + mod;
+                            }
+                        }else if(h.getValor().equals("ID")){ //En caso de que sea un ID se toma
+                            id = h.getHijos().get(0).getValor();
+                            if(!verificar_variable(id, ambito_actual)){ // Se verifica en la tabla de símbolos
+                                if (hijo.getHijos().get(0).getHijos().get(3).getValor().equals("asignacion")){
+                                    String valor = hijo.getHijos().get(0).getHijos().get(3).getHijos().get(0).getValor();
+                                    if(tipo.equals("caracter") && valor.equals("Valores-caracter")){
+                                        tabla.add(new Variables(tipo, id, ambito_actual, offset));
+                                    }else if(tipo.equals("numero") && valor.equals("Valores-num")){
+                                        tabla.add(new Variables(tipo, id, ambito_actual, offset));
+                                    }else if(tipo.equals("booleano") && valor.equals("Valores-bool")){
+                                        tabla.add(new Variables(tipo, id, ambito_actual, offset));
+                                    }else{
+                                        errores_semanticos.add("Error semántico: Se ha asignado un valor erróneo a la a variable "+id+"");
+                                    }
+                                }else if (hijo.getHijos().get(0).getHijos().get(3).getValor().equals(";")){
+                                    tabla.add(new Variables(tipo, id, ambito_actual, offset));
+                                }
+                            }else{
+                                errores_semanticos.add("Error semántico: La variable "+id+" ha sido declarada con anterioridad");
+                            }
+                        }
+                    }
+                }
+                
+                // En caso de que sea otra cosa
+                else if(hijo.getValor().equals("")){
+                
+                }
+                
+                
             }
-        }*/
+        }else{
+            System.out.println("ERROR: Root nulo, verificar si el archivo proporcionado es correcto");
+        }
+        
+        System.out.println("LA TABLA DE SÍMBOLOS ES: ");
+        for (Variables variable : tabla) {
+            System.out.println(variable.toString());
+        }
+        
+        System.out.println("LOS ERRORES SEMÁNTICOS SON: ");
+        for (String error : errores_semanticos) {
+            System.out.println(error);
+        }   
     }
     
-    
+    public static boolean verificar_variable(String variable, String ambito_actual) {
+        boolean ret = false;
+        for (int i = 0; i < tabla.size(); i++) {
+            if (variable.equals(tabla.get(i).getId()) && ambito_actual.equals(tabla.get(i).getAmbito())) {
+                ret = true;
+            }
+        }
+        return ret;
+    }
     
     public static void escribirArchivo(String v){
         FileWriter fichero = null;
@@ -129,7 +184,7 @@ public class temp_main {
             pw.print("digraph {\n");
             pw.print(v);
             pw.print("\n}");
-        }catch(Exception e){
+        }catch(IOException e){
 
         }finally{
             try{

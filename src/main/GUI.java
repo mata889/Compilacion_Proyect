@@ -276,7 +276,6 @@ public class GUI extends javax.swing.JFrame {
             
              // Parte léxica y sintáctica:
             AnalizadorSintactico p = new AnalizadorSintactico(new Lexico(new FileReader("temporal.txt")));
-            temp_main ej = new temp_main();
             p.parse();
             if((Lexico.errores == 0)){ // && (AnalizadorSIntactico.syntacticErrors ==0)
                 Nodo root = AnalizadorSintactico.arbol;
