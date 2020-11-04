@@ -48,7 +48,7 @@ OpeA_mult = "*"|"/"
 //MOD = "MOD"
 
 
-//letter_special= "^"|{MOD}|"$"|#|&|"'"|"?"|"!"|{abrirC}|{cerrarC}|"{"|"}"
+letter_special= "^"|"$"|#|&|"'"|"?"|"!"|{abrirC}|{cerrarC}|"{"|"}"
 
 
 //identificador
@@ -56,7 +56,7 @@ id = {LETTER}({int}|{LETTER})*
 
 //valorChar = {LETTER}+
 //valorChar = {letra}|{numero}|{letter_special}|" "
-//valorStr = {letra}|{numero}|{letter_special}|" "
+WORD = {LETTER}|{NUM}|{letter_special}|" "
 
 commentarios_izq="#/"
 commentarios_der="/#"
@@ -116,13 +116,14 @@ commentarios_der="/#"
     {parentesisC}   { return new Symbol(sym.PARENTESISC,yycolumn,yyline,yytext()); }
     {abrirC}        { return new Symbol(sym.ABRIRC,yycolumn,yyline,yytext()); }
     {cerrarC}       { return new Symbol(sym.CERRARC,yycolumn,yyline,yytext()); }
+    {WORD}          { return new Symbol(sym.WORD,yycolumn,yyline,yytext()); }
     {comma}         { return new Symbol(sym.COMMA,yycolumn,yyline,yytext()); }
     {bracketA}      { return new Symbol(sym.BRACKETA,yycolumn,yyline,yytext()); }
     {bracketC}      { return new Symbol(sym.BRACKETC,yycolumn,yyline,yytext()); }
     {punto}         { return new Symbol(sym.PUNTO,yycolumn,yyline,yytext()); }
     
     
-    //{valorStr}      { return new Symbol(sym.VALORSTR,yycolumn,yyline,yytext()); }
+    
    
     {commentarios_izq}  { yybegin(BLOCK_COMMENT); }
     "##"                {yybegin(COMMENT_LINE);}

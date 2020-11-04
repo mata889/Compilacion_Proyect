@@ -103,14 +103,14 @@ parser code
 
 
 //lexemas
-terminal  VERDAD, NUMERITO, LETRA, WORD;
+terminal  VERDAD, NUMERITO, LETRA, WORD ;
 
 
 //palabras reservadas y Operadores
 
 terminal PUNTOC, PARENTESISA, PARENTESISC, ABRIRC, CERRARC , ASSIGNMENT, BRACKETA, BRACKETC, COMMA;
 terminal OPER, OPEA_SUM, OPEA_MULT, BOOL,  FOR, WLE, IF, EIF, ELSE ,BLOCK, END;
-terminal NUM, LETTER, FUNC, START ,FLECHA,  VAR ,  NOT;
+terminal NUM, LETTER, FUNC, START ,FLECHA,  VAR ,  NOT, LETTERS;
 terminal IN, PUNTO, CASE,DEFAULT, REPLY, ID;
 terminal ARRAY,NEW;
 terminal THROW,THROWDOWN,CATCH;
@@ -242,7 +242,7 @@ funciones::= FUNC type:t ID:ide PARENTESISA parametro:p PARENTESISC BRACKETA bod
 
 CicloFor::= FOR PARENTESISA ID:ide IN NUM:n PUNTO PUNTO PUNTO NUM:n1 PARENTESISC FLECHA ABRIRC body:b CERRARC
 {:
-        Nodo ciclo = new Nodo("CicloFor",parser.token);
+        Nodo ciclo = new Nodo("For",parser.token);
         parser.token++;
 
         Nodo ID=new Nodo("Id",parser.token);
@@ -864,6 +864,15 @@ valores::= NUM:n
     Nodo node=new Nodo("Valores-caracter",parser.token);
     parser.token++;
     node.addHijo(l.toString(),parser.token);
+    parser.token++;
+
+    RESULT = node;
+:}
+|   LETTERS:ls
+{:
+    Nodo node=new Nodo("String",parser.token);
+    parser.token++;
+    node.addHijo(ls.toString(),parser.token);
     parser.token++;
 
     RESULT = node;
