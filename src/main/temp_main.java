@@ -94,13 +94,18 @@ public class temp_main {
         return root;
     }
 
-    // Semántica
+    
+    // ===================================================
+    // =================== Semántica =====================
+    // ===================================================
     public static void recorrido(Nodo root) {
         if (root != null) {
-            Nodo body = root.getHijos().get(0); // Aquí entro al body de start.
-            for (Nodo hijo : body.getHijos()) { // Se recorren los hijos del body
+            for (Nodo hijo : root.getHijos().get(0).getHijos()) { // Se recorren los hijos del body
 
-                // Aquí se encuentran declaraciones de variables con o sin asignación y las asignaciones solamente
+                // Aquí se encuentran las siguientes validaciones semánticas:
+                // - Declaraciones de variables sin asignación | int x;
+                // - Declaraciones de variables con asignación | int x = 23;
+                // - Asignaciones solamente | x = 123;
                 if (hijo.getValor().equals("Proposicion")) {
                     if (hijo.getHijos().get(0).getValor().equals("Declaracion Simple")) {
                         String tipo = "", id = "";
@@ -112,7 +117,7 @@ public class temp_main {
                                 tipo = "booleano";
                                 offset += 1;
                             } else if (h.getValor().equals("NUM")) {//En caso de que sea un numero
-                                tipo = "numero";
+                                tipo = "entero";
                                 int mod = 4 - (offset % 4);
                                 if (mod == 4) {
                                     offset += 4;
@@ -121,12 +126,12 @@ public class temp_main {
                                 }
                             } else if (h.getValor().equals("ID")) { //En caso de que sea un ID se toma
                                 id = h.getHijos().get(0).getValor();
-                                if (!verificarVariable(id, ambito_actual)) { // Se verifica en la tabla de símbolos
+                                if (!verificarVariable(id, ambito_actual)) { // Se verifica si el id está repetido en la tabla de símbolos
                                     if (hijo.getHijos().get(0).getHijos().get(3).getValor().equals("asignacion")) {
                                         String valor = hijo.getHijos().get(0).getHijos().get(3).getHijos().get(0).getValor();
                                         if (tipo.equals("caracter") && valor.equals("Valores-caracter")) {
                                             tabla.add(new Variables(tipo, id, ambito_actual, offset));
-                                        } else if (tipo.equals("numero") && valor.equals("Valores-num")) {
+                                        } else if (tipo.equals("entero") && valor.equals("Valores-num")) {
                                             tabla.add(new Variables(tipo, id, ambito_actual, offset));
                                         } else if (tipo.equals("booleano") && valor.equals("Valores-bool")) {
                                             tabla.add(new Variables(tipo, id, ambito_actual, offset));
@@ -137,7 +142,7 @@ public class temp_main {
                                         tabla.add(new Variables(tipo, id, ambito_actual, offset));
                                     }
                                 } else {
-                                    errores_semanticos.add("Error semántico: La variable " + id + " ha sido declarada con anterioridad");
+                                    errores_semanticos.add("Error semántico: La variable " + id + " ha sido declarada con anterioridad dentro del ámbito "+ambito_actual);
                                 }
                             }
                         }
@@ -147,18 +152,54 @@ public class temp_main {
                         valor = hijo.getHijos().get(1).getValor(); // Tomo el valor
                         if ((tipo = buscarTipoVariable(id, ambito_actual)) != null) { //Si el id existe y los tipos concuerdan
                             if (tipo.equals("caracter") && valor.equals("Valores-caracter")) {
-                                // tabla.add(new Variables(tipo, id, ambito_actual, offset));
-                            } else if (tipo.equals("numero") && valor.equals("Valores-num")) {
-                                // tabla.add(new Variables(tipo, id, ambito_actual, offset));
+                                // RECORDAR: NO SE AGREGA A LA TABLA DE VALORES PORQUE YA DEBERÍA DE ESTAR AGREGADO
+                            } else if (tipo.equals("entero") && valor.equals("Valores-num")) {
+                                // RECORDAR: NO SE AGREGA A LA TABLA DE VALORES PORQUE YA DEBERÍA DE ESTAR AGREGADO
                             } else if (tipo.equals("booleano") && valor.equals("Valores-bool")) {
-                                // tabla.add(new Variables(tipo, id, ambito_actual, offset));
+                                // RECORDAR: NO SE AGREGA A LA TABLA DE VALORES PORQUE YA DEBERÍA DE ESTAR AGREGADO
                             } else {
                                 errores_semanticos.add("Error semántico: Se ha asignado un valor erróneo a la a variable " + id + "");
                             }
+                        }else{
+                            errores_semanticos.add("Error semántico: La variable " + id + " no existe dentro del ámbito "+ambito_actual);
                         }
                     }
                 }
-
+                
+                
+                // Aquí se encuentran las siguientes validaciones semánticas:
+                // - Arrays de 1 o 2 dimensiones
+                else if(hijo.getValor().equals("Declara Array")){
+                    Nodo currentNode = hijo;
+                    String id = currentNode.getHijos().get(0).getHijos().get(0).getValor();
+                    int dimension = Integer.parseInt(currentNode.getHijos().get(1).getHijos().get(0).getValor());
+                    String tipo = "array()";
+                    for (int i = 1; i < dimension; i++) {
+                        tipo = "array("+tipo+")";
+                    }
+                    if(!verificarVariable(id, ambito_actual)){ //Verifica si ya existe el id
+                        if(currentNode.getHijos().size()>2){ //Verifica si se le asigna arreglos
+                            if (currentNode.getHijos().get(2).getValor().equals("Valores") && dimension==1){ //Verifica si se le asigna la cantidad de arreglos con respecto a la dimensión establecida
+                                // RECORDAR: CALCULAR EL OFFSET
+                                tabla.add(new Variables(tipo, id, ambito_actual, 0));
+                            }else if (currentNode.getHijos().get(2).getValor().equals("bracket-segunda dimension") && dimension==2){
+                                // RECORDAR: CALCULAR EL OFFSET
+                                tabla.add(new Variables(tipo, id, ambito_actual, 0));
+                            }else{
+                                errores_semanticos.add("Error semántico: Se esperaba un arreglo de "+dimension+" dimensiones en la variable "+id);
+                            }
+                        }else{
+                            // RECORDAR: CALCULAR EL OFFSET
+                            tabla.add(new Variables(tipo, id, ambito_actual, 0));
+                        }
+                    }else{
+                        errores_semanticos.add("Error semántico: La variable " + id + " ha sido declarada con anterioridad dentro del ámbito "+ambito_actual);
+                    }
+                }
+                
+                
+                // Aquí se encuentran las siguientes validaciones semánticas:
+                //
             }
         } else {
             System.out.println("ERROR: Root nulo, verificar si el archivo proporcionado es correcto");
@@ -195,7 +236,13 @@ public class temp_main {
         }
         return null;
     }
-
+    // ===================================================
+    // ===================================================
+    // ===================================================
+    
+    
+    
+    
     // Verifica si la variable
     public static void escribirArchivo(String v) {
         FileWriter fichero = null;
