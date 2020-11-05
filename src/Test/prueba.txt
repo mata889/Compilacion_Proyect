@@ -1,4 +1,9 @@
 start->[
-    var arr = new Array(1);
-    var arreglo = new Array(2)[[1,2,3],[2,3]];
+    var letter letra1=c;
+    var letter letra2=c;
+    func num funcion_entera (num numero)[
+        var letter letra1;
+        var letter letra2;
+    ]
+
 ]
