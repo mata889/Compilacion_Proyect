@@ -24,7 +24,7 @@ public class temp_main {
         compilar_archivos();
         
         // Ejecutar parte léxica y sintáctico:
-        // ejecutar();
+        //ejecutar();
         
         // Ejecutar parte semántica
         

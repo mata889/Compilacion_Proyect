@@ -48,15 +48,15 @@ OpeA_mult = "*"|"/"
 //MOD = "MOD"
 
 
-letter_special= "^"|"$"|#|&|"'"|"?"|"!"|{abrirC}|{cerrarC}|"{"|"}"
-
+//letter_special= "^"|"$"|#|&|"'"|"?"|{abrirC}|{cerrarC}|"{"|"}"
+signo_string="!"
 
 //identificador
 id = {LETTER}({int}|{LETTER})*
 
 //valorChar = {LETTER}+
 //valorChar = {letra}|{numero}|{letter_special}|" "
-WORD = {LETTER}|{NUM}|{letter_special}|" "
+WORD ={signo_string}{LETTER}({int}|{LETTER}|{espacio})*{signo_string}
 
 commentarios_izq="#/"
 commentarios_der="/#"
@@ -116,11 +116,12 @@ commentarios_der="/#"
     {parentesisC}   { return new Symbol(sym.PARENTESISC,yycolumn,yyline,yytext()); }
     {abrirC}        { return new Symbol(sym.ABRIRC,yycolumn,yyline,yytext()); }
     {cerrarC}       { return new Symbol(sym.CERRARC,yycolumn,yyline,yytext()); }
-    {WORD}          { return new Symbol(sym.WORD,yycolumn,yyline,yytext()); }
+    
     {comma}         { return new Symbol(sym.COMMA,yycolumn,yyline,yytext()); }
     {bracketA}      { return new Symbol(sym.BRACKETA,yycolumn,yyline,yytext()); }
     {bracketC}      { return new Symbol(sym.BRACKETC,yycolumn,yyline,yytext()); }
     {punto}         { return new Symbol(sym.PUNTO,yycolumn,yyline,yytext()); }
+    //{WORD}          { System.out.println("word"); return new Symbol(sym.LETTERS,yycolumn,yyline,yytext()); }
     
     
     

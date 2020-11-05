@@ -103,14 +103,14 @@ parser code
 
 
 //lexemas
-terminal  VERDAD, NUMERITO, LETRA, WORD ;
+terminal  VERDAD, NUMERITO, LETRA, WORD;
 
 
 //palabras reservadas y Operadores
 
 terminal PUNTOC, PARENTESISA, PARENTESISC, ABRIRC, CERRARC , ASSIGNMENT, BRACKETA, BRACKETC, COMMA;
 terminal OPER, OPEA_SUM, OPEA_MULT, BOOL,  FOR, WLE, IF, EIF, ELSE ,BLOCK, END;
-terminal NUM, LETTER, FUNC, START ,FLECHA,  VAR ,  NOT, LETTERS;
+terminal NUM, LETTER, FUNC, START ,FLECHA,  VAR ,  NOT;
 terminal IN, PUNTO, CASE,DEFAULT, REPLY, ID;
 terminal ARRAY,NEW;
 terminal THROW,THROWDOWN,CATCH;
@@ -152,11 +152,11 @@ non terminal bracket_valores;
 non terminal list_valores;
 non terminal arrayData;
 non terminal llamadaFunc;
-
+non terminal declaParametro;
 start with Program;
 
 //program
-Program ::= START  FLECHA BRACKETA body:b BRACKETC
+Program ::= START FLECHA BRACKETA body:b BRACKETC
 {:
     Nodo start = new Nodo("Start",token);
     parser.token ++;
@@ -199,7 +199,7 @@ declara_simple::= VAR:v type:t ID:ide declara_puntoc:dc
 :}
 ;
 //bodyf= REPLY PARENTESISA parametro:p2 PARENTESISC BRACKETC
-funciones::= FUNC type:t ID:ide PARENTESISA parametro:p PARENTESISC BRACKETA bodyf:b BRACKETC
+funciones::= FUNC type:t ID:ide PARENTESISA declaParametro:p PARENTESISC BRACKETA bodyf:b BRACKETC
 
 {:
     Nodo node= new Nodo("Funciones",parser.token);
@@ -242,7 +242,7 @@ funciones::= FUNC type:t ID:ide PARENTESISA parametro:p PARENTESISC BRACKETA bod
 
 CicloFor::= FOR PARENTESISA ID:ide IN NUM:n PUNTO PUNTO PUNTO NUM:n1 PARENTESISC FLECHA ABRIRC body:b CERRARC
 {:
-        Nodo ciclo = new Nodo("For",parser.token);
+        Nodo ciclo = new Nodo("CicloFor",parser.token);
         parser.token++;
 
         Nodo ID=new Nodo("Id",parser.token);
@@ -438,7 +438,23 @@ devolverFunc::= valores:v
     RESULT = ID;
 :}
     ;
+declaParametro::= parametro:p{:
 
+    RESULT=p;
+:}
+| declaParametro:dp COMMA parametro:p
+{:
+    Nodo node= new Nodo("Decla",parser.token);
+    parser.token++;
+
+    if(dp!=null){
+        node.addHijitos(((Nodo)dp).getHijos());
+    }
+    if(p!=null){
+        node.addHijitos(((Nodo)p).getHijos());
+    }
+    RESULT = node;
+:}  ;
 //parametro
 parametro::= type:t ID:id
 {:
@@ -864,15 +880,6 @@ valores::= NUM:n
     Nodo node=new Nodo("Valores-caracter",parser.token);
     parser.token++;
     node.addHijo(l.toString(),parser.token);
-    parser.token++;
-
-    RESULT = node;
-:}
-|   LETTERS:ls
-{:
-    Nodo node=new Nodo("String",parser.token);
-    parser.token++;
-    node.addHijo(ls.toString(),parser.token);
     parser.token++;
 
     RESULT = node;
