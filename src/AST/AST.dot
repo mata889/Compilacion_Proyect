@@ -1,6 +1,6 @@
 digraph {
-"32,Start" -> "31,body";
-"31,body" -> "9,Proposicion";
+"38,Start" -> "37,body";
+"37,body" -> "9,Proposicion";
 "9,Proposicion" -> "4,Declaracion Simple";
 "4,Declaracion Simple" -> "5,Variable";
 "5,Variable" -> "6,var";
@@ -10,7 +10,7 @@ digraph {
 "4,Declaracion Simple" -> "3,asignacion";
 "3,asignacion" -> "1,Valores-caracter";
 "1,Valores-caracter" -> "2,s";
-"31,body" -> "19,Proposicion";
+"37,body" -> "19,Proposicion";
 "19,Proposicion" -> "14,Declaracion Simple";
 "14,Declaracion Simple" -> "15,Variable";
 "15,Variable" -> "16,var";
@@ -20,7 +20,7 @@ digraph {
 "14,Declaracion Simple" -> "13,asignacion";
 "13,asignacion" -> "11,Valores-num";
 "11,Valores-num" -> "12,23";
-"31,body" -> "27,Proposicion";
+"37,body" -> "27,Proposicion";
 "27,Proposicion" -> "22,Declaracion Simple";
 "22,Declaracion Simple" -> "23,Variable";
 "23,Variable" -> "24,var";
@@ -28,5 +28,10 @@ digraph {
 "22,Declaracion Simple" -> "25,ID";
 "25,ID" -> "26,variable3";
 "22,Declaracion Simple" -> "21,;";
+"37,body" -> "30,Proposicion";
+"30,Proposicion" -> "31,ID";
+"31,ID" -> "32,variable2";
+"30,Proposicion" -> "28,Valores-num";
+"28,Valores-num" -> "29,123";
 
 }

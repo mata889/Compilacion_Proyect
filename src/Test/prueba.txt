@@ -1,5 +1,7 @@
 start->[
-    var letter variable1 = 's';
+    var letter variable1 = s;
     var num variable2 = 23;
     var bool variable3;
+    variable2 = 123;
+
 ]
