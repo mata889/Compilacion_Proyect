@@ -14,7 +14,6 @@ public class temp_main {
 
     Scanner leer = new Scanner(System.in);
 
-    static String ambito_actual = "Start";
     static int offset = 0;
 
     // Semántico
@@ -34,9 +33,12 @@ public class temp_main {
         Nodo root = ejecutar();
 
         // Ejecutar parte semántica
-        if(root!=null) recorrido(root.getHijos().get(0));
-        else System.out.println("ROOT NULO");
-        
+        if (root != null) {
+            recorrido(root.getHijos().get(0), "Start");
+        } else {
+            System.out.println("ROOT NULO");
+        }
+
         System.out.println("LA TABLA DE SÍMBOLOS ES: ");
         for (Variables variable : tabla) {
             System.out.println(variable.toString());
@@ -116,7 +118,7 @@ public class temp_main {
     // ===================================================
     // =================== Semántica =====================
     // ===================================================
-    public static void recorrido(Nodo body) {
+    public static void recorrido(Nodo body, String ambito_actual) {
         for (Nodo hijo : body.getHijos()) { // Se recorren los hijos del body, nodo que contiene todo.
 
             // Aquí se encuentran las siguientes validaciones semánticas:
@@ -216,49 +218,70 @@ public class temp_main {
                 ArrayList<Variables> parametros = new ArrayList();  //Aquí se almacenarán los parámetros de la función.
                 boolean permitido = true; // Indica si la función es permitida para agregarse a la tabla o no.
                 id = hijo.getHijos().get(2).getHijos().get(0).getValor();   //Se obtiene el Id
-                ambito_actual=id;
-                if (hijo.getHijos().get(1).getValor().equals("NUM")) {   //Se valida que tipo es la función
-                    tipo = "entero";
-                } else if (hijo.getHijos().get(1).getValor().equals("Caracter")) {
-                    tipo = "caracter";
-                } else if (hijo.getHijos().get(1).getValor().equals("Boolena")) {
-                    tipo = "booleano";
-                } else if (hijo.getHijos().get(1).getValor().equals("String")) {
-                    tipo = "cadena";
-                }
-                // Validación de sus parámetros
-                String tipoParam = "", idParam = ""; // Tipo y ID del parámetro
-                for (Nodo h : hijo.getHijos().get(3).getHijos()) { // Se obtiene el tipo del parametro
-                    if (h.getValor().equals("Caracter")) {
-                        tipoParam = "caracter";
-                    } else if (h.getValor().equals("Boolena")) {
-                        tipoParam = "booleano";
-                    } else if (h.getValor().equals("NUM")) {
-                        tipoParam = "entero";
-                    } else if (h.getValor().equals("String")) {
-                        tipoParam = "cadena";
-                    } else if (h.getValor().equals("ID")) {
-                        idParam = h.getHijos().get(0).getValor(); // Se obtiene el id del parametro
-                        Variables param = new Variables(tipoParam, idParam, id, 0);  //Se crea la variable con el tipo y id del parámetro
-                        // RECORDAR: CALCULAR EL OFFSET
-                        if (!verificarParametroId(parametros, idParam)) { // Se verifica si el id del parámetro ya existía dentro de la función
-                            parametros.add(param);
-                        } else {
-                            errores_semanticos.add("Error semántico: La variable " + idParam + " ya es utilizada en otro parámetro en la declaración de la función " + id);
-                            permitido = false;
-                            break;
+                if (!verificarFuncion(id)) {
+                    if (hijo.getHijos().get(1).getValor().equals("NUM")) {   //Se valida que tipo es la función
+                        tipo = "entero";
+                    } else if (hijo.getHijos().get(1).getValor().equals("Caracter")) {
+                        tipo = "caracter";
+                    } else if (hijo.getHijos().get(1).getValor().equals("Boolena")) {
+                        tipo = "booleano";
+                    } else if (hijo.getHijos().get(1).getValor().equals("String")) {
+                        tipo = "cadena";
+                    }
+                    // Validación de sus parámetros
+                    String tipoParam = "", idParam = ""; // Tipo y ID del parámetro
+                    for (Nodo h : hijo.getHijos().get(3).getHijos()) { // Se obtiene el tipo del parametro
+                        if (h.getValor().equals("Caracter")) {
+                            tipoParam = "caracter";
+                        } else if (h.getValor().equals("Boolena")) {
+                            tipoParam = "booleano";
+                        } else if (h.getValor().equals("NUM")) {
+                            tipoParam = "entero";
+                        } else if (h.getValor().equals("String")) {
+                            tipoParam = "cadena";
+                        } else if (h.getValor().equals("ID")) {
+                            idParam = h.getHijos().get(0).getValor(); // Se obtiene el id del parametro
+                            Variables param = new Variables(tipoParam, idParam, id, 0);  //Se crea la variable con el tipo y id del parámetro
+                            // RECORDAR: CALCULAR EL OFFSET
+                            if (!verificarParametroId(parametros, idParam)) { // Se verifica si el id del parámetro ya existía dentro de la función
+                                parametros.add(param);
+                            } else {
+                                errores_semanticos.add("Error semántico: La variable " + idParam + " ya es utilizada en otro parámetro en la declaración de la función " + id);
+                                permitido = false;
+                                break;
+                            }
                         }
                     }
+                    if (permitido) {
+                        funciones.add(new Funcion(tipo, id, parametros));
+                        // Ahora el cuerpo de la función
+                        recorrido(hijo.getHijos().get(4), id);
+                    }
+                }else{
+                    errores_semanticos.add("Error semántico: La función "+id+" fue definida con anterioridad");
                 }
-                if (permitido) {
-                    funciones.add(new Funcion(tipo, id, parametros));
-                    // Ahora el cuerpo de la función
-                    recorrido(hijo.getHijos().get(4));
+            } // Aquí se encuentran las siguientes validaciones semánticas:
+            // - Llamada de funciones con parámetro.
+            else if (hijo.getValor().equals("Llamada de funciones")) {
+                String id = hijo.getHijos().get(0).getHijos().get(0).getValor(); // Obtener el ID
+                if(verificarLlamado(id)){ // Verifica si la función ya ha sido declarada
+                    for (Nodo h : hijo.getHijos().get(1).getHijos()) { //Verifica los argumentos
+                        if(verificarVariable(h.getHijos().get(0).getValor(), ambito_actual)){ //Verifica Si la variable existe
+                            if(false){ // Verifica si el tipo es el indicado
+                            
+                            }else{
+                                errores_semanticos.add("Error semántico: La variable "+h.getValor()+" no existe dentro del ámbito "+ambito_actual);
+                            }
+                        }else{
+                            errores_semanticos.add("Error semántico: La variable "+h.getHijos().get(0).getValor()+" no existe dentro del ámbito "+ambito_actual);
+                        }
+                    }
+                }else{
+                    errores_semanticos.add("Error semántico: La función "+id+" no ha sido declarada");
                 }
             }
         }
 
-        
     }
 
     // Verifica si existe el id en el ámbito espicificado
@@ -270,7 +293,27 @@ public class temp_main {
         }
         return false;
     }
+    
+    // Verifica si la función ya ha sido creada
+    public static boolean verificarFuncion(String idFuncion) {
+        for (Funcion funcion : funciones) {
+            if(funcion.getId().equals(idFuncion)){
+                return true;
+            }
+        }
+        return false;
+    }
 
+    // Verifica si la función ya fue creado y se le pasan los parámetros correctos
+    public static boolean verificarLlamado(String idFuncion) {
+        for (Funcion funcion : funciones) {
+            if(funcion.getId().equals(idFuncion)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
     // Busca el tipo de la variable con su ID y su ámbito
     public static String buscarTipoVariable(String id, String ambito) {
         for (Variables variable : tabla) {

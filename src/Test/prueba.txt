@@ -1,9 +1,16 @@
 start->[
-    var letter letra1=c;
-    var letter letra2=c;
-    func num funcion_entera (num numero)[
-        var letter letra1;
-        var letter letra2;
+    var letter aja=c;
+    var arr = new Array(1);
+    var id2= new Array(2)[[1,3],[1,3]];
+    aja = f;
+
+    func num Recursiva (letter Zeta)[
+        var arr = new Array(1);
+        var id2= new Array(2)[[1,2],[3,4]];
+        var num numero = 213;
+        reply(Zeta)
     ]
 
+    
+    var num numero = 213;
 ]
