@@ -269,7 +269,7 @@ public class temp_main {
                 String id = hijo.getHijos().get(0).getHijos().get(0).getValor(); // Obtener el ID
                 ArrayList<Variables> parametros = new ArrayList();
                 Funcion funcion;
-                if ((funcion = verificarLlamado(id))!=null) { // Verifica si la función ya ha sido declarada
+                if ((funcion = getFuncion(id))!=null) { // Verifica si la función ya ha sido declarada
                     for (Nodo h : hijo.getHijos().get(1).getHijos()) { //toma todos los argumentos
                         if (verificarVariable(h.getHijos().get(0).getValor(), ambito_actual)) { //Verifica Si la variable que se le está pasando existe
                             parametros.add(getVariable(h.getHijos().get(0).getValor(), ambito_actual)); //Sí la variable existe se agrega a este arreglo
@@ -284,14 +284,18 @@ public class temp_main {
                         }
                     }
                 } else {
-                    errores_semanticos.add("Error semántico: La función " + id + " no ha sido declarada");
+                    errores_semanticos.add("Error semántico: llamado de función incorrecta, la función " + id + " no fue declarada con anterioridad");
                 }
+            }// Aquí se encuentran las siguientes validaciones semánticas:
+            // - Declaraciones de ciclo FOR
+            else if (hijo.getValor().equals("CicloFor")) {
+                recorrido(hijo.getHijos().get(0).getHijos().get(3), ambito_actual+"."+"for_statement");
             }
         }
 
     }
 
-    // Verifica si existe el id en los ámbitos especificados
+    // Verifica si el id de la variable ya existe en el o los ámbitos especificados.
     public static boolean verificarVariable(String variable, String ambito_actual) {
         for (int i = 0; i < tabla.size(); i++) {
             if (variable.equals(tabla.get(i).getId()) && ambito_actual.contains(tabla.get(i).getAmbito())) {
@@ -321,8 +325,8 @@ public class temp_main {
         return false;
     }
 
-    // Verifica si la función ya fue creado y se le pasan los parámetros correctos
-    public static Funcion verificarLlamado(String idFuncion) {
+    // Verifica si la función ya fue creado y retorna la función que se pide
+    public static Funcion getFuncion(String idFuncion) {
         for (Funcion funcion : funciones) {
             if (funcion.getId().equals(idFuncion)) {
                 return funcion;
@@ -341,7 +345,7 @@ public class temp_main {
         return null;
     }
 
-    // Verifica si el id se encuentra en la lista de parámetros añadida
+    // Verifica si el id se encuentra en la lista de parámetros de la función espec
     public static boolean verificarParametroId(ArrayList<Variables> parametros, String id) {
         for (Variables parametro : parametros) {
             if (parametro.getId().equals(id)) {
