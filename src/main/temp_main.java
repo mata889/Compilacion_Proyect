@@ -170,6 +170,9 @@ public class temp_main {
                     id = hijo.getHijos().get(0).getHijos().get(0).getValor(); // Tomo el id
                     valor = hijo.getHijos().get(1).getValor(); // Tomo el valor
                     if ((tipo = buscarTipoVariable(id, ambito_actual)) != null) { //Si el id existe y los tipos concuerdan
+                        if (valor.equals("=")){
+                            valor = hijo.getHijos().get(2).getValor();
+                        }
                         if (tipo.equals("caracter") && valor.equals("Valores-caracter")) {
                             // RECORDAR: NO SE AGREGA A LA TABLA DE VALORES PORQUE YA DEBERÍA DE ESTAR AGREGADO (Esto solo es asignación)
                         } else if (tipo.equals("entero") && valor.equals("Valores-num")) {
@@ -177,7 +180,7 @@ public class temp_main {
                         } else if (tipo.equals("booleano") && valor.equals("Valores-bool")) {
                             // RECORDAR: NO SE AGREGA A LA TABLA DE VALORES PORQUE YA DEBERÍA DE ESTAR AGREGADO (Esto solo es asignación)
                         } else {
-                            errores_semanticos.add("Error semántico: Se ha asignado un valor erróneo a la a variable " + id + " se esperaba un " + tipo);
+                            errores_semanticos.add("Error semántico: Se ha asignado un valor erróneo a la variable " + id + " se esperaba un " + tipo);
                         }
                     } else {
                         errores_semanticos.add("Error semántico: La variable " + id + " no existe dentro del ámbito " + ambito_actual);
@@ -255,7 +258,7 @@ public class temp_main {
                     if (permitido) {
                         funciones.add(new Funcion(tipo, id, parametros));
                         // Ahora el cuerpo de la función
-                        recorrido(hijo.getHijos().get(4), id);
+                        recorrido(hijo.getHijos().get(4), ambito_actual+"."+id);
                     }
                 }else{
                     errores_semanticos.add("Error semántico: La función "+id+" fue definida con anterioridad");
@@ -284,10 +287,10 @@ public class temp_main {
 
     }
 
-    // Verifica si existe el id en el ámbito espicificado
+    // Verifica si existe el id en los ámbitos especificados
     public static boolean verificarVariable(String variable, String ambito_actual) {
         for (int i = 0; i < tabla.size(); i++) {
-            if (variable.equals(tabla.get(i).getId()) && ambito_actual.equals(tabla.get(i).getAmbito())) {
+            if (variable.equals(tabla.get(i).getId()) && ambito_actual.contains(tabla.get(i).getAmbito())){
                 return true;
             }
         }
@@ -317,7 +320,7 @@ public class temp_main {
     // Busca el tipo de la variable con su ID y su ámbito
     public static String buscarTipoVariable(String id, String ambito) {
         for (Variables variable : tabla) {
-            if (variable.getId().equals(id) && variable.getAmbito().equals(ambito)) {
+            if (variable.getId().equals(id) && ambito.contains(variable.getAmbito())) {
                 return variable.getTipo();
             }
         }

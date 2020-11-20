@@ -5,12 +5,13 @@ start->[
     aja = f;
 
     func num Recursiva (letter Zeta)[
-        var arr = new Array(1);
-        var id2= new Array(2)[[1,2],[3,4]];
+        var arreglo = new Array(1);
+        var id3 = new Array(2)[[1,2],[3,4]];
         var num numero = 213;
+        aja = a;
         reply(Zeta)
     ]
 
-    
     var num numero = 213;
+    
 ]
