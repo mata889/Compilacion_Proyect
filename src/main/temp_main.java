@@ -170,7 +170,7 @@ public class temp_main {
                     id = hijo.getHijos().get(0).getHijos().get(0).getValor(); // Tomo el id
                     valor = hijo.getHijos().get(1).getValor(); // Tomo el valor
                     if ((tipo = buscarTipoVariable(id, ambito_actual)) != null) { //Si el id existe y los tipos concuerdan
-                        if (valor.equals("=")){
+                        if (valor.equals("=")) {
                             valor = hijo.getHijos().get(2).getValor();
                         }
                         if (tipo.equals("caracter") && valor.equals("Valores-caracter")) {
@@ -258,29 +258,33 @@ public class temp_main {
                     if (permitido) {
                         funciones.add(new Funcion(tipo, id, parametros));
                         // Ahora el cuerpo de la función
-                        recorrido(hijo.getHijos().get(4), ambito_actual+"."+id);
+                        recorrido(hijo.getHijos().get(4), ambito_actual + "." + id);
                     }
-                }else{
-                    errores_semanticos.add("Error semántico: La función "+id+" fue definida con anterioridad");
+                } else {
+                    errores_semanticos.add("Error semántico: La función " + id + " fue definida con anterioridad");
                 }
             } // Aquí se encuentran las siguientes validaciones semánticas:
             // - Llamada de funciones con parámetro.
             else if (hijo.getValor().equals("Llamada de funciones")) {
                 String id = hijo.getHijos().get(0).getHijos().get(0).getValor(); // Obtener el ID
-                if(verificarLlamado(id)){ // Verifica si la función ya ha sido declarada
-                    for (Nodo h : hijo.getHijos().get(1).getHijos()) { //Verifica los argumentos
-                        if(verificarVariable(h.getHijos().get(0).getValor(), ambito_actual)){ //Verifica Si la variable existe
-                            if(false){ // Verifica si el tipo es el indicado
-                            
-                            }else{
-                                errores_semanticos.add("Error semántico: La variable "+h.getValor()+" no existe dentro del ámbito "+ambito_actual);
-                            }
-                        }else{
-                            errores_semanticos.add("Error semántico: La variable "+h.getHijos().get(0).getValor()+" no existe dentro del ámbito "+ambito_actual);
+                ArrayList<Variables> parametros = new ArrayList();
+                Funcion funcion;
+                if ((funcion = verificarLlamado(id))!=null) { // Verifica si la función ya ha sido declarada
+                    for (Nodo h : hijo.getHijos().get(1).getHijos()) { //toma todos los argumentos
+                        if (verificarVariable(h.getHijos().get(0).getValor(), ambito_actual)) { //Verifica Si la variable que se le está pasando existe
+                            parametros.add(getVariable(h.getHijos().get(0).getValor(), ambito_actual)); //Sí la variable existe se agrega a este arreglo
+                        } else {
+                            errores_semanticos.add("Error semántico: La variable " + h.getHijos().get(0).getValor() + " no existe dentro del ámbito " + ambito_actual);
                         }
                     }
-                }else{
-                    errores_semanticos.add("Error semántico: La función "+id+" no ha sido declarada");
+                    // Verifica si los parámetros que se pasan son del tipo correcto y del tamaño correcto
+                    for (int i = 0; i < funcion.getParams().size(); i++) {
+                        if (!funcion.getParams().get(i).getTipo().equals(parametros.get(i).getTipo())) {
+                            errores_semanticos.add("Error semántico: Se esperaba un tipo de variable "+funcion.getParams().get(i).getTipo()+" pero se le da un "+parametros.get(i).getTipo()+"al llamado de la función "+id);
+                        }
+                    }
+                } else {
+                    errores_semanticos.add("Error semántico: La función " + id + " no ha sido declarada");
                 }
             }
         }
@@ -290,17 +294,27 @@ public class temp_main {
     // Verifica si existe el id en los ámbitos especificados
     public static boolean verificarVariable(String variable, String ambito_actual) {
         for (int i = 0; i < tabla.size(); i++) {
-            if (variable.equals(tabla.get(i).getId()) && ambito_actual.contains(tabla.get(i).getAmbito())){
+            if (variable.equals(tabla.get(i).getId()) && ambito_actual.contains(tabla.get(i).getAmbito())) {
                 return true;
             }
         }
         return false;
     }
     
+    // Toma la variable dependiendo del ID y del ámbito
+    public static Variables getVariable(String variable, String ambito_actual){
+        for (int i = 0; i < tabla.size(); i++) {
+            if (variable.equals(tabla.get(i).getId()) && ambito_actual.contains(tabla.get(i).getAmbito())) {
+                return tabla.get(i);
+            }
+        }
+        return null;
+    }
+    
     // Verifica si la función ya ha sido creada
     public static boolean verificarFuncion(String idFuncion) {
         for (Funcion funcion : funciones) {
-            if(funcion.getId().equals(idFuncion)){
+            if (funcion.getId().equals(idFuncion)) {
                 return true;
             }
         }
@@ -308,15 +322,15 @@ public class temp_main {
     }
 
     // Verifica si la función ya fue creado y se le pasan los parámetros correctos
-    public static boolean verificarLlamado(String idFuncion) {
+    public static Funcion verificarLlamado(String idFuncion) {
         for (Funcion funcion : funciones) {
-            if(funcion.getId().equals(idFuncion)){
-                return true;
+            if (funcion.getId().equals(idFuncion)) {
+                return funcion;
             }
         }
-        return false;
+        return null;
     }
-    
+
     // Busca el tipo de la variable con su ID y su ámbito
     public static String buscarTipoVariable(String id, String ambito) {
         for (Variables variable : tabla) {
@@ -336,6 +350,7 @@ public class temp_main {
         }
         return false;
     }
+
 
     // ===================================================
     // ===================================================
