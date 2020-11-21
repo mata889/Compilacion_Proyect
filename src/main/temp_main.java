@@ -169,7 +169,7 @@ public class temp_main {
                     String tipo = "", id = "", valor = "";
                     id = hijo.getHijos().get(0).getHijos().get(0).getValor(); // Tomo el id
                     valor = hijo.getHijos().get(1).getValor(); // Tomo el valor
-                    if ((tipo = buscarTipoVariable(id, ambito_actual)) != null) { //Si el id existe y los tipos concuerdan
+                    if ((tipo = getTipoVariable(id, ambito_actual)) != null) { //Si el id existe y los tipos concuerdan
                         if (valor.equals("=")) {
                             valor = hijo.getHijos().get(2).getValor();
                         }
@@ -269,7 +269,7 @@ public class temp_main {
                 String id = hijo.getHijos().get(0).getHijos().get(0).getValor(); // Obtener el ID
                 ArrayList<Variables> parametros = new ArrayList();
                 Funcion funcion;
-                if ((funcion = getFuncion(id))!=null) { // Verifica si la función ya ha sido declarada
+                if ((funcion = getFuncion(id)) != null) { // Verifica si la función ya ha sido declarada
                     for (Nodo h : hijo.getHijos().get(1).getHijos()) { //toma todos los argumentos
                         if (verificarVariable(h.getHijos().get(0).getValor(), ambito_actual)) { //Verifica Si la variable que se le está pasando existe
                             parametros.add(getVariable(h.getHijos().get(0).getValor(), ambito_actual)); //Sí la variable existe se agrega a este arreglo
@@ -280,7 +280,7 @@ public class temp_main {
                     // Verifica si los parámetros que se pasan son del tipo correcto y del tamaño correcto
                     for (int i = 0; i < funcion.getParams().size(); i++) {
                         if (!funcion.getParams().get(i).getTipo().equals(parametros.get(i).getTipo())) {
-                            errores_semanticos.add("Error semántico: Se esperaba un tipo de variable "+funcion.getParams().get(i).getTipo()+" pero se le da un "+parametros.get(i).getTipo()+"al llamado de la función "+id);
+                            errores_semanticos.add("Error semántico: Se esperaba un tipo de variable " + funcion.getParams().get(i).getTipo() + " pero se le da un " + parametros.get(i).getTipo() + "al llamado de la función " + id);
                         }
                     }
                 } else {
@@ -289,7 +289,48 @@ public class temp_main {
             }// Aquí se encuentran las siguientes validaciones semánticas:
             // - Declaraciones de ciclo FOR
             else if (hijo.getValor().equals("CicloFor")) {
-                recorrido(hijo.getHijos().get(0).getHijos().get(3), ambito_actual+"."+"for_statement");
+                recorrido(hijo.getHijos().get(0).getHijos().get(3), ambito_actual + "." + "for_statement");
+            }// Aquí se encuentran las siguientes validaciones semánticas:
+            // - Declaraciones de Switch case
+            else if (hijo.getValor().equals("Bloque Switch")) {
+                ArrayList<String> arreglo = new ArrayList();
+                String id = hijo.getHijos().get(1).getHijos().get(0).getValor(), tipo, valor;
+                if ((tipo = getTipoVariable(id, ambito_actual)) == null) {
+                    errores_semanticos.add("Error semántico: la variable " + id + " no se encuentra dentro del ámbito " + ambito_actual + " al usarlo en un bloque Switch Case");
+                } else {
+                    arreglo.add(id);
+                    for (int i = 0; i < hijo.getHijos().size(); i++) {
+                        if (hijo.getHijos().get(i).getValor().equals("Case")) {
+                            if (hijo.getHijos().get(i + 1).getValor().equals("Id")) { // Verifica si lo que hay después de case es un ID, en caso de ser un ID hay que validar si existe y el tipo de la variable.
+                                String temp_id = hijo.getHijos().get(i + 1).getHijos().get(0).getValor();
+                                if (!arreglo.contains(temp_id)) { //Comprueba si la variable ya fue utilizada
+                                    if (verificarVariable(temp_id, ambito_actual)) {
+                                        if (!tipo.equals(getTipoVariable(temp_id, ambito_actual))) {
+                                            errores_semanticos.add("Error semántico: la variable " + temp_id + " es de un tipo no válido, se esperaba una variable de un tipo " + tipo + " dentro del bloque Switch case en el ámbito " + ambito_actual);
+                                        } else {
+                                            arreglo.add(temp_id);
+                                            recorrido(hijo.getHijos().get(i + 2), ambito_actual+".switchCase_statement-case"+temp_id);
+                                        }
+                                    } else {
+                                        errores_semanticos.add("Error semántico: la variable " + temp_id + " no se encuentra dentro del ámbito " + ambito_actual + " al usarlo en un case dentro del bloque Switch Case");
+                                    }
+                                } else {
+                                    errores_semanticos.add("Error semántico: la variable " + temp_id + " ya ha sido utilizada dentro del bloque Switch Case en el ámbito " + ambito_actual);
+                                }
+                            } else if ((hijo.getHijos().get(i + 1).getValor().equals("Valores-num") && tipo.equals("entero")) || (hijo.getHijos().get(i + 1).getValor().equals("Valores-caracter") && tipo.equals("caracter"))) {
+                                if (!arreglo.contains(valor = hijo.getHijos().get(i + 1).getHijos().get(0).getValor())) { // Comprueba si el valor ya fue utilizado
+                                    arreglo.add(valor);
+                                    recorrido(hijo.getHijos().get(i + 2), ambito_actual+".switchCase_statement-case"+valor);
+                                } else {
+                                    errores_semanticos.add("Error semántico: ya se utiliza el valor " + valor + " dentro del bloque switch case en el ámbito " + ambito_actual);
+                                }
+                            } else {
+                                errores_semanticos.add("Error semántico: se esperan casos de tipo " + tipo + " dentro del bloque Switch Case en el ámbito " + ambito_actual);
+                            }
+                            // RECORDAR: TERMINAR PARA BOOLEANOS 
+                        }
+                    }
+                }
             }
         }
 
@@ -304,9 +345,9 @@ public class temp_main {
         }
         return false;
     }
-    
+
     // Toma la variable dependiendo del ID y del ámbito
-    public static Variables getVariable(String variable, String ambito_actual){
+    public static Variables getVariable(String variable, String ambito_actual) {
         for (int i = 0; i < tabla.size(); i++) {
             if (variable.equals(tabla.get(i).getId()) && ambito_actual.contains(tabla.get(i).getAmbito())) {
                 return tabla.get(i);
@@ -314,7 +355,7 @@ public class temp_main {
         }
         return null;
     }
-    
+
     // Verifica si la función ya ha sido creada
     public static boolean verificarFuncion(String idFuncion) {
         for (Funcion funcion : funciones) {
@@ -336,7 +377,7 @@ public class temp_main {
     }
 
     // Busca el tipo de la variable con su ID y su ámbito
-    public static String buscarTipoVariable(String id, String ambito) {
+    public static String getTipoVariable(String id, String ambito) {
         for (Variables variable : tabla) {
             if (variable.getId().equals(id) && ambito.contains(variable.getAmbito())) {
                 return variable.getTipo();
@@ -354,7 +395,6 @@ public class temp_main {
         }
         return false;
     }
-
 
     // ===================================================
     // ===================================================
