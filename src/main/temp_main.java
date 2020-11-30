@@ -182,6 +182,20 @@ public class temp_main {
                     } else {
                         errores_semanticos.add("Error semántico: La variable " + id + " no existe dentro del ámbito " + ambito_actual);
                     }
+                }else if (hijo.getValor().equals("while")) {
+                    Nodo currentNode = hijo;
+                    String id = currentNode.getHijos().get(0).getHijos().get(0).getValor();
+                    if (!verificarVariable(id, ambito_actual)){
+                        if(currentNode.getHijos().get(0).valor == "TRUE" || currentNode.getHijos().get(0).valor == "FALSE" || currentNode.getHijos().get(0).valor == "0" || currentNode.getHijos().get(0).valor == "1"){
+                            tabla.add(new Variables("while", id, ambito_actual, 0));
+                        }else if(currentNode.valor == "expression simple"){
+                            
+                        }else{
+                        
+                        }
+                    }else{
+                        errores_semanticos.add("Error semántico: La variable " + id + " ha sido declarada con anterioridad dentro del ámbito " + ambito_actual);
+                    }
                 }
             } // Aquí se encuentran las siguientes validaciones semánticas:
             // - Arrays de 1 o 2 dimensiones
@@ -279,7 +293,16 @@ public class temp_main {
                 }else{
                     errores_semanticos.add("Error semántico: La función "+id+" no ha sido declarada");
                 }
+            }else if (hijo.getValor().equals("Empiezo IF")) {
+                Nodo currentNode = hijo;
+                String id = currentNode.getHijos().get(0).getHijos().get(0).getValor();
+                if(currentNode.getHijos().get(0).valor == "if"){
+                    if(currentNode.getHijos().get(1).valor == "expresion simple"){
+                        tabla.add(new Variables("if", id, ambito_actual, 0));
+                    }
+                 }
             }
+            
         }
 
     }
