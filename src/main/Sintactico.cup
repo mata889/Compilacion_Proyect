@@ -494,7 +494,7 @@ parametro::= type:t ID:id
     RESULT=error;
 :};
 //proposciones
-proposition::= WLE expression:e FLECHA ABRIRC proposition:p CERRARC
+proposition::= WLE expression:e FLECHA ABRIRC body:p CERRARC
 {:
     Nodo node = new Nodo("Proposicion",parser.token);
     parser.token++;
