@@ -110,7 +110,7 @@ terminal  VERDAD, NUMERITO, LETRA, WORD;
 
 terminal PUNTOC, PARENTESISA, PARENTESISC, ABRIRC, CERRARC , ASSIGNMENT, BRACKETA, BRACKETC, COMMA;
 terminal OPER, OPEA_SUM, OPEA_MULT, BOOL,  FOR, WLE, IF, EIF, ELSE ,BLOCK, END;
-terminal NUM, LETTER, FUNC, START ,FLECHA,  VAR ,  NOT;
+terminal NUM, LETTER, FUNC, START ,FLECHA,  VAR ,  NOT, LETTERS;
 terminal IN, PUNTO, CASE,DEFAULT, REPLY, ID;
 terminal ARRAY,NEW;
 terminal THROW,THROWDOWN,CATCH;
@@ -613,7 +613,7 @@ llamadaFunc ::= ID:ide PARENTESISA parametro:p PARENTESISC
 :};
 
 //impresiones
-print::= THROW PARENTESISA ID:ide PARENTESISC PUNTOC
+print::= THROW PARENTESISA id:ide PARENTESISC PUNTOC
 {:
     Nodo node=new Nodo("Print",parser.token);
     parser.token++;
@@ -875,11 +875,20 @@ valores::= NUM:n
 
     RESULT = node;
 :}
-    |   LETTER:l
+    |   LETTERS:l
+{:
+    Nodo node=new Nodo("Valores-streuhb",parser.token);
+    parser.token++;
+    node.addHijo(l.toString(),parser.token);
+    parser.token++;
+
+    RESULT = node;
+:}
+|   LETTER:L
 {:
     Nodo node=new Nodo("Valores-caracter",parser.token);
     parser.token++;
-    node.addHijo(l.toString(),parser.token);
+    node.addHijo(L.toString(),parser.token);
     parser.token++;
 
     RESULT = node;

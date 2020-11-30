@@ -121,7 +121,7 @@ commentarios_der="/#"
     {bracketA}      { return new Symbol(sym.BRACKETA,yycolumn,yyline,yytext()); }
     {bracketC}      { return new Symbol(sym.BRACKETC,yycolumn,yyline,yytext()); }
     {punto}         { return new Symbol(sym.PUNTO,yycolumn,yyline,yytext()); }
-    //{WORD}          { System.out.println("word"); return new Symbol(sym.LETTERS,yycolumn,yyline,yytext()); }
+    {WORD}          { System.out.println("word"); return new Symbol(sym.LETTERS,yycolumn,yyline,yytext()); }
     
     
     
