@@ -613,7 +613,7 @@ llamadaFunc ::= ID:ide PARENTESISA parametro:p PARENTESISC
 :};
 
 //impresiones
-print::= THROW PARENTESISA id:ide PARENTESISC PUNTOC
+print::= THROW PARENTESISA ID:ide PARENTESISC PUNTOC
 {:
     Nodo node=new Nodo("Print",parser.token);
     parser.token++;
