@@ -103,14 +103,14 @@ parser code
 
 
 //lexemas
-terminal  VERDAD, NUMERITO, LETRA, WORD;
+terminal  VERDAD, NUMERITO, LETRA, WORDS;
 
 
 //palabras reservadas y Operadores
 
 terminal PUNTOC, PARENTESISA, PARENTESISC, ABRIRC, CERRARC , ASSIGNMENT, BRACKETA, BRACKETC, COMMA;
 terminal OPER, OPEA_SUM, OPEA_MULT, BOOL,  FOR, WLE, IF, EIF, ELSE ,BLOCK, END;
-terminal NUM, LETTER, FUNC, START ,FLECHA,  VAR ,  NOT, LETTERS;
+terminal NUM, LETTER, FUNC, START ,FLECHA,VAR,NOT,WORD;
 terminal IN, PUNTO, CASE,DEFAULT, REPLY, ID;
 terminal ARRAY,NEW;
 terminal THROW,THROWDOWN,CATCH;
@@ -712,7 +712,7 @@ type::= VERDAD
     parser.token++;
     RESULT = node;
 :}
-    | WORD
+    | WORDS
 {:
     Nodo node = new Nodo("String",  parser.token);
     parser.token++;
@@ -875,7 +875,7 @@ valores::= NUM:n
 
     RESULT = node;
 :}
-    |   LETTERS:l
+    |   WORD:l
 {:
     Nodo node=new Nodo("Valores-streuhb",parser.token);
     parser.token++;

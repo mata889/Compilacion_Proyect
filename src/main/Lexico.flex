@@ -73,7 +73,7 @@ commentarios_der="/#"
     "func"          { System.out.println("func");return new Symbol(sym.FUNC,yycolumn,yyline,yytext()); }
     "reply"         { System.out.println("reply");return new Symbol(sym.REPLY,yycolumn,yyline,yytext()); }  
     "letter "       { System.out.println("letter");return new Symbol(sym.LETRA,yycolumn,yyline,yytext()); }
-    "word"          { System.out.println("word");return new Symbol(sym.WORD,yycolumn,yyline,yytext()); }
+    "words"          { System.out.println("word");return new Symbol(sym.WORDS,yycolumn,yyline,yytext()); }
     "bool"          { System.out.println("bool");return new Symbol(sym.VERDAD,yycolumn,yyline,yytext()); }
     "var"           { System.out.println("var");return new Symbol(sym.VAR,yycolumn,yyline,yytext()); }
     "new"           { System.out.println("new");return new Symbol(sym.NEW,yycolumn,yyline,yytext()); }
@@ -121,7 +121,7 @@ commentarios_der="/#"
     {bracketA}      { return new Symbol(sym.BRACKETA,yycolumn,yyline,yytext()); }
     {bracketC}      { return new Symbol(sym.BRACKETC,yycolumn,yyline,yytext()); }
     {punto}         { return new Symbol(sym.PUNTO,yycolumn,yyline,yytext()); }
-    {WORD}          { System.out.println("word"); return new Symbol(sym.LETTERS,yycolumn,yyline,yytext()); }
+    {WORD}          { System.out.println("word"); return new Symbol(sym.WORD,yycolumn,yyline,yytext()); }
     
     
     

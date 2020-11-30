@@ -16,12 +16,12 @@ public class temp_main {
     
     public static void main (String args[]){
         compilar_archivos();
-        boolean mvAl = moverArch("AnalizadorLexico.java");
-        boolean mvAS = moverArch("Lexico.java");
+        boolean mvAl = moverArch("Lexico.java");
+        boolean mvAS = moverArch("AnalizadorSintactico.java");
         boolean mvSyn= moverArch("sym.java");
         
         // Ejecutar esto si se llegaron a hacer cambios:
-        compilar_archivos();
+        //compilar_archivos();
         
         // Ejecutar parte léxica y sintáctico:
         //ejecutar();
