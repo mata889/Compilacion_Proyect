@@ -23,13 +23,13 @@ public class temp_main {
     static ArrayList<Funcion> decfunciones = new ArrayList();
 
     public static void main(String args[]) {
-        /*boolean mvAl = moverArch("AnalizadorLexico.java");
-        boolean mvAS = moverArch("Lexico.java");
-        boolean mvSyn= moverArch("sym.java");*/
 
-        // Ejecutar esto si se llegaron a hacer cambios:
-        // compilar_archivos();
-        // Ejecutar parte léxica y sintáctico:
+        //Ejecutar esto si se llegaron a hacer cambios:
+        /*compilar_archivos();
+        boolean mvAl = moverArch("Lexico.java");
+        boolean mvAS = moverArch("AnalizadorSintactico.java");
+        boolean mvSyn= moverArch("sym.java");*/
+        //Ejecutar parte léxica y sintáctico:
         Nodo root = ejecutar();
 
         // Ejecutar parte semántica

@@ -36,5 +36,6 @@ start->[
     wle(expresion)->
     <
         var num express=1;
+        var letter xd = c; 
     >
 ]
