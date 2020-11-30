@@ -1,18 +1,18 @@
 start->[
     var num id;
     if(cont :>0 ~ ejemplo:<69 )<
-        throwDown(mayor);
+        throwDown(!mayor A CERO!);
     >eif(cont:=2)<
-        throwDown(menor);
+        throwDown(!menor a cero!);
     >else<
-        throwDown(imposible);
+        throwDown(!imposible ese error!);
     >
     
     for(initial in 1...3)->
     <
         catch(char,lectura);
         throw(Hola);
-        throwDown(HolaComOEstas);
+        throwDown(olaComOEstas);
         var num cont = 1;
     >	
 ]

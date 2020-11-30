@@ -121,7 +121,7 @@ commentarios_der="/#"
     {bracketA}      { return new Symbol(sym.BRACKETA,yycolumn,yyline,yytext()); }
     {bracketC}      { return new Symbol(sym.BRACKETC,yycolumn,yyline,yytext()); }
     {punto}         { return new Symbol(sym.PUNTO,yycolumn,yyline,yytext()); }
-    {WORD}          { System.out.println("word"); return new Symbol(sym.WORD,yycolumn,yyline,yytext()); }
+    
     
     
     
@@ -129,6 +129,7 @@ commentarios_der="/#"
     {commentarios_izq}  { yybegin(BLOCK_COMMENT); }
     "##"                {yybegin(COMMENT_LINE);}
     {espacio}       {}
+    {WORD}          { System.out.println("word-string"); return new Symbol(sym.WORD,yycolumn,yyline,yytext()); }
     .               {System.out.println("Falla en lexico, char o variable no aceptada: " +yytext()+" Linea: "+(yyline + 1)+ ", Columna: "+(yycolumn+1));
 							errores++;}
 }

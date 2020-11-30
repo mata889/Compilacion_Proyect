@@ -76,7 +76,7 @@ public class temp_main {
     }
      
     // Parte léxica y sintáctica 
-    public static void ejecutar() {
+    /*public static void ejecutar() {
         System.out.println("*****Inicio Ejecuación*****");
         try {
             AnalizadorSintactico asin = new AnalizadorSintactico(new Lexico(new FileReader("src/Test/temporal.txt")));
@@ -101,7 +101,7 @@ public class temp_main {
             System.out.println(ex);
         }
     }
-     
+     */
     String msn1 = "";
     
   

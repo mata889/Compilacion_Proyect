@@ -930,7 +930,7 @@ class Lexico implements java_cup.runtime.Scanner {
             // fall through
           case 76: break;
           case 27:
-            { System.out.println("word"); return new Symbol(sym.WORD,yycolumn,yyline,yytext());
+            { System.out.println("word-string"); return new Symbol(sym.WORD,yycolumn,yyline,yytext());
             }
             // fall through
           case 77: break;

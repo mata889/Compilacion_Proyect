@@ -164,7 +164,6 @@ Program ::= START FLECHA BRACKETA body:b BRACKETC
     start.addHijo((Nodo)b);
  
     
-
     parser.arbol = start;
     RESULT = start;
 :};
@@ -662,7 +661,7 @@ print::= THROW PARENTESISA ID:ide PARENTESISC PUNTOC
     node.addHijo((Nodo)v);
 
     RESULT=node;
-:};
+:} ;
 
 //scanner     
 catch::= CATCH PARENTESISA ID:ide COMMA ID:ide2 PARENTESISC PUNTOC
