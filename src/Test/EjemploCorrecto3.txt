@@ -33,7 +33,7 @@ start->[
         end
     reply(Zeta)
     ]
-    wle(expresion)->
+    wle(var <: var2)->
     <
         var num express=1;
     >
