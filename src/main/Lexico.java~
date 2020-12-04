@@ -841,7 +841,7 @@ class Lexico implements java_cup.runtime.Scanner {
             // fall through
           case 58: break;
           case 10:
-            { System.out.println("num");return new Symbol(sym.NUM,yycolumn,yyline,yytext());
+            { return new Symbol(sym.NUM,yycolumn,yyline,yytext());
             }
             // fall through
           case 59: break;
@@ -866,7 +866,7 @@ class Lexico implements java_cup.runtime.Scanner {
             // fall through
           case 63: break;
           case 15:
-            { System.out.println("letter");return new Symbol(sym.LETTER,yycolumn,yyline,yytext());
+            { return new Symbol(sym.LETTER,yycolumn,yyline,yytext());
             }
             // fall through
           case 64: break;
@@ -881,7 +881,7 @@ class Lexico implements java_cup.runtime.Scanner {
             // fall through
           case 66: break;
           case 18:
-            { System.out.println("operador relacional"); return new Symbol(sym.OPER,yycolumn,yyline,yytext());
+            { return new Symbol(sym.OPER,yycolumn,yyline,yytext());
             }
             // fall through
           case 67: break;
@@ -911,17 +911,17 @@ class Lexico implements java_cup.runtime.Scanner {
             // fall through
           case 72: break;
           case 24:
-            { System.out.println("id ");return new Symbol(sym.ID,yycolumn,yyline,yytext());
+            { return new Symbol(sym.ID,yycolumn,yyline,yytext());
             }
             // fall through
           case 73: break;
           case 25:
-            { System.out.println("if");return new Symbol(sym.IF,yycolumn,yyline,yytext());
+            { return new Symbol(sym.IF,yycolumn,yyline,yytext());
             }
             // fall through
           case 74: break;
           case 26:
-            { System.out.println("in");return new Symbol(sym.IN,yycolumn,yyline,yytext());
+            { return new Symbol(sym.IN,yycolumn,yyline,yytext());
             }
             // fall through
           case 75: break;
@@ -931,112 +931,112 @@ class Lexico implements java_cup.runtime.Scanner {
             // fall through
           case 76: break;
           case 28:
-            { System.out.println("eif");return new Symbol(sym.EIF,yycolumn,yyline,yytext());
+            { return new Symbol(sym.EIF,yycolumn,yyline,yytext());
             }
             // fall through
           case 77: break;
           case 29:
-            { System.out.println("end");return new Symbol(sym.END,yycolumn,yyline,yytext());
+            { return new Symbol(sym.END,yycolumn,yyline,yytext());
             }
             // fall through
           case 78: break;
           case 30:
-            { System.out.println("for");return new Symbol(sym.FOR,yycolumn,yyline,yytext());
+            { return new Symbol(sym.FOR,yycolumn,yyline,yytext());
             }
             // fall through
           case 79: break;
           case 31:
-            { System.out.println("new");return new Symbol(sym.NEW,yycolumn,yyline,yytext());
+            { return new Symbol(sym.NEW,yycolumn,yyline,yytext());
             }
             // fall through
           case 80: break;
           case 32:
-            { System.out.println("num");return new Symbol(sym.NUMERITO,yycolumn,yyline,yytext());
+            { return new Symbol(sym.NUMERITO,yycolumn,yyline,yytext());
             }
             // fall through
           case 81: break;
           case 33:
-            { System.out.println("var");return new Symbol(sym.VAR,yycolumn,yyline,yytext());
+            { return new Symbol(sym.VAR,yycolumn,yyline,yytext());
             }
             // fall through
           case 82: break;
           case 34:
-            { System.out.println("wle");return new Symbol(sym.WLE,yycolumn,yyline,yytext());
+            { return new Symbol(sym.WLE,yycolumn,yyline,yytext());
             }
             // fall through
           case 83: break;
           case 35:
-            { System.out.println("bool");return new Symbol(sym.BOOL,yycolumn,yyline,yytext());
+            { return new Symbol(sym.BOOL,yycolumn,yyline,yytext());
             }
             // fall through
           case 84: break;
           case 36:
-            { System.out.println("bool");return new Symbol(sym.VERDAD,yycolumn,yyline,yytext());
+            { return new Symbol(sym.VERDAD,yycolumn,yyline,yytext());
             }
             // fall through
           case 85: break;
           case 37:
-            { System.out.println("case");return new Symbol(sym.CASE,yycolumn,yyline,yytext());
+            { return new Symbol(sym.CASE,yycolumn,yyline,yytext());
             }
             // fall through
           case 86: break;
           case 38:
-            { System.out.println("else");return new Symbol(sym.ELSE,yycolumn,yyline,yytext());
+            { return new Symbol(sym.ELSE,yycolumn,yyline,yytext());
             }
             // fall through
           case 87: break;
           case 39:
-            { System.out.println("func");return new Symbol(sym.FUNC,yycolumn,yyline,yytext());
+            { return new Symbol(sym.FUNC,yycolumn,yyline,yytext());
             }
             // fall through
           case 88: break;
           case 40:
-            { System.out.println("word");return new Symbol(sym.WORD,yycolumn,yyline,yytext());
+            { return new Symbol(sym.WORD,yycolumn,yyline,yytext());
             }
             // fall through
           case 89: break;
           case 41:
-            { System.out.println("Array");return new Symbol(sym.ARRAY,yycolumn,yyline,yytext());
+            { return new Symbol(sym.ARRAY,yycolumn,yyline,yytext());
             }
             // fall through
           case 90: break;
           case 42:
-            { System.out.println("block");return new Symbol(sym.BLOCK,yycolumn,yyline,yytext());
+            { return new Symbol(sym.BLOCK,yycolumn,yyline,yytext());
             }
             // fall through
           case 91: break;
           case 43:
-            { System.out.println("catch");return new Symbol(sym.CATCH,yycolumn,yyline,yytext());
+            { return new Symbol(sym.CATCH,yycolumn,yyline,yytext());
             }
             // fall through
           case 92: break;
           case 44:
-            { System.out.println("reply");return new Symbol(sym.REPLY,yycolumn,yyline,yytext());
+            { return new Symbol(sym.REPLY,yycolumn,yyline,yytext());
             }
             // fall through
           case 93: break;
           case 45:
-            { System.out.println("start"); return new Symbol(sym.START,yycolumn,yyline,yytext());
+            { return new Symbol(sym.START,yycolumn,yyline,yytext());
             }
             // fall through
           case 94: break;
           case 46:
-            { System.out.println("throw");return new Symbol(sym.THROW,yycolumn,yyline,yytext());
+            { return new Symbol(sym.THROW,yycolumn,yyline,yytext());
             }
             // fall through
           case 95: break;
           case 47:
-            { System.out.println("default");return new Symbol(sym.DEFAULT,yycolumn,yyline,yytext());
+            { return new Symbol(sym.DEFAULT,yycolumn,yyline,yytext());
             }
             // fall through
           case 96: break;
           case 48:
-            { System.out.println("letter");return new Symbol(sym.LETRA,yycolumn,yyline,yytext());
+            { return new Symbol(sym.LETRA,yycolumn,yyline,yytext());
             }
             // fall through
           case 97: break;
           case 49:
-            { System.out.println("throwDown");return new Symbol(sym.THROWDOWN,yycolumn,yyline,yytext());
+            { return new Symbol(sym.THROWDOWN,yycolumn,yyline,yytext());
             }
             // fall through
           case 98: break;
