@@ -36,5 +36,6 @@ start->[
     wle(var <: var2)->
     <
         var num express=1;
+        var letter xd = c; 
     >
 ]
