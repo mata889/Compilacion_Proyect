@@ -28,8 +28,8 @@ public class temp_main {
         /*compilar_archivos();
         boolean mvAl = moverArch("Lexico.java");
         boolean mvAS = moverArch("AnalizadorSintactico.java");
-        boolean mvSyn= moverArch("sym.java");*/
-        //Ejecutar parte léxica y sintáctico:
+        boolean mvSyn= moverArch("sym.java");
+        //Ejecutar parte léxica y sintáctico:*/
         Nodo root = ejecutar();
 
         // Ejecutar parte semántica
@@ -186,9 +186,8 @@ public class temp_main {
                         errores_semanticos.add("Error semántico: La variable " + id + " no existe dentro del ámbito " + ambito_actual);
                     }
                 }else if (hijo.getHijos().get(0).getValor().equals("while")) {
-                    Nodo currentNode = hijo.getHijos().get(1);
-                    String id = currentNode.getHijos().get(1).getHijos().get(0).getValor();
-                    recorrido(currentNode.getHijos().get(2), ambito_actual+"."+"while_statement");
+                    Nodo currentNode = hijo.getHijos().get(1); // Factor
+                    String id = currentNode.getHijos().get(0).getHijos().get(0).getValor();
                     for (Nodo node : currentNode.getHijos()) {
                         if(node.getValor() == "ID"){
                             tabla.add(new Variables(node.getHijos().get(0).getValor(), id, ambito_actual, 0));
@@ -212,6 +211,7 @@ public class temp_main {
                             }
                         }
                     }
+                    recorrido(hijo.getHijos().get(2), ambito_actual+"."+"while_statement");
                 }
             } // Aquí se encuentran las siguientes validaciones semánticas:
             // - Arrays de 1 o 2 dimensiones
