@@ -335,7 +335,7 @@ bodyf::= propositionf:p bodyf:b  {:
 //propositionF
 propositionf::= WLE expression:e FLECHA ABRIRC body:b CERRARC
 {:
-    Nodo node = new Nodo("Proposicion",parser.token);
+    Nodo node = new Nodo("while",parser.token);
     parser.token++;
 
     Nodo whil=new Nodo("while",parser.token);
@@ -504,7 +504,7 @@ proposition::= WLE expression:e FLECHA ABRIRC body:p CERRARC
 
     node.addHijo((Nodo)e);
 
-    node.addHijo((Nodo)p);
+    node.addHijo((Nodo)b);
 
     RESULT= node;
 
@@ -1054,7 +1054,6 @@ cases::= CASE ID:ide ABRIRC body:b CERRARC cases:c
 //expresiones
 expression::= expression_simple:es
 {:
-    
     RESULT=es;
 :}
     |   expression_simple:es OPER:op expression:ex
@@ -1086,8 +1085,7 @@ expression::= expression_simple:es
 :};
 
 expression_simple::= termino:t
-{:
-    
+{:  
     RESULT=t;
 :}
     |   signo:s termino:t

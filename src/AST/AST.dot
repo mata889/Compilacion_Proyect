@@ -10,12 +10,12 @@ digraph {
 "4,Declaracion Simple" -> "3,asignacion";
 "3,asignacion" -> "1,Valores-caracter";
 "1,Valores-caracter" -> "2,c";
-"203,body" -> "10,Declara Array";
+"171,body" -> "10,Declara Array";
 "10,Declara Array" -> "11,ID";
 "11,ID" -> "12,arr";
 "10,Declara Array" -> "13,num";
 "13,num" -> "14,1";
-"203,body" -> "28,Declara Array";
+"171,body" -> "28,Declara Array";
 "28,Declara Array" -> "29,ID";
 "29,ID" -> "30,id2";
 "28,Declara Array" -> "31,num";
