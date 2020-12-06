@@ -21,7 +21,8 @@ public class temp_main {
     static ArrayList<Variables> tabla = new ArrayList();
     static ArrayList<Funcion> funciones = new ArrayList();
     static ArrayList<Funcion> decfunciones = new ArrayList();
-
+    static int cont = 0;
+    
     public static void main(String args[]) {
 
         //Ejecutar esto si se llegaron a hacer cambios:
@@ -203,11 +204,10 @@ public class temp_main {
                                 if (!verificarVariable(cadena, ambito_actual)) {
                                     errores_semanticos.add("Error semántico: La variable " + cadena + " no existe dentro del ámbito " + ambito_actual + " al usarse dentro del while");
                                 }
-                                System.out.println("SADSADSASA: " + cadena);
                             }
                         }
                     }
-                    recorrido(hijo.getHijos().get(2), ambito_actual + "." + "while_statement");
+                    recorrido(hijo.getHijos().get(2), ambito_actual + "." +(cont++)+"_while_statement");
                 }
             } // Aquí se encuentran las siguientes validaciones semánticas:
             // - Arrays de 1 o 2 dimensiones
@@ -289,7 +289,7 @@ public class temp_main {
                     if (permitido) {
                         funciones.add(new Funcion(tipo, id, parametros));
                         // Ahora el cuerpo de la función
-                        recorrido(hijo.getHijos().get(4), ambito_actual + "." + id);
+                        recorrido(hijo.getHijos().get(4), ambito_actual+ "."+(cont++)+"_"+id);
                     }
                 } else {
                     errores_semanticos.add("Error semántico: La función " + id + " fue definida con anterioridad");
@@ -323,8 +323,11 @@ public class temp_main {
                 String id = hijo.getHijos().get(0).getHijos().get(0).getHijos().get(0).getValor();
                 if (verificarVariable(id, ambito_actual)) {
                     errores_semanticos.add("Error semántico: la variable " + id + " no se puede usar en el for ya fue declarada con anterioridad en el ámbito " + ambito_actual);
+                }else{
+                    offset += 4;
+                    tabla.add(new Variables("entero", id, ambito_actual+ "."+(cont++)+"_for_statement", offset));
                 }
-                recorrido(hijo.getHijos().get(0).getHijos().get(3), ambito_actual + "." + "for_statement");
+                recorrido(hijo.getHijos().get(0).getHijos().get(3), ambito_actual+ "."+(cont++)+"_for_statement");
             }// Aquí se encuentran las siguientes validaciones semánticas:
             // - Declaraciones de Switch case
             else if (hijo.getValor().equals("Bloque Switch")) {
@@ -344,7 +347,7 @@ public class temp_main {
                                             errores_semanticos.add("Error semántico: la variable " + temp_id + " es de un tipo no válido, se esperaba una variable de un tipo " + tipo + " dentro del bloque Switch case en el ámbito " + ambito_actual);
                                         } else {
                                             arreglo.add(temp_id);
-                                            recorrido(hijo.getHijos().get(i + 2), ambito_actual + ".switchCase_statement-case" + temp_id);
+                                            recorrido(hijo.getHijos().get(i + 2), ambito_actual+ "."+(cont++)+"_switchCase_statement-case" + temp_id);
                                         }
                                     } else {
                                         errores_semanticos.add("Error semántico: la variable " + temp_id + " no se encuentra dentro del ámbito " + ambito_actual + " al usarlo en un case dentro del bloque Switch Case");
@@ -355,7 +358,7 @@ public class temp_main {
                             } else if ((hijo.getHijos().get(i + 1).getValor().equals("Valores-num") && tipo.equals("entero")) || (hijo.getHijos().get(i + 1).getValor().equals("Valores-caracter") && tipo.equals("caracter"))) {
                                 if (!arreglo.contains(valor = hijo.getHijos().get(i + 1).getHijos().get(0).getValor())) { // Comprueba si el valor ya fue utilizado
                                     arreglo.add(valor);
-                                    recorrido(hijo.getHijos().get(i + 2), ambito_actual + ".switchCase_statement-case" + valor);
+                                    recorrido(hijo.getHijos().get(i + 2), ambito_actual+ "."+(cont++)+"_switchCase_statement-case" + valor);
                                 } else {
                                     errores_semanticos.add("Error semántico: ya se utiliza el valor " + valor + " dentro del bloque switch case en el ámbito " + ambito_actual);
                                 }
@@ -379,9 +382,9 @@ public class temp_main {
                 }
                 //
                 if (hijo.getValor().equals("If statement")) {
-                    recorrido(currentNode.getHijos().get(2), ambito_actual + "." + "if_statement"); //Cuerpo del if
+                    recorrido(currentNode.getHijos().get(2), ambito_actual+ "."+(cont++)+"_if_statement"); //Cuerpo del if
                 } else if (hijo.getValor().equals("Else if")) {
-                    recorrido(currentNode.getHijos().get(2), ambito_actual + "." + "elseif_statement"); // Cuerpo del if else
+                    recorrido(currentNode.getHijos().get(2), ambito_actual+ "."+(cont++)+"_elseif_statement"); // Cuerpo del if else
                 }
                 if (currentNode.getHijos().get(3).getValor().equals("Else if") || currentNode.getHijos().get(3).getValor().equals("Else")) {
                     Nodo node = new Nodo();
@@ -389,7 +392,7 @@ public class temp_main {
                     recorrido(node, ambito_actual);
                 }
             } else if (hijo.getValor().equals("Else")) {
-                recorrido(hijo.getHijos().get(0), ambito_actual + "." + "else");
+                recorrido(hijo.getHijos().get(0), ambito_actual+ "."+(cont++)+"_else");
             }
         }
 
@@ -399,16 +402,21 @@ public class temp_main {
     public static boolean verificarVariable(String variable, String ambito_actual) {
         String value;
         for (int i = 0; i < tabla.size(); i++) {
-            if ( ambito_actual.contains((value="if_statement").toString()) || 
+            /*if ( ambito_actual.contains((value="if_statement").toString()) || 
                  ambito_actual.contains((value="elseif_statement").toString()) || 
                  ambito_actual.contains((value="else").toString()) || 
                  ambito_actual.contains((value="while_statement").toString()) || 
-                 ambito_actual.contains((value="for_statement").toString())) {
+                 ambito_actual.contains((value="for_statement").toString()) ||
+                 ambito_actual.contains((value="switchCase_statement-case").toString())) {
                 String ambito = ambito_actual.replace("."+value, "");
                 if (variable.equals(tabla.get(i).getId()) && ambito.contains(tabla.get(i).getAmbito())) {
                     return true;
                 }
-            }
+            }else{*/
+                if (variable.equals(tabla.get(i).getId()) && ambito_actual.contains(tabla.get(i).getAmbito())) {
+                    return true;
+                }
+            //}
         }
         return false;
     }
