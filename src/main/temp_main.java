@@ -185,28 +185,26 @@ public class temp_main {
                         errores_semanticos.add("Error semántico: La variable " + id + " no existe dentro del ámbito " + ambito_actual);
                     }
                 } else if (hijo.getHijos().get(0).getValor().equals("while")) {
-                    Nodo currentNode = hijo.getHijos().get(1); // Factor
-                    String id = currentNode.getHijos().get(0).getHijos().get(0).getValor();
-                    for (Nodo node : currentNode.getHijos()) {
-                        if (node.getValor() == "ID") {
-                            tabla.add(new Variables(node.getHijos().get(0).getValor(), id, ambito_actual, 0));
-                        } else if (node.getValor() == "expression simple") {
-                            for (Nodo node2 : node.getHijos()) {
-                                if (node2.getValor().equals("ID")) {
-                                    tabla.add(new Variables(node2.getHijos().get(0).getValor(), id, ambito_actual, 0));
-                                } else if (node2.getValor().equals("Operador Relacional")) {
-                                    //Se deja fuera de la tabla por ahora
-                                } else if (node2.getValor().equals("factor")) {
-                                    if (node2.getHijos().get(0).equals("ID")) {
-                                        tabla.add(new Variables(node2.getHijos().get(0).getValor(), id, ambito_actual, 0));
-                                    }
+                    Nodo currentNode = hijo.getHijos().get(1).getHijos().get(0); // Factor
+                    if (currentNode.getValor().equals("factor")) {
+                        String id = currentNode.getHijos().get(0).getHijos().get(0).getValor();
+                        if (!verificarVariable(id, ambito_actual)) {
+                            errores_semanticos.add("Error semántico: La variable " + id + " no existe dentro del ámbito " + ambito_actual);
+                        }
+                    } else {
+                        for (Nodo node : currentNode.getHijos()) {
+                            if (node.getValor() == "ID") {
+                                String cadena = node.getHijos().get(0).getValor();
+                                if (!verificarVariable(cadena, ambito_actual)){
+                                    errores_semanticos.add("Error semántico: La variable "+cadena+" no existe dentro del ámbito "+ambito_actual+" al usarse dentro del while");
                                 }
-                            }
-                        } else if (node.getValor() == "factor") {
-                            if (node.getHijos().get(0).equals("ID")) {
-                                tabla.add(new Variables(node.getHijos().get(0).getValor(), id, ambito_actual, 0));
-                            } else {
-
+                                //tabla.add(new Variables(node.getHijos().get(0).getValor(), id, ambito_actual, 0));
+                            } else if (node.getValor() == "factor") {
+                                String cadena = node.getHijos().get(0).getHijos().get(0).getValor();
+                                if (!verificarVariable(cadena, ambito_actual)){
+                                    errores_semanticos.add("Error semántico: La variable "+cadena+" no existe dentro del ámbito "+ambito_actual+" al usarse dentro del while");
+                                }
+                                System.out.println("SADSADSASA: "+cadena);
                             }
                         }
                     }
@@ -224,22 +222,22 @@ public class temp_main {
                 }
                 if (!verificarVariable(id, ambito_actual)) { //Verifica si ya existe el id
                     if (currentNode.getHijos().size() > 2) { //Verifica si se le asigna arreglos
-                        if (dimension == 1){
-                            if (currentNode.getHijos().get(2).getValor().equals("Valores")){
+                        if (dimension == 1) {
+                            if (currentNode.getHijos().get(2).getValor().equals("Valores")) {
                                 // RECORDAR: CALCULAR EL OFFSET
                                 tabla.add(new Variables(tipo, id, ambito_actual, 0));
-                            }else{
-                                errores_semanticos.add("Error semántico: Se esperaban arreglos de "+dimension+" dimensiones en la variable "+ id);
+                            } else {
+                                errores_semanticos.add("Error semántico: Se esperaban arreglos de " + dimension + " dimensiones en la variable " + id);
                             }
-                        }else if (dimension == 2){
-                            if (currentNode.getHijos().get(2).getValor().equals("bracket-segunda dimension")){
+                        } else if (dimension == 2) {
+                            if (currentNode.getHijos().get(2).getValor().equals("bracket-segunda dimension")) {
                                 // RECORDAR: CALCULAR EL OFFSET
                                 tabla.add(new Variables(tipo, id, ambito_actual, 0));
-                            }else{
-                                errores_semanticos.add("Error semántico: Se esperaban arreglos de "+dimension+" dimensiones en la variable "+ id);
+                            } else {
+                                errores_semanticos.add("Error semántico: Se esperaban arreglos de " + dimension + " dimensiones en la variable " + id);
                             }
-                        }else{
-                            errores_semanticos.add("Error semántico: No se permiten arreglos de "+dimension+" dimensiones en la variable "+ id);
+                        } else {
+                            errores_semanticos.add("Error semántico: No se permiten arreglos de " + dimension + " dimensiones en la variable " + id);
                         }
                     } else {
                         // RECORDAR: CALCULAR EL OFFSET
@@ -325,9 +323,9 @@ public class temp_main {
             else if (hijo.getValor().equals("CicloFor")) {
                 String id = hijo.getHijos().get(0).getHijos().get(0).getHijos().get(0).getValor();
                 if (verificarVariable(id, ambito_actual)) {
-                    errores_semanticos.add("Error semántico: la variable "+id+" no se puede usar en el for ya fue declarada con anterioridad en el ámbito "+ambito_actual); 
+                    errores_semanticos.add("Error semántico: la variable " + id + " no se puede usar en el for ya fue declarada con anterioridad en el ámbito " + ambito_actual);
                 }
-                recorrido(hijo.getHijos().get(0).getHijos().get(3), ambito_actual + "." + "for_statement"); 
+                recorrido(hijo.getHijos().get(0).getHijos().get(3), ambito_actual + "." + "for_statement");
             }// Aquí se encuentran las siguientes validaciones semánticas:
             // - Declaraciones de Switch case
             else if (hijo.getValor().equals("Bloque Switch")) {
