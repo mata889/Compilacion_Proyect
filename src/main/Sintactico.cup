@@ -929,7 +929,6 @@ elseif::= ELSE ifState:i
 //siwthc sale null.point exception nose porque
 block_switch::= BLOCK PARENTESISA ID:ide PARENTESISC FLECHA cases:c END
 {:
-   
     Nodo node=new Nodo("Bloque Switch",parser.token);
     parser.token++;
 
@@ -953,9 +952,7 @@ block_switch::= BLOCK PARENTESISA ID:ide PARENTESISC FLECHA cases:c END
     node.addHijo(end);
 
     RESULT = node;
-    
 :};
-
 cases::= CASE ID:ide ABRIRC body:b CERRARC cases:c
 {:
     
@@ -980,8 +977,6 @@ cases::= CASE ID:ide ABRIRC body:b CERRARC cases:c
     }
     
     RESULT = node;
-    
-
 :}
     |   CASE valores:v ABRIRC body:b CERRARC cases:c
 {:
@@ -1022,6 +1017,7 @@ cases::= CASE ID:ide ABRIRC body:b CERRARC cases:c
 
     RESULT=error;
 :};
+
 //expresiones
 expression::= expression_simple:es
 {:

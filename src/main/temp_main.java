@@ -25,15 +25,14 @@ public class temp_main {
     public static void main(String args[]) {
 
         //Ejecutar esto si se llegaron a hacer cambios:
-        compilar_archivos();
+        /*compilar_archivos();
         boolean mvAl = moverArch("Lexico.java");
         boolean mvAS = moverArch("AnalizadorSintactico.java");
-        boolean mvSyn= moverArch("sym.java");
+        boolean mvSyn= moverArch("sym.java");*/
         //Ejecutar parte léxica y sintáctico:
         Nodo root = ejecutar();
-
         // Ejecutar parte semántica
-        /*if (root != null) {
+        if (root != null) {
             recorrido(root.getHijos().get(0), "Start");
         } else {
             System.out.println("ROOT NULO");
@@ -51,7 +50,7 @@ public class temp_main {
         System.out.println("LOS ERRORES SEMÁNTICOS SON: ");
         for (String error : errores_semanticos) {
             System.out.println(error);
-        }*/
+        }
     }
 
     public static void compilar_archivos() {
@@ -152,7 +151,7 @@ public class temp_main {
                                         tabla.add(new Variables(tipo, id, ambito_actual, offset));
                                     } else if (tipo.equals("entero") && valor.equals("Valores-num")) {
                                         tabla.add(new Variables(tipo, id, ambito_actual, offset));
-                                    } else if (tipo.equals("booleano") && valor.equals("Valores-bool")) {
+                                    } else if (tipo.equals("booleano") && valor.equals("Valores-boolean")) {
                                         tabla.add(new Variables(tipo, id, ambito_actual, offset));
                                     } else {
                                         errores_semanticos.add("Error semántico: Se ha asignado un valor erróneo a la a variable " + id + " se esperaba un " + tipo);
@@ -225,14 +224,22 @@ public class temp_main {
                 }
                 if (!verificarVariable(id, ambito_actual)) { //Verifica si ya existe el id
                     if (currentNode.getHijos().size() > 2) { //Verifica si se le asigna arreglos
-                        if (currentNode.getHijos().get(2).getValor().equals("Valores") && dimension == 1) { //Verifica si se le asigna la cantidad de arreglos con respecto a la dimensión establecida
-                            // RECORDAR: CALCULAR EL OFFSET
-                            tabla.add(new Variables(tipo, id, ambito_actual, 0));
-                        } else if (currentNode.getHijos().get(2).getValor().equals("bracket-segunda dimension") && dimension == 2) {
-                            // RECORDAR: CALCULAR EL OFFSET
-                            tabla.add(new Variables(tipo, id, ambito_actual, 0));
-                        } else {
-                            errores_semanticos.add("Error semántico: Se esperaba un arreglo de " + dimension + " dimensiones en la variable " + id);
+                        if (dimension == 1){
+                            if (currentNode.getHijos().get(2).getValor().equals("Valores")){
+                                // RECORDAR: CALCULAR EL OFFSET
+                                tabla.add(new Variables(tipo, id, ambito_actual, 0));
+                            }else{
+                                errores_semanticos.add("Error semántico: Se esperaban arreglos de "+dimension+" dimensiones en la variable "+ id);
+                            }
+                        }else if (dimension == 2){
+                            if (currentNode.getHijos().get(2).getValor().equals("bracket-segunda dimension")){
+                                // RECORDAR: CALCULAR EL OFFSET
+                                tabla.add(new Variables(tipo, id, ambito_actual, 0));
+                            }else{
+                                errores_semanticos.add("Error semántico: Se esperaban arreglos de "+dimension+" dimensiones en la variable "+ id);
+                            }
+                        }else{
+                            errores_semanticos.add("Error semántico: No se permiten arreglos de "+dimension+" dimensiones en la variable "+ id);
                         }
                     } else {
                         // RECORDAR: CALCULAR EL OFFSET
@@ -316,7 +323,11 @@ public class temp_main {
             }// Aquí se encuentran las siguientes validaciones semánticas:
             // - Declaraciones de ciclo FOR
             else if (hijo.getValor().equals("CicloFor")) {
-                recorrido(hijo.getHijos().get(0).getHijos().get(3), ambito_actual + "." + "for_statement");
+                String id = hijo.getHijos().get(0).getHijos().get(0).getHijos().get(0).getValor();
+                if (verificarVariable(id, ambito_actual)) {
+                    errores_semanticos.add("Error semántico: la variable "+id+" no se puede usar en el for ya fue declarada con anterioridad en el ámbito "+ambito_actual); 
+                }
+                recorrido(hijo.getHijos().get(0).getHijos().get(3), ambito_actual + "." + "for_statement"); 
             }// Aquí se encuentran las siguientes validaciones semánticas:
             // - Declaraciones de Switch case
             else if (hijo.getValor().equals("Bloque Switch")) {
@@ -358,7 +369,8 @@ public class temp_main {
                         }
                     }
                 }
-            } /*else if (hijo.getValor().equals("Empiezo IF")) {
+            }
+            /*else if (hijo.getValor().equals("Empiezo IF")) {
                 Nodo currentNode = hijo;
                 String id = currentNode.getHijos().get(1).getHijos().get(0).getValor();
                 recorrido(currentNode.getHijos().get(1), ambito_actual + "." + "if_statement");

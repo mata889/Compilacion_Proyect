@@ -2104,7 +2104,6 @@ class CUP$AnalizadorSintactico$actions {
 		int cright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)).right;
 		Object c = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)).value;
 		
-   
     Nodo node=new Nodo("Bloque Switch",parser.token);
     parser.token++;
 
@@ -2128,7 +2127,6 @@ class CUP$AnalizadorSintactico$actions {
     node.addHijo(end);
 
     RESULT = node;
-    
 
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("block_switch",22, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-6)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -2170,8 +2168,6 @@ class CUP$AnalizadorSintactico$actions {
     }
     
     RESULT = node;
-    
-
 
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("cases",23, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-5)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }

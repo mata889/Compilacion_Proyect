@@ -2,7 +2,7 @@ start->[
     var num id;
     if(cont :>0 ~ ejemplo:<69 )<
         throwDown(mayor);
-    >eif(cont:=2)<
+    >else if(cont:=2)<
         throwDown(menor);
     >else<
         throwDown(imposible);
