@@ -5,28 +5,6 @@ start->[
     aja = f;
     var num numero = 213;
 
-    func num Recursiva (letter Zeta)[
-        var arreglo = new Array(1);
-        var id3 = new Array(2)[[1,2],[3,4]];
-        aja = a;
-        reply(Zeta)
-    ]
-    
-    for(initial in 1...3)->
-        <
-
-            var num cont = 1;
-        >   
-
-    wle( var1 :< var2 :> var3 )->
-    <
-        var num numero = 2222;
-        for(initial in 1...3)->
-        <
-            
-        >   
-        var num sadsadsa = 1;
-    >
-
+    throwDown(menor);
     
 ]

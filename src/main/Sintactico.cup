@@ -118,6 +118,8 @@ terminal THROW,THROWDOWN,CATCH;
 //not terminales
 non terminal Program;
 non terminal ifState;
+non terminal else_n;
+non terminal elseif;
 non terminal expression;
 non terminal valores;
 non terminal type;
@@ -870,65 +872,58 @@ valores::= NUM:n
 :};
 
 //if
-
-ifState::= IF PARENTESISA expression:e PARENTESISC ABRIRC proposition:p CERRARC eif:ei
+ifState::= IF PARENTESISA expression:e PARENTESISC ABRIRC body:b CERRARC
 {:
-    Nodo node=new Nodo("Empiezo IF",parser.token);
+    Nodo node=new Nodo("If statement",parser.token);
     parser.token++;
-
-    Nodo ife=new Nodo("IF",parser.token);
+    Nodo ife= new Nodo("if",parser.token);
     parser.token++;
     node.addHijo(ife);
-
     node.addHijo((Nodo)e);
-
-    node.addHijo((Nodo)p);
-
-    node.addHijo((Nodo)ei);
-
+    if (b!=null) node.addHijo((Nodo)b);
     RESULT=node;
 :}
-;
-
-eif::= EIF expression:e ABRIRC proposition:p CERRARC eif:eife
+| IF PARENTESISA expression:e PARENTESISC ABRIRC body:b CERRARC else_n:el
 {:
-    Nodo node=new Nodo("Else if",parser.token);
+    Nodo node = new Nodo("If statement",parser.token);
     parser.token++;
-
-    Nodo ei=new Nodo("eif",parser.token);
+    Nodo ife=new Nodo("if",parser.token);
     parser.token++;
-    node.addHijo(ei);
-
+    node.addHijo(ife);
     node.addHijo((Nodo)e);
-
-    node.addHijo((Nodo)p);
-
-
-    if(eife!=null){
-        node.addHijitos(((Nodo)eife).getHijos());
-    }
-
-    RESULT= node;
-:}
-    |   ELSE ABRIRC proposition:p CERRARC
-{:
-    Nodo node=new Nodo("Else if",parser.token);
-    parser.token++;
-
-    Nodo ei=new Nodo("else",parser.token);
-    parser.token++;
-    node.addHijo(ei);
-
-    node.addHijo((Nodo)p);
- 
+    if (b!=null) node.addHijo((Nodo)b);
+    node.addHijo((Nodo)el);
     RESULT=node;
 :}
-    |   
+| IF PARENTESISA expression:e PARENTESISC ABRIRC body:b CERRARC elseif:el
 {:
-    Nodo node = new Nodo("Vacio",parser.token);
+    Nodo node = new Nodo("If statement",parser.token);
     parser.token++;
+    Nodo ife=new Nodo("if",parser.token);
+    parser.token++;
+    node.addHijo(ife);
+    node.addHijo((Nodo)e);
+    if (b!=null) node.addHijo((Nodo)b);
+    node.addHijo((Nodo)el);
     RESULT=node;
 :};
+
+else_n::= ELSE ABRIRC body:b CERRARC
+{:
+    Nodo node = new Nodo("Else",parser.token);
+    parser.token++;
+    if (b!=null) node.addHijo((Nodo)b);
+    RESULT=node;
+:};
+
+elseif::= ELSE ifState:i
+{:
+    Nodo node = new Nodo("Else if",parser.token);
+    parser.token++;
+    node.addHijitos(((Nodo)i).getHijos());
+    RESULT=node;
+:};
+
 
 //bloque switch
 //siwthc sale null.point exception nose porque
