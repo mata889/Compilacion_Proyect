@@ -5,6 +5,19 @@ start->[
 
     wle(23 :< var2  :< var213 )->
     <
-        var num express=1;
+        var num numero = 0;
+    >
+
+    if(asdsa)<
+        var num wawa = 0;
+        var num numero = 0;
+    >else<
+        var num wawa = 0;
+    >
+
+    if(asdsa)<
+        var num wawa = 0;
+    >else<
+        var num wawa = 0;
     >
 ]

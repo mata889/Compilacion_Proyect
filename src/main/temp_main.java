@@ -119,7 +119,6 @@ public class temp_main {
     // ===================================================
     public static void recorrido(Nodo body, String ambito_actual) {
         for (Nodo hijo : body.getHijos()) { // Se recorren los hijos del body, nodo que contiene todo.
-
             // Aquí se encuentran las siguientes validaciones semánticas:
             // - Declaraciones de variables sin asignación | int x;
             // - Declaraciones de variables con asignación | int x = 23;
@@ -195,16 +194,16 @@ public class temp_main {
                         for (Nodo node : currentNode.getHijos()) {
                             if (node.getValor() == "ID") {
                                 String cadena = node.getHijos().get(0).getValor();
-                                if (!verificarVariable(cadena, ambito_actual)){
-                                    errores_semanticos.add("Error semántico: La variable "+cadena+" no existe dentro del ámbito "+ambito_actual+" al usarse dentro del while");
+                                if (!verificarVariable(cadena, ambito_actual)) {
+                                    errores_semanticos.add("Error semántico: La variable " + cadena + " no existe dentro del ámbito " + ambito_actual + " al usarse dentro del while");
                                 }
                                 //tabla.add(new Variables(node.getHijos().get(0).getValor(), id, ambito_actual, 0));
                             } else if (node.getValor() == "factor") {
                                 String cadena = node.getHijos().get(0).getHijos().get(0).getValor();
-                                if (!verificarVariable(cadena, ambito_actual)){
-                                    errores_semanticos.add("Error semántico: La variable "+cadena+" no existe dentro del ámbito "+ambito_actual+" al usarse dentro del while");
+                                if (!verificarVariable(cadena, ambito_actual)) {
+                                    errores_semanticos.add("Error semántico: La variable " + cadena + " no existe dentro del ámbito " + ambito_actual + " al usarse dentro del while");
                                 }
-                                System.out.println("SADSADSASA: "+cadena);
+                                System.out.println("SADSADSASA: " + cadena);
                             }
                         }
                     }
@@ -367,39 +366,48 @@ public class temp_main {
                         }
                     }
                 }
-            }
-            /*else if (hijo.getValor().equals("Empiezo IF")) {
+            } else if (hijo.getValor().equals("If statement") || hijo.getValor().equals("Else if")) {
                 Nodo currentNode = hijo;
-                String id = currentNode.getHijos().get(1).getHijos().get(0).getValor();
-                recorrido(currentNode.getHijos().get(1), ambito_actual + "." + "if_statement");
-                if (currentNode.getHijos().get(0).valor == "if") {
-                    if (currentNode.getHijos().get(1).valor == "expresion simple") {
-                        for (int i = 0; i < currentNode.getHijos().get(1).getHijos().size(); i++) {
-                            if (currentNode.getHijos().get(1).getHijos().get(i).equals("factor")) {
-                                if (!verificarVariable(currentNode.getHijos().get(1).getHijos().get(i).getValor(), ambito_actual)) {
-                                    String tipo = getTipoVariable(currentNode.getHijos().get(1).getHijos().get(i).getValor(), ambito_actual);
-                                    tabla.add(new Variables(tipo, currentNode.getHijos().get(1).getHijos().get(i).getValor(), ambito_actual, offset));
-                                } else if (currentNode.getHijos().get(1).getHijos().get(i).equals("Operador Relacional")) {
-                                    tabla.add(new Variables("Op_Rel", currentNode.getHijos().get(1).getHijos().get(i).getValor(), ambito_actual, offset));
-                                }
-                            }
-                        }
+                // Validar los parametros
+                if (currentNode.getHijos().get(1).getValor().equals("factor")) {
+                    String id = currentNode.getHijos().get(1).getHijos().get(0).getHijos().get(0).getValor();
+                    if (!verificarVariable(id, ambito_actual)) {
+                        errores_semanticos.add("Error semántico: no existe la variable " + id + " dentro del ámbito " + ambito_actual + " al usarlo dentro del bloque de decisión if");
                     }
-                }
-                if (currentNode.getHijos().get(3).valor == "Else if") {
-                    recorrido(currentNode.getHijos().get(1), ambito_actual + "." + "else_if_statement");
-                }
-            }*/
+                } else if (currentNode.getHijos().get(1).getValor().equals("expression simple")) {
 
+                }
+                //
+                if (hijo.getValor().equals("If statement")) {
+                    recorrido(currentNode.getHijos().get(2), ambito_actual + "." + "if_statement"); //Cuerpo del if
+                } else if (hijo.getValor().equals("Else if")) {
+                    recorrido(currentNode.getHijos().get(2), ambito_actual + "." + "elseif_statement"); // Cuerpo del if else
+                }
+                if (currentNode.getHijos().get(3).getValor().equals("Else if") || currentNode.getHijos().get(3).getValor().equals("Else")) {
+                    Nodo node = new Nodo();
+                    node.addHijo(currentNode.getHijos().get(3));
+                    recorrido(node, ambito_actual);
+                }
+            } else if (hijo.getValor().equals("Else")) {
+                recorrido(hijo.getHijos().get(0), ambito_actual + "." + "else");
+            }
         }
 
     }
 
     // Verifica si el id de la variable ya existe en el o los ámbitos especificados.
     public static boolean verificarVariable(String variable, String ambito_actual) {
+        String value;
         for (int i = 0; i < tabla.size(); i++) {
-            if (variable.equals(tabla.get(i).getId()) && ambito_actual.contains(tabla.get(i).getAmbito())) {
-                return true;
+            if ( ambito_actual.contains((value="if_statement").toString()) || 
+                 ambito_actual.contains((value="elseif_statement").toString()) || 
+                 ambito_actual.contains((value="else").toString()) || 
+                 ambito_actual.contains((value="while_statement").toString()) || 
+                 ambito_actual.contains((value="for_statement").toString())) {
+                String ambito = ambito_actual.replace("."+value, "");
+                if (variable.equals(tabla.get(i).getId()) && ambito.contains(tabla.get(i).getAmbito())) {
+                    return true;
+                }
             }
         }
         return false;
