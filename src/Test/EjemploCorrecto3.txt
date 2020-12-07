@@ -33,7 +33,7 @@ start->[
         end
     reply(Zeta)
     ]
-    wle(var <: var2)->
+    wle(var :< var2)->
     <
         var num express=1;
         var letter xd = c; 

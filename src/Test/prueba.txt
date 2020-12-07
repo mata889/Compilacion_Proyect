@@ -19,10 +19,12 @@ start->[
         catch(Zeta);
         reply(Zeta)
     ]
-
-    numero4 = letra;
     
-    
+    wle(var :< var2)->
+    <
+        var num express=1;
+        var letter xd = 'c'; 
+    >
 
     throwDown("variable");
 ]

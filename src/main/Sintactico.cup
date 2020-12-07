@@ -951,7 +951,7 @@ valores::= NUM:n
 //if
 ifState::= IF PARENTESISA expression:e PARENTESISC ABRIRC body:b CERRARC
 {:
-    Nodo node=new Nodo("If statement",parser.token);
+    Nodo node=new Nodo("declaración if",parser.token);
     parser.token++;
     Nodo ife= new Nodo("if",parser.token);
     parser.token++;
@@ -962,7 +962,7 @@ ifState::= IF PARENTESISA expression:e PARENTESISC ABRIRC body:b CERRARC
 :}
 | IF PARENTESISA expression:e PARENTESISC ABRIRC body:b CERRARC else_n:el
 {:
-    Nodo node = new Nodo("If statement",parser.token);
+    Nodo node = new Nodo("declaración if",parser.token);
     parser.token++;
     Nodo ife=new Nodo("if",parser.token);
     parser.token++;
@@ -974,7 +974,7 @@ ifState::= IF PARENTESISA expression:e PARENTESISC ABRIRC body:b CERRARC
 :}
 | IF PARENTESISA expression:e PARENTESISC ABRIRC body:b CERRARC elseif:el
 {:
-    Nodo node = new Nodo("If statement",parser.token);
+    Nodo node = new Nodo("declaración if",parser.token);
     parser.token++;
     Nodo ife=new Nodo("if",parser.token);
     parser.token++;
@@ -987,7 +987,7 @@ ifState::= IF PARENTESISA expression:e PARENTESISC ABRIRC body:b CERRARC
 
 else_n::= ELSE ABRIRC body:b CERRARC
 {:
-    Nodo node = new Nodo("Else",parser.token);
+    Nodo node = new Nodo("else",parser.token);
     parser.token++;
     if (b!=null) node.addHijo((Nodo)b);
     RESULT=node;
@@ -995,7 +995,7 @@ else_n::= ELSE ABRIRC body:b CERRARC
 
 elseif::= ELSE ifState:i
 {:
-    Nodo node = new Nodo("Else if",parser.token);
+    Nodo node = new Nodo("else if",parser.token);
     parser.token++;
     node.addHijitos(((Nodo)i).getHijos());
     RESULT=node;

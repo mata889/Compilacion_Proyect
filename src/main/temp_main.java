@@ -473,7 +473,7 @@ public class temp_main {
                         }
                     }
                 }
-            } else if (hijo.getValor().equals("If statement") || hijo.getValor().equals("Else if")) {
+            } else if (hijo.getValor().equals("declaración if") || hijo.getValor().equals("else if")) {
                 Nodo currentNode = hijo;
                 // Validar los parametros
                 if (currentNode.getHijos().get(1).getValor().equals("factor")) {
@@ -482,21 +482,31 @@ public class temp_main {
                         errores_semanticos.add("Error semántico: no existe la variable " + id + " dentro del ámbito " + ambito_actual + " al usarlo dentro del bloque de decisión if");
                     }
                 } else if (currentNode.getHijos().get(1).getValor().equals("expression simple")) {
-
+                    /*
+                    
+                        VALIDAR AQUI LAS EXPRESIONES
+                    
+                    */
                 }
-                //
-                if (hijo.getValor().equals("If statement")) {
+                if (hijo.getValor().equals("declaración if")) {
                     recorrido(currentNode.getHijos().get(2), ambito_actual + "." + (cont++) + "_if_statement"); //Cuerpo del if
-                } else if (hijo.getValor().equals("Else if")) {
+                } else if (hijo.getValor().equals("else if")) {
                     recorrido(currentNode.getHijos().get(2), ambito_actual + "." + (cont++) + "_elseif_statement"); // Cuerpo del if else
                 }
-                if (currentNode.getHijos().get(3).getValor().equals("Else if") || currentNode.getHijos().get(3).getValor().equals("Else")) {
+                if (currentNode.getHijos().get(3).getValor().equals("else if") || currentNode.getHijos().get(3).getValor().equals("else")) {
                     Nodo node = new Nodo();
                     node.addHijo(currentNode.getHijos().get(3));
                     recorrido(node, ambito_actual);
                 }
-            } else if (hijo.getValor().equals("Else")) {
+            } else if (hijo.getValor().equals("else")) {
                 recorrido(hijo.getHijos().get(0), ambito_actual + "." + (cont++) + "_else");
+            }else if (hijo.getValor().equals("declaración ciclo while")){
+                /*
+
+                    VALIDAR LAS EXPRESIONES
+                
+                */
+                recorrido( hijo.getHijo(2), ambito_actual + "." + (cont++) + "_while_statement"); // Cuerpo del if else
             }
         }
 

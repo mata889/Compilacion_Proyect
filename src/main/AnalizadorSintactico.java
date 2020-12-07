@@ -2190,7 +2190,7 @@ class CUP$AnalizadorSintactico$actions {
 		int bright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)).right;
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)).value;
 		
-    Nodo node=new Nodo("If statement",parser.token);
+    Nodo node=new Nodo("declaración if",parser.token);
     parser.token++;
     Nodo ife= new Nodo("if",parser.token);
     parser.token++;
@@ -2217,7 +2217,7 @@ class CUP$AnalizadorSintactico$actions {
 		int elright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		Object el = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
-    Nodo node = new Nodo("If statement",parser.token);
+    Nodo node = new Nodo("declaración if",parser.token);
     parser.token++;
     Nodo ife=new Nodo("if",parser.token);
     parser.token++;
@@ -2245,7 +2245,7 @@ class CUP$AnalizadorSintactico$actions {
 		int elright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		Object el = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
-    Nodo node = new Nodo("If statement",parser.token);
+    Nodo node = new Nodo("declaración if",parser.token);
     parser.token++;
     Nodo ife=new Nodo("if",parser.token);
     parser.token++;
@@ -2267,7 +2267,7 @@ class CUP$AnalizadorSintactico$actions {
 		int bright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)).right;
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)).value;
 		
-    Nodo node = new Nodo("Else",parser.token);
+    Nodo node = new Nodo("else",parser.token);
     parser.token++;
     if (b!=null) node.addHijo((Nodo)b);
     RESULT=node;
@@ -2284,7 +2284,7 @@ class CUP$AnalizadorSintactico$actions {
 		int iright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		Object i = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
-    Nodo node = new Nodo("Else if",parser.token);
+    Nodo node = new Nodo("else if",parser.token);
     parser.token++;
     node.addHijitos(((Nodo)i).getHijos());
     RESULT=node;
