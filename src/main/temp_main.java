@@ -21,7 +21,9 @@ public class temp_main {
     static ArrayList<Variables> tabla = new ArrayList();
     static ArrayList<Funcion> funciones = new ArrayList();
     static ArrayList<Funcion> decfunciones = new ArrayList();
+    static ArrayList<Cuadruplo> cuadruplo = new ArrayList();
     static int cont = 0;
+    static int cont_temp = 0, cont_etiq = 0;
 
     public static void main(String args[]) {
 
@@ -35,22 +37,32 @@ public class temp_main {
         // Ejecutar parte semántica
         if (root != null) {
             recorrido(root.getHijos().get(0), "Start");
+            if (errores_semanticos.size() == 0) {
+                intermedio(root.getHijos().get(0));
+            }
         } else {
             System.out.println("ROOT NULO");
         }
 
-        System.out.println("LA TABLA DE SÍMBOLOS ES: ");
+        System.out.println(" ==== Semántico ==== ");
+        System.out.println("TABLA DE SÍMBOLOS: ");
         for (Variables variable : tabla) {
             System.out.println(variable.toString());
         }
-        System.out.println("LA TABLA DE SÍMBOLOS DE FUNCIONES ES: ");
+        System.out.println("TABLA DE SÍMBOLOS DE FUNCIONES: ");
         for (Funcion funcion : funciones) {
             System.out.println(funcion.toString());
         }
         System.out.println("\n -------------------------------------- \n");
-        System.out.println("LOS ERRORES SEMÁNTICOS SON: ");
+        System.out.println("ERRORES: ");
         for (String error : errores_semanticos) {
             System.out.println(error);
+        }
+
+        System.out.println("\n -------------------------------------- \n");
+        System.out.println(" ==== Código intermedio ==== ");
+        for (Cuadruplo cuad : cuadruplo) {
+            System.out.println(cuad.toString());
         }
     }
 
@@ -509,7 +521,6 @@ public class temp_main {
                 recorrido(hijo.getHijo(2), ambito_actual + "." + (cont++) + "_while_statement"); // Cuerpo del while
             }
         }
-
     }
 
     public static int getOffset(String tipo, Nodo valores) {
@@ -638,6 +649,46 @@ public class temp_main {
             }
         }
         return null;
+    }
+
+    // ===================================================
+    // ===================================================
+    // ===================================================
+    public static void intermedio(Nodo node) {
+        String id, valor;
+        for (Nodo hijo : node.getHijos()) {
+            switch (hijo.getValor()) {
+                case "declaracion y asignacion":
+                    id = hijo.getHijo(2).getHijo(0).getValor();
+                    valor = hijo.getHijo(3).getHijo(0).getHijo(0).getValor();
+                    cuadruplo.add(new Cuadruplo("=", valor, "", id));
+                    break;
+                case "asignacion":
+                    id = hijo.getHijo(0).getHijo(0).getValor();
+                    valor = hijo.getHijo(1).getValor();
+                    if (valor.equals("id")) {
+                        valor = hijo.getHijo(1).getHijo(0).getValor();
+                    }else{
+                        valor = hijo.getHijo(1).getHijo(0).getHijo(0).getValor();
+                    }
+                    cuadruplo.add(new Cuadruplo("=", valor, "", id));
+                    break;
+                default:
+            }
+        }
+    }
+
+    // ===================================================
+    // ============== Código intermedio ==================
+    // ===================================================
+    public String generarTemp() {
+        this.cont_temp++;
+        return "#t" + this.cont_temp;
+    }
+
+    public String nuevaEtiqueta() {
+        this.cont_etiq++;
+        return "etiq" + this.cont_etiq;
     }
 
     // ===================================================
