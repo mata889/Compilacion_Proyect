@@ -1,23 +1,20 @@
 start->[
-
-    var num numero = 0;
-    var id2 = new Array(2)[[1,2],[3,4]];
-    var num numero = 0;
-
-    wle(23 :< var2  :< var213 )->
-    <
-        var num wawa = 0;
-    >
-
-    wle(23 :< var2  :< var213 )->
-    <
-        var num wawa = 0;
-    >
+    var num eqw;
+    var num numero1 = 12;
+    var num numero2 = 12;
+    var num numero3 = 12;
+    var num numero4 = 12;
+    var letter letra = 'c';
+    var word cadena = "sadsadsadsasdasda";
+    var arr = new Array(1)[1,2,3,4,5];
     
-    for(wawa in 1...3)->
-    <   
-        var num cont = 1;
-    >
+    func num Recursiva (letter Zeta)[
+        var num numeron = 234;
+        reply(numeron)
+    ]
 
-
+    func letter efe (letter Zeta)[
+        var num numeron = 234;
+        reply(Zeta)
+    ]
 ]

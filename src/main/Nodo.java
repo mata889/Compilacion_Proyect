@@ -41,6 +41,10 @@ public class Nodo {
         return hijos;
     }
 
+    public Nodo getHijo(int num){
+        return hijos.get(num);
+    }
+    
     public void addHijitos(ArrayList<Nodo> n){
         hijos.addAll(n);
     }

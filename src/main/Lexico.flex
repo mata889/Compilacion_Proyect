@@ -17,10 +17,16 @@ import java_cup.runtime.Symbol;
 %}
 
 //Caracteres especiales
+comillas= \'
+comillasDobles= \"
+
+letra = [a-zA-Z_]
+
 int=[0-9]
 NUM = {int}+
-LETTER = [a-zA-Z]|"_"
+LETTER = {comillas}{letra}{comillas}
 BOOL = "True" | "False"
+CADENA = {comillasDobles}{letra}*{comillasDobles}
 flecha="->"
 espacio  = [ \n\r\t]+
 comma = ","
@@ -52,7 +58,7 @@ OpeA_mult = "*"|"/"
 
 
 //identificador
-id = {LETTER}({int}|{LETTER})*
+id = {letra}({int}|{letra})*
 
 //valorChar = {LETTER}+
 //valorChar = {letra}|{numero}|{letter_special}|" "
@@ -94,6 +100,7 @@ commentarios_der="/#"
     "Array"         { return new Symbol(sym.ARRAY,yycolumn,yyline,yytext()); }
     {BOOL}          { return new Symbol(sym.BOOL,yycolumn,yyline,yytext()); }
     {LETTER}        { return new Symbol(sym.LETTER,yycolumn,yyline,yytext()); }
+    {CADENA}        { return new Symbol(sym.CADENA,yycolumn,yyline,yytext()); }
     {NUM}           { return new Symbol(sym.NUM,yycolumn,yyline,yytext()); }
     {id}            { return new Symbol(sym.ID,yycolumn,yyline,yytext()); }
     //{valorChar}     { return new Symbol(sym.VALORCHAR,yycolumn,yyline,yytext()); }
