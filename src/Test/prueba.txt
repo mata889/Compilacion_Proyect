@@ -1,6 +1,6 @@
 start->[
     var num eqw;
-    var num numero1 = 12;
+    var num numero1 = 123;
     var num numero2 = 12;
     var num numero3 = 12;
     var num numero4 = 12;
@@ -10,15 +10,16 @@ start->[
     
     func num Recursiva (letter Zeta)[
         var num awa = 234;
-        reply(numeron)
+        reply(awa)
     ]
 
     func letter efe (letter Zeta)[
         var num numeron = 234;
-        numero1 = 23;
         throw('a');
         reply(Zeta)
     ]
+
+    numero4 = letra;
 
     throwDown("variable");
 ]
