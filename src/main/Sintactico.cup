@@ -770,27 +770,16 @@ print::= THROW PARENTESISA ID:ide PARENTESISC PUNTOC
 :};
 
 //scanner     
-catch::= CATCH PARENTESISA ID:ide COMMA ID:ide2 PARENTESISC PUNTOC
+catch::= CATCH PARENTESISA ID:ide PARENTESISC PUNTOC
 {:
-    Nodo node=new Nodo("Empieza el catch",parser.token);
+    Nodo node=new Nodo("catch",parser.token);
     parser.token++;
 
-    Nodo catche=new Nodo("Catch",parser.token);
-    parser.token++;
-    node.addHijo(catche);
-
-    Nodo id=new Nodo("ID",parser.token);
+    Nodo id=new Nodo("id",parser.token);
     parser.token++;
 
     id.addHijo(ide.toString(),parser.token);
     node.addHijo(id); 
-    parser.token++;
- 
-    Nodo id_2=new Nodo("ID",parser.token);
-    parser.token++;
-
-    id_2.addHijo(ide2.toString(),parser.token);
-    node.addHijo(id_2); 
     parser.token++;
  
     RESULT=node;

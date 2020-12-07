@@ -276,14 +276,14 @@ public class temp_main {
                         tipo = getTipoVariable(id, ambito_actual);
                         if ((tipoId = getTipoVariable(value, ambito_actual)) != null) { // Valida si existe en el cuerpo de la función
                             if (!tipoId.equals(tipo)) {
-                                errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, se esperaba un "+tipo);
+                                errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, se esperaba un " + tipo);
                             }
                         } else {
                             String[] array = ambito_actual.split("\\.");
                             String funcionActual = array[array.length - 1];
                             if ((tipoId = verificarParametroId(value, funcionActual)) != null) { //Segundo verificar si la variable no ha sido declarada en los parámetros de la función
                                 if (!tipoId.equals(tipo)) {
-                                    errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, se esperaba un "+tipo);
+                                    errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, se esperaba un " + tipo);
                                 }
                             } else {
                                 errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, la variable " + value + " no ha sido declarada en el ámbito " + ambito_actual);
@@ -402,6 +402,15 @@ public class temp_main {
                         if (verificarParametroId(id, funcionActual) == null) { //Segundo verificar si la variable no ha sido declarada en los parámetros de la función
                             errores_semanticos.add("Error semántico: La variable " + id + " no ha sido declarada con anterioridad, ambito " + ambito_actual + " al usarlo en el método throw");
                         }
+                    }
+                }
+            } else if (hijo.getValor().equals("catch")) {
+                String id = hijo.getHijo(0).getHijo(0).getValor();
+                if (!verificarVariable(id, ambito_actual)) { // Primero verificar si la variable no ha sido declarada en el cuerpo de la función
+                    String[] array = ambito_actual.split("\\.");
+                    String funcionActual = array[array.length - 1];
+                    if (verificarParametroId(id, funcionActual) == null) { //Segundo verificar si la variable no ha sido declarada en los parámetros de la función
+                        errores_semanticos.add("Error semántico: La variable " + id + " no ha sido declarada con anterioridad, ambito " + ambito_actual + " al usarlo en el método catch");
                     }
                 }
             } else if (hijo.getValor().equals("reply")) {

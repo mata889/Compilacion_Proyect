@@ -16,10 +16,13 @@ start->[
     func letter efe (letter Zeta)[
         var num numeron = 234;
         throw('a');
+        catch(Zeta);
         reply(Zeta)
     ]
 
     numero4 = letra;
+    
+    
 
     throwDown("variable");
 ]
