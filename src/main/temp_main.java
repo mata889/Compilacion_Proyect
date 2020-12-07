@@ -290,6 +290,18 @@ public class temp_main {
                 } else {
                     errores_semanticos.add("Error semántico: llamado de función incorrecta, la función " + id + " no fue declarada con anterioridad");
                 }
+            } else if (hijo.getValor().equals("throw") || hijo.getValor().equals("throwdown")) {
+                String valor = hijo.getHijo(0).getValor();
+                if (valor.equals("id")) {
+                    String id = hijo.getHijo(0).getHijo(0).getValor();
+                    if (!verificarVariable(id, ambito_actual)) { // Primero verificar si la variable no ha sido declarada en el cuerpo de la función
+                        String[] array = ambito_actual.split("\\.");
+                        String funcionActual = array[array.length - 1];
+                        if (verificarParametroId(id, funcionActual) == null) { //Segundo verificar si la variable no ha sido declarada en los parámetros de la función
+                            errores_semanticos.add("Error semántico: La variable " + id + " no ha sido declarada con anterioridad, ambito " + ambito_actual+" al usarlo en el método throw");
+                        }
+                    }
+                }
             } else if (hijo.getValor().equals("reply")) {
                 String id = hijo.getHijo(0).getHijo(0).getValor(), tipo;
                 String[] arrays = ambito_actual.split("\\.");
@@ -477,7 +489,7 @@ public class temp_main {
     public static String getTipoVariable(String id, String ambito) {
         for (Variables variable : tabla) {
             // ambito.contains(variable.getAmbito())
-            if (variable.getId().equals(id) && variable.getAmbito().contains(ambito) || variable.getId().equals(id) && ambito.contains(variable.getAmbito()) ) {
+            if (variable.getId().equals(id) && variable.getAmbito().contains(ambito) || variable.getId().equals(id) && ambito.contains(variable.getAmbito())) {
                 return variable.getTipo();
             }
         }

@@ -1771,10 +1771,10 @@ class CUP$AnalizadorSintactico$actions {
 		int ideright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)).right;
 		Object ide = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)).value;
 		
-    Nodo node=new Nodo("Print",parser.token);
+    Nodo node=new Nodo("throw",parser.token);
     parser.token++;
 
-    Nodo id=new Nodo("ID-print",parser.token);
+    Nodo id=new Nodo("id",parser.token);
     parser.token++;
 
     id.addHijo(ide.toString(),parser.token);
@@ -1795,12 +1795,8 @@ class CUP$AnalizadorSintactico$actions {
 		int vright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)).right;
 		Object v = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)).value;
 		
-    Nodo node=new Nodo("Print",parser.token);
+    Nodo node=new Nodo("throw",parser.token);
     parser.token++;
-
-    Nodo thro=new Nodo("Throw",parser.token);
-    parser.token++;
-    node.addHijo(thro);
 
     node.addHijo((Nodo)v);
  
@@ -1818,10 +1814,10 @@ class CUP$AnalizadorSintactico$actions {
 		int ideright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)).right;
 		Object ide = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)).value;
 		
-    Nodo node=new Nodo("Print",parser.token);
+    Nodo node=new Nodo("throwdown",parser.token);
     parser.token++;
 
-    Nodo id=new Nodo("ID-print",parser.token);
+    Nodo id=new Nodo("id",parser.token);
     parser.token++;
 
     id.addHijo(ide.toString(),parser.token);
@@ -1842,7 +1838,7 @@ class CUP$AnalizadorSintactico$actions {
 		int vright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)).right;
 		Object v = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)).value;
 		
-    Nodo node=new Nodo("Print",parser.token);
+    Nodo node=new Nodo("throwdown",parser.token);
     parser.token++;
 
     node.addHijo((Nodo)v);

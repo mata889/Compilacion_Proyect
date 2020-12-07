@@ -9,12 +9,16 @@ start->[
     var arr = new Array(1)[1,2,3,4,5];
     
     func num Recursiva (letter Zeta)[
-        var num numeron = 234;
+        var num awa = 234;
         reply(numeron)
     ]
 
     func letter efe (letter Zeta)[
         var num numeron = 234;
+        numero1 = 23;
+        throw('a');
         reply(Zeta)
     ]
+
+    throwDown("variable");
 ]

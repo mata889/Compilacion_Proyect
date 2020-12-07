@@ -1,11 +1,11 @@
 digraph {
-"139,Start" -> "138,body";
-"138,body" -> "1,declaracion de variable";
+"154,Start" -> "153,body";
+"153,body" -> "1,declaracion de variable";
 "1,declaracion de variable" -> "2,var";
 "1,declaracion de variable" -> "0,entero";
 "1,declaracion de variable" -> "4,id";
 "4,id" -> "5,eqw";
-"138,body" -> "9,declaracion y asignacion";
+"153,body" -> "9,declaracion y asignacion";
 "9,declaracion y asignacion" -> "10,var";
 "9,declaracion y asignacion" -> "6,entero";
 "9,declaracion y asignacion" -> "12,id";
@@ -13,7 +13,7 @@ digraph {
 "9,declaracion y asignacion" -> "14,valor";
 "14,valor" -> "7,num";
 "7,num" -> "8,12";
-"138,body" -> "18,declaracion y asignacion";
+"153,body" -> "18,declaracion y asignacion";
 "18,declaracion y asignacion" -> "19,var";
 "18,declaracion y asignacion" -> "15,entero";
 "18,declaracion y asignacion" -> "21,id";
@@ -21,7 +21,7 @@ digraph {
 "18,declaracion y asignacion" -> "23,valor";
 "23,valor" -> "16,num";
 "16,num" -> "17,12";
-"138,body" -> "27,declaracion y asignacion";
+"153,body" -> "27,declaracion y asignacion";
 "27,declaracion y asignacion" -> "28,var";
 "27,declaracion y asignacion" -> "24,entero";
 "27,declaracion y asignacion" -> "30,id";
@@ -29,7 +29,7 @@ digraph {
 "27,declaracion y asignacion" -> "32,valor";
 "32,valor" -> "25,num";
 "25,num" -> "26,12";
-"138,body" -> "36,declaracion y asignacion";
+"153,body" -> "36,declaracion y asignacion";
 "36,declaracion y asignacion" -> "37,var";
 "36,declaracion y asignacion" -> "33,entero";
 "36,declaracion y asignacion" -> "39,id";
@@ -37,7 +37,7 @@ digraph {
 "36,declaracion y asignacion" -> "41,valor";
 "41,valor" -> "34,num";
 "34,num" -> "35,12";
-"138,body" -> "45,declaracion y asignacion";
+"153,body" -> "45,declaracion y asignacion";
 "45,declaracion y asignacion" -> "46,var";
 "45,declaracion y asignacion" -> "42,caracter";
 "45,declaracion y asignacion" -> "48,id";
@@ -45,7 +45,7 @@ digraph {
 "45,declaracion y asignacion" -> "50,valor";
 "50,valor" -> "43,letter";
 "43,letter" -> "44,'c'";
-"138,body" -> "54,declaracion y asignacion";
+"153,body" -> "54,declaracion y asignacion";
 "54,declaracion y asignacion" -> "55,var";
 "54,declaracion y asignacion" -> "51,string";
 "54,declaracion y asignacion" -> "57,id";
@@ -53,7 +53,7 @@ digraph {
 "54,declaracion y asignacion" -> "59,valor";
 "59,valor" -> "52,string";
 "52,string" -> "53,sadsadsadsasdasda";
-"138,body" -> "75,declaración array";
+"153,body" -> "75,declaración array";
 "75,declaración array" -> "76,id";
 "76,id" -> "77,arr";
 "75,declaración array" -> "78,indice";
@@ -69,7 +69,7 @@ digraph {
 "66,num" -> "67,4";
 "74,valores" -> "68,num";
 "68,num" -> "69,5";
-"138,body" -> "99,declaración de funcion";
+"153,body" -> "99,declaración de funcion";
 "99,declaración de funcion" -> "100,función";
 "99,declaración de funcion" -> "80,entero";
 "99,declaración de funcion" -> "101,id";
@@ -83,24 +83,24 @@ digraph {
 "88,declaracion y asignacion" -> "89,var";
 "88,declaracion y asignacion" -> "85,entero";
 "88,declaracion y asignacion" -> "91,id";
-"91,id" -> "92,numeron";
+"91,id" -> "92,awa";
 "88,declaracion y asignacion" -> "93,valor";
 "93,valor" -> "86,num";
 "86,num" -> "87,234";
 "98,body" -> "96,reply";
 "96,reply" -> "94,id";
 "94,id" -> "95,numeron";
-"138,body" -> "123,declaración de funcion";
-"123,declaración de funcion" -> "124,función";
-"123,declaración de funcion" -> "104,caracter";
-"123,declaración de funcion" -> "125,id";
-"125,id" -> "126,efe";
-"123,declaración de funcion" -> "127,parametros";
-"127,parametros" -> "106,Parametro";
+"153,body" -> "134,declaración de funcion";
+"134,declaración de funcion" -> "135,función";
+"134,declaración de funcion" -> "104,caracter";
+"134,declaración de funcion" -> "136,id";
+"136,id" -> "137,efe";
+"134,declaración de funcion" -> "138,parametros";
+"138,parametros" -> "106,Parametro";
 "106,Parametro" -> "105,caracter";
 "106,Parametro" -> "107,Zeta";
-"123,declaración de funcion" -> "122,body";
-"122,body" -> "112,declaracion y asignacion";
+"134,declaración de funcion" -> "133,body";
+"133,body" -> "112,declaracion y asignacion";
 "112,declaracion y asignacion" -> "113,var";
 "112,declaracion y asignacion" -> "109,entero";
 "112,declaracion y asignacion" -> "115,id";
@@ -108,8 +108,20 @@ digraph {
 "112,declaracion y asignacion" -> "117,valor";
 "117,valor" -> "110,num";
 "110,num" -> "111,234";
-"122,body" -> "120,reply";
-"120,reply" -> "118,id";
-"118,id" -> "119,Zeta";
+"133,body" -> "120,asignacion";
+"120,asignacion" -> "121,id";
+"121,id" -> "122,numero1";
+"120,asignacion" -> "123,valor";
+"123,valor" -> "118,num";
+"118,num" -> "119,23";
+"133,body" -> "126,throw";
+"126,throw" -> "124,letter";
+"124,letter" -> "125,'a'";
+"133,body" -> "129,reply";
+"129,reply" -> "127,id";
+"127,id" -> "128,Zeta";
+"153,body" -> "141,throwdown";
+"141,throwdown" -> "139,string";
+"139,string" -> "140,variable";
 
 }

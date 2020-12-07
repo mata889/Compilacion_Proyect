@@ -724,10 +724,10 @@ llamadaFunc ::= ID:ide PARENTESISA parametros:p PARENTESISC
 //impresiones
 print::= THROW PARENTESISA ID:ide PARENTESISC PUNTOC
 {:
-    Nodo node=new Nodo("Print",parser.token);
+    Nodo node=new Nodo("throw",parser.token);
     parser.token++;
 
-    Nodo id=new Nodo("ID-print",parser.token);
+    Nodo id=new Nodo("id",parser.token);
     parser.token++;
 
     id.addHijo(ide.toString(),parser.token);
@@ -738,12 +738,8 @@ print::= THROW PARENTESISA ID:ide PARENTESISC PUNTOC
 :}
     |   THROW PARENTESISA valores:v PARENTESISC PUNTOC
 {:
-    Nodo node=new Nodo("Print",parser.token);
+    Nodo node=new Nodo("throw",parser.token);
     parser.token++;
-
-    Nodo thro=new Nodo("Throw",parser.token);
-    parser.token++;
-    node.addHijo(thro);
 
     node.addHijo((Nodo)v);
  
@@ -751,10 +747,10 @@ print::= THROW PARENTESISA ID:ide PARENTESISC PUNTOC
 :}
     |   THROWDOWN PARENTESISA ID:ide PARENTESISC PUNTOC
 {:
-    Nodo node=new Nodo("Print",parser.token);
+    Nodo node=new Nodo("throwdown",parser.token);
     parser.token++;
 
-    Nodo id=new Nodo("ID-print",parser.token);
+    Nodo id=new Nodo("id",parser.token);
     parser.token++;
 
     id.addHijo(ide.toString(),parser.token);
@@ -765,7 +761,7 @@ print::= THROW PARENTESISA ID:ide PARENTESISC PUNTOC
 :}
     |   THROWDOWN PARENTESISA valores:v PARENTESISC PUNTOC
 {:
-    Nodo node=new Nodo("Print",parser.token);
+    Nodo node=new Nodo("throwdown",parser.token);
     parser.token++;
 
     node.addHijo((Nodo)v);
