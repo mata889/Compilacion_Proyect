@@ -486,7 +486,7 @@ public class temp_main {
                     
                         VALIDAR AQUI LAS EXPRESIONES
                     
-                    */
+                     */
                 }
                 if (hijo.getValor().equals("declaración if")) {
                     recorrido(currentNode.getHijos().get(2), ambito_actual + "." + (cont++) + "_if_statement"); //Cuerpo del if
@@ -500,13 +500,13 @@ public class temp_main {
                 }
             } else if (hijo.getValor().equals("else")) {
                 recorrido(hijo.getHijos().get(0), ambito_actual + "." + (cont++) + "_else");
-            }else if (hijo.getValor().equals("declaración ciclo while")){
+            } else if (hijo.getValor().equals("declaración ciclo while")) {
                 /*
 
                     VALIDAR LAS EXPRESIONES
                 
-                */
-                recorrido( hijo.getHijo(2), ambito_actual + "." + (cont++) + "_while_statement"); // Cuerpo del if else
+                 */
+                recorrido(hijo.getHijo(2), ambito_actual + "." + (cont++) + "_while_statement"); // Cuerpo del while
             }
         }
 

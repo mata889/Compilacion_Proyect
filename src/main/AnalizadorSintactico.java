@@ -2470,17 +2470,12 @@ class CUP$AnalizadorSintactico$actions {
 		int exright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		Object ex = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
-    Nodo node =new Nodo("expression simple",parser.token);
+    Nodo node =new Nodo("expresión simple",parser.token);
     parser.token++;
     node.addHijo((Nodo)es);
 
-    Nodo oper=new Nodo("Operador Relacional",parser.token);
+    node.addHijo(op.toString(),parser.token);
     parser.token++;
-
-    oper.addHijo(op.toString(),parser.token);
-    parser.token++;
-
-    node.addHijo(oper);
 
     if(ex!=null){
         node.addHijitos(((Nodo)ex).getHijos());
@@ -2497,7 +2492,7 @@ class CUP$AnalizadorSintactico$actions {
             {
               Object RESULT =null;
 		
-    Nodo error=new Nodo("Error-expression",parser.token);
+    Nodo error=new Nodo("error expresión",parser.token);
     parser.token++;
 
     RESULT=error;
@@ -2531,13 +2526,7 @@ class CUP$AnalizadorSintactico$actions {
 		int tright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		Object t = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
-    Nodo node=new Nodo("Expresion simple-signo",parser.token);
-    parser.token++;
-
-    node.addHijo((Nodo)s);
-    node.addHijo((Nodo)t);
-
-    RESULT=node;
+    RESULT=(Nodo)t;
 
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("expression_simple",21, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-1)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
             }
@@ -2557,14 +2546,14 @@ class CUP$AnalizadorSintactico$actions {
 		int tright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		Object t = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
-    Nodo node=new Nodo("Expresion simple",parser.token);
+    Nodo node=new Nodo("expresión simple",parser.token);
     parser.token++;
 
     if(exs!=null){
         node.addHijitos(((Nodo)exs).getHijos());
     }
 
-    Nodo opea_sum=new Nodo("Operacion de Suma/Resta",parser.token);
+    Nodo opea_sum=new Nodo("operador suma/resta",parser.token);
     parser.token++;
     opea_sum.addHijo(op.toString(),parser.token);
     parser.token++;
@@ -2606,13 +2595,12 @@ class CUP$AnalizadorSintactico$actions {
 		int fright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		Object f = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
-    Nodo node =new Nodo("Termino",parser.token);
+    Nodo node =new Nodo("termino",parser.token);
     parser.token++;
-
     if(t!=null){
         node.addHijitos(((Nodo)t).getHijos());
     }
-    Nodo opea_mult=new Nodo("Operador de Multiplicacion/Division",parser.token);
+    Nodo opea_mult=new Nodo("operador multiplicacion/division",parser.token);
     parser.token++;
 
     opea_mult.addHijo(op.toString(),parser.token++);
@@ -2640,7 +2628,7 @@ class CUP$AnalizadorSintactico$actions {
     Nodo node=new Nodo("factor",parser.token);
     parser.token++;
 
-    Nodo id=new Nodo("ID",parser.token);
+    Nodo id=new Nodo("id",parser.token);
     parser.token++;
 
     id.addHijo(ide.toString(),parser.token);
@@ -2667,7 +2655,7 @@ class CUP$AnalizadorSintactico$actions {
     Nodo node=new Nodo("factor",parser.token);
     parser.token++;
 
-    Nodo id=new Nodo("ID",parser.token);
+    Nodo id=new Nodo("id",parser.token);
     parser.token++;
 
     id.addHijo(ide.toString(),parser.token);
@@ -2691,7 +2679,6 @@ class CUP$AnalizadorSintactico$actions {
 		int vright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		Object v = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
-    
     RESULT=v;
 
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("factor",24, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
@@ -2708,9 +2695,7 @@ class CUP$AnalizadorSintactico$actions {
 		
     Nodo node=new Nodo("factor",parser.token);
     parser.token++;
-    
     node.addHijo((Nodo)e);
-   
     RESULT=node;
 
               CUP$AnalizadorSintactico$result = parser.getSymbolFactory().newSymbol("factor",24, ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.elementAt(CUP$AnalizadorSintactico$top-2)), ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()), RESULT);
@@ -2728,7 +2713,7 @@ class CUP$AnalizadorSintactico$actions {
 		int fright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		Object f = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
-    Nodo node=new Nodo(" factor",parser.token);
+    Nodo node=new Nodo("factor",parser.token);
     parser.token++;
 
     Nodo not=new Nodo("Not",parser.token);
