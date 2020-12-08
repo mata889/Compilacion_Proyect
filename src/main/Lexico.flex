@@ -81,6 +81,7 @@ commentarios_der="/#"
     "letter "       { return new Symbol(sym.LETRA,yycolumn,yyline,yytext()); }
     "word"          { return new Symbol(sym.WORD,yycolumn,yyline,yytext()); }
     "bool"          { return new Symbol(sym.VERDAD,yycolumn,yyline,yytext()); }
+    "void"          { return new Symbol(sym.VOID,yycolumn,yyline,yytext()); }
     "var"           { return new Symbol(sym.VAR,yycolumn,yyline,yytext()); }
     "new"           { return new Symbol(sym.NEW,yycolumn,yyline,yytext()); }
     "for"           { return new Symbol(sym.FOR,yycolumn,yyline,yytext()); }

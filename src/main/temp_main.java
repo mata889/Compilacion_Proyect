@@ -215,6 +215,8 @@ public class temp_main {
                             if (validFunc) {
                                 if (!tipoFunc.equals(tipo)) {
                                     errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, se esperaba un tipo entero ");
+                                }else{
+                                    pasa =true;
                                 }
                             }
                         } else {
@@ -248,6 +250,8 @@ public class temp_main {
                             if (validFunc) {
                                 if (!tipoFunc.equals(tipo)) {
                                     errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, se esperaba un tipo booleano");
+                                }else{
+                                    pasa =true;
                                 }
                             }
                         } else {
@@ -281,6 +285,8 @@ public class temp_main {
                             if (validFunc) {
                                 if (!tipoFunc.equals(tipo)) {
                                     errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, se esperaba un tipo caracter ");
+                                }else{
+                                    pasa =true;
                                 }
                             }
                         } else {
@@ -314,6 +320,8 @@ public class temp_main {
                             if (validFunc) {
                                 if (!tipoFunc.equals(tipo)) {
                                     errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, se esperaba un tipo string ");
+                                }else{
+                                    pasa =true;
                                 }
                             }
                         } else {
@@ -359,6 +367,44 @@ public class temp_main {
                             } else {
                                 errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, la variable " + value + " no ha sido declarada en el ámbito " + ambito_actual);
                             }
+                        }
+                    } else if (valor.equals("llamada a funcion")) {
+                        boolean validFunc = true;
+                        String idFunc;
+                        tipo = getTipoVariable(id, ambito_actual);
+                        idFunc = hijo.getHijo(1).getHijo(0).getHijo(0).getValor(); // Obtener el ID
+                        ArrayList<Variables> parametros = new ArrayList();
+                        Funcion funcion;
+                        int cont = 0;
+                        if ((funcion = getFuncion(idFunc)) != null) { // Verifica si la función ya ha sido declarada
+                            for (Nodo h : hijo.getHijo(1).getHijo(1).getHijos()) {
+                                cont++;
+                                if (verificarVariable(h.getHijo(0).getValor(), ambito_actual)) { //Verifica Si la variable que se le está pasando existe
+                                    parametros.add(getVariable(h.getHijo(0).getValor(), ambito_actual)); //Sí la variable existe se agrega a este arreglo
+                                } else {
+                                    errores_semanticos.add("Error semántico: llamado a función, la variable " + h.getHijos().get(0).getValor() + " no existe en el ámbito " + ambito_actual);
+                                    validFunc = false;
+                                }
+                            }
+                            if (cont != funcion.getParams().size()) {
+                                errores_semanticos.add("Error semántico: llamado de función incorrecta, se esperaban " + funcion.getParams().size() + " cantidad de parámetros en el llamado a la función " + id + " en el ámbito " + ambito_actual);
+                                validFunc = false;
+                            } else if (parametros.size() == funcion.getParams().size()) {
+                                for (int i = 0; i < parametros.size(); i++) {
+                                    if (parametros.get(i).getTipo() != funcion.getParams().get(i).getTipo()) { // Verificar los tipos
+                                        errores_semanticos.add("Error semántico: llamado de función incorrecta, la variable " + parametros.get(i).getId() + " es de un tipo distinto, se esperaba un tipo " + funcion.getParams().get(i).getTipo() + " en el llamado a la función " + id + " en el ámbito " + ambito_actual);
+                                        validFunc = false;
+                                    }
+                                }
+                            }
+                            if (validFunc){
+                                if (!tipo.equals(funcion.getTipo())){
+                                    errores_semanticos.add("Error semántico: llamado de función incorrecta, la función " + funcion.getId() + " es de un tipo distinto, se esperaba un tipo "+tipo);
+                                }
+                            }
+                        } else {
+                            errores_semanticos.add("Error semántico: llamado de función incorrecta, la función " + idFunc + " no fue declarada con anterioridad");
+                            validFunc = false;
                         }
                     } else {
                         tipo = getTipoVariable(id, ambito_actual);

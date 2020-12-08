@@ -109,7 +109,7 @@ terminal  VERDAD, NUMERITO, LETRA, WORD, CADENA;
 
 //palabras reservadas y Operadores
 
-terminal PUNTOC, PARENTESISA, PARENTESISC, ABRIRC, CERRARC , ASSIGNMENT, BRACKETA, BRACKETC, COMMA;
+terminal PUNTOC, PARENTESISA, PARENTESISC, ABRIRC, CERRARC , ASSIGNMENT, BRACKETA, BRACKETC, COMMA, VOID;
 terminal OPER, OPEA_SUM, OPEA_MULT, BOOL,  FOR, WLE, IF, EIF, ELSE ,BLOCK, END;
 terminal NUM, LETTER, FUNC, START ,FLECHA,  VAR ,  NOT;
 terminal IN, PUNTO, CASE,DEFAULT, REPLY, ID;
@@ -365,6 +365,66 @@ funciones::= FUNC type:t ID:ide PARENTESISA parametrosf:p PARENTESISC BRACKETA b
     node.addHijo(funciones);
 
     node.addHijo((Nodo)t);
+
+    Nodo id=new Nodo("id",parser.token);
+    parser.token++;
+
+    id.addHijo(ide.toString(),parser.token);
+    node.addHijo(id);
+    parser.token++;
+    
+    Nodo vacio = new Nodo("Vacio",parser.token);
+    parser.token++;
+
+    Nodo parametros = new Nodo("parametros",parser.token);
+    parser.token++;
+    parametros.addHijo(vacio);
+    
+    node.addHijo(parametros);
+
+    node.addHijo((Nodo)b);
+
+    RESULT= node;
+:}
+    | FUNC VOID:t ID:ide PARENTESISA parametrosf:p PARENTESISC BRACKETA body:b BRACKETC
+{:
+    Nodo node= new Nodo("declaración de funcion",parser.token);
+    parser.token++;
+
+    Nodo funciones=new Nodo("función",parser.token);
+    parser.token++;
+    node.addHijo(funciones);
+
+    node.addHijo(t.toString(),parser.token);
+    parser.token++;
+
+    Nodo id=new Nodo("id",parser.token);
+    parser.token++;
+
+    id.addHijo(ide.toString(),parser.token);
+    node.addHijo(id);
+    parser.token++;
+
+    Nodo parametros = new Nodo("parametros",parser.token);
+    parser.token++;
+    parametros.addHijitos( ((Nodo)p).getHijos() );
+
+    node.addHijo(parametros);
+    node.addHijo((Nodo)b);
+
+    RESULT= node;
+:}
+    | FUNC VOID:t ID:ide PARENTESISA PARENTESISC BRACKETA body:b BRACKETC
+{:
+    Nodo node= new Nodo("declaración de funcion",parser.token);
+    parser.token++;
+
+    Nodo funciones=new Nodo("funcion",parser.token);
+    parser.token++;
+    node.addHijo(funciones);
+
+    node.addHijo(t.toString(),parser.token);
+    parser.token++;
 
     Nodo id=new Nodo("id",parser.token);
     parser.token++;

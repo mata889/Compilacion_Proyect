@@ -8,50 +8,51 @@ package main;
 /** CUP generated class containing symbol constants. */
 public class sym {
   /* terminals */
-  public static final int OPEA_SUM = 17;
+  public static final int OPEA_SUM = 18;
   public static final int WORD = 5;
   public static final int ASSIGNMENT = 12;
-  public static final int THROWDOWN = 43;
+  public static final int THROWDOWN = 44;
   public static final int NUMERITO = 3;
-  public static final int CASE = 36;
+  public static final int CASE = 37;
   public static final int ABRIRC = 10;
-  public static final int ARRAY = 40;
-  public static final int FOR = 20;
+  public static final int ARRAY = 41;
+  public static final int FOR = 21;
   public static final int PARENTESISC = 9;
   public static final int BRACKETC = 14;
   public static final int PARENTESISA = 8;
   public static final int BRACKETA = 13;
-  public static final int NOT = 33;
-  public static final int BLOCK = 25;
-  public static final int IN = 34;
+  public static final int NOT = 34;
+  public static final int BLOCK = 26;
+  public static final int IN = 35;
   public static final int LETRA = 4;
-  public static final int BOOL = 19;
+  public static final int BOOL = 20;
   public static final int COMMA = 15;
   public static final int VERDAD = 2;
-  public static final int THROW = 42;
-  public static final int WLE = 21;
-  public static final int NUM = 27;
-  public static final int IF = 22;
-  public static final int EIF = 23;
-  public static final int ID = 39;
+  public static final int THROW = 43;
+  public static final int WLE = 22;
+  public static final int NUM = 28;
+  public static final int IF = 23;
+  public static final int EIF = 24;
+  public static final int ID = 40;
   public static final int EOF = 0;
-  public static final int NEW = 41;
+  public static final int NEW = 42;
   public static final int error = 1;
   public static final int CADENA = 6;
-  public static final int START = 30;
-  public static final int FLECHA = 31;
-  public static final int OPEA_MULT = 18;
-  public static final int ELSE = 24;
-  public static final int PUNTO = 35;
-  public static final int LETTER = 28;
-  public static final int FUNC = 29;
-  public static final int DEFAULT = 37;
-  public static final int OPER = 16;
+  public static final int START = 31;
+  public static final int VOID = 16;
+  public static final int FLECHA = 32;
+  public static final int OPEA_MULT = 19;
+  public static final int ELSE = 25;
+  public static final int PUNTO = 36;
+  public static final int LETTER = 29;
+  public static final int FUNC = 30;
+  public static final int DEFAULT = 38;
+  public static final int OPER = 17;
   public static final int PUNTOC = 7;
-  public static final int END = 26;
-  public static final int REPLY = 38;
-  public static final int VAR = 32;
-  public static final int CATCH = 44;
+  public static final int END = 27;
+  public static final int REPLY = 39;
+  public static final int VAR = 33;
+  public static final int CATCH = 45;
   public static final int CERRARC = 11;
   public static final String[] terminalNames = new String[] {
   "EOF",
@@ -70,6 +71,7 @@ public class sym {
   "BRACKETA",
   "BRACKETC",
   "COMMA",
+  "VOID",
   "OPER",
   "OPEA_SUM",
   "OPEA_MULT",

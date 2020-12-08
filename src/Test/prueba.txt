@@ -1,11 +1,16 @@
 start->[
     
-    func letter funcion (letter Zeta)[
-    
+    func letter funcion (letter letra)[
+        var letter Zeta;
         reply(Zeta)
     ]
 
-    var letter n;
-    var num numero = funcion(n);
+    func void awa ()[
+        var letter Zeta;
+    ]
 
+    var letter letrota;
+    var letter n;
+
+    n = awa();
 ]
