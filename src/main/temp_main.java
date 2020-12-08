@@ -482,11 +482,13 @@ public class temp_main {
                         errores_semanticos.add("Error semántico: no existe la variable " + id + " dentro del ámbito " + ambito_actual + " al usarlo dentro del bloque de decisión if");
                     }
                 } else if (currentNode.getHijos().get(1).getValor().equals("expression simple")) {
-                    /*
-                    
-                        VALIDAR AQUI LAS EXPRESIONES
-                    
-                     */
+                    //expresiones
+                    if (currentNode.getHijos().get(1).getHijos().get(0).getValor().equals("factor")) {
+                        String id = currentNode.getHijos().get(1).getHijos().get(0).getHijos().get(0).getHijos().get(0).getValor();
+                        if (!verificarVariable(id, ambito_actual)) {
+                        errores_semanticos.add("Error semántico: no existe la variable " + id + " dentro del ámbito " + ambito_actual + " al usarlo dentro del bloque de decisión if");
+                        }
+                    }
                 }
                 if (hijo.getValor().equals("declaración if")) {
                     recorrido(currentNode.getHijos().get(2), ambito_actual + "." + (cont++) + "_if_statement"); //Cuerpo del if
@@ -501,11 +503,13 @@ public class temp_main {
             } else if (hijo.getValor().equals("else")) {
                 recorrido(hijo.getHijos().get(0), ambito_actual + "." + (cont++) + "_else");
             } else if (hijo.getValor().equals("declaración ciclo while")) {
-                /*
-
-                    VALIDAR LAS EXPRESIONES
-                
-                 */
+                Nodo currentNode = hijo;
+                if (currentNode.getHijos().get(1).getValor().equals("factor")) {
+                    String id = currentNode.getHijos().get(1).getHijos().get(0).getHijos().get(0).getValor();
+                    if (!verificarVariable(id, ambito_actual)) {
+                    errores_semanticos.add("Error semántico: no existe la variable " + id + " dentro del ámbito " + ambito_actual + " al usarlo dentro del bloque de decisión if");
+                    }
+                }
                 recorrido(hijo.getHijo(2), ambito_actual + "." + (cont++) + "_while_statement"); // Cuerpo del while
             }
         }
