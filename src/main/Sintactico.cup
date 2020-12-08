@@ -103,14 +103,14 @@ parser code
 
 
 //lexemas
-terminal  VERDAD, NUMERITO, LETRA, WORD;
+terminal  VERDAD, NUMERITO, LETRA, WORDS;
 
 
 //palabras reservadas y Operadores
 
 terminal PUNTOC, PARENTESISA, PARENTESISC, ABRIRC, CERRARC , ASSIGNMENT, BRACKETA, BRACKETC, COMMA;
 terminal OPER, OPEA_SUM, OPEA_MULT, BOOL,  FOR, WLE, IF, EIF, ELSE ,BLOCK, END;
-terminal NUM, LETTER, FUNC, START ,FLECHA,  VAR ,  NOT;
+terminal NUM, LETTER, FUNC, START ,FLECHA,VAR,NOT,WORD;
 terminal IN, PUNTO, CASE,DEFAULT, REPLY, ID;
 terminal ARRAY,NEW;
 terminal THROW,THROWDOWN,CATCH;
@@ -152,11 +152,11 @@ non terminal bracket_valores;
 non terminal list_valores;
 non terminal arrayData;
 non terminal llamadaFunc;
-
+non terminal declaParametro;
 start with Program;
 
 //program
-Program ::= START  FLECHA BRACKETA body:b BRACKETC
+Program ::= START FLECHA BRACKETA body:b BRACKETC
 {:
     Nodo start = new Nodo("Start",token);
     parser.token ++;
@@ -164,7 +164,6 @@ Program ::= START  FLECHA BRACKETA body:b BRACKETC
     start.addHijo((Nodo)b);
  
     
-
     parser.arbol = start;
     RESULT = start;
 :};
@@ -199,7 +198,7 @@ declara_simple::= VAR:v type:t ID:ide declara_puntoc:dc
 :}
 ;
 //bodyf= REPLY PARENTESISA parametro:p2 PARENTESISC BRACKETC
-funciones::= FUNC type:t ID:ide PARENTESISA parametro:p PARENTESISC BRACKETA bodyf:b BRACKETC
+funciones::= FUNC type:t ID:ide PARENTESISA declaParametro:p PARENTESISC BRACKETA bodyf:b BRACKETC
 
 {:
     Nodo node= new Nodo("Funciones",parser.token);
@@ -438,7 +437,23 @@ devolverFunc::= valores:v
     RESULT = ID;
 :}
     ;
+declaParametro::= parametro:p{:
 
+    RESULT=p;
+:}
+| declaParametro:dp COMMA parametro:p
+{:
+    Nodo node= new Nodo("Decla",parser.token);
+    parser.token++;
+
+    if(dp!=null){
+        node.addHijitos(((Nodo)dp).getHijos());
+    }
+    if(p!=null){
+        node.addHijitos(((Nodo)p).getHijos());
+    }
+    RESULT = node;
+:}  ;
 //parametro
 parametro::= type:t ID:id
 {:
@@ -478,7 +493,7 @@ parametro::= type:t ID:id
     RESULT=error;
 :};
 //proposciones
-proposition::= WLE expression:e FLECHA ABRIRC body:b CERRARC
+proposition::= WLE expression:e FLECHA ABRIRC body:p CERRARC
 {:
     Nodo node = new Nodo("Proposicion",parser.token);
     parser.token++;
@@ -646,7 +661,7 @@ print::= THROW PARENTESISA ID:ide PARENTESISC PUNTOC
     node.addHijo((Nodo)v);
 
     RESULT=node;
-:};
+:} ;
 
 //scanner     
 catch::= CATCH PARENTESISA ID:ide COMMA ID:ide2 PARENTESISC PUNTOC
@@ -696,7 +711,7 @@ type::= VERDAD
     parser.token++;
     RESULT = node;
 :}
-    | WORD
+    | WORDS
 {:
     Nodo node = new Nodo("String",  parser.token);
     parser.token++;
@@ -859,11 +874,20 @@ valores::= NUM:n
 
     RESULT = node;
 :}
-    |   LETTER:l
+    |   WORD:l
+{:
+    Nodo node=new Nodo("Valores-streuhb",parser.token);
+    parser.token++;
+    node.addHijo(l.toString(),parser.token);
+    parser.token++;
+
+    RESULT = node;
+:}
+|   LETTER:L
 {:
     Nodo node=new Nodo("Valores-caracter",parser.token);
     parser.token++;
-    node.addHijo(l.toString(),parser.token);
+    node.addHijo(L.toString(),parser.token);
     parser.token++;
 
     RESULT = node;
