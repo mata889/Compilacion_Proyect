@@ -251,6 +251,27 @@ declara_assig ::=  VAR:v type:t ID:ide ASSIGNMENT valores:va PUNTOC
         parser.token++;
 
         RESULT = decl;
+:} |  VAR:v type:t ID:ide ASSIGNMENT llamadaFunc:f PUNTOC
+{:
+        Nodo decl = new Nodo("declaracion y asignacion",  parser.token);
+        parser.token++;
+        // Asigno var
+        Nodo variable=new Nodo(v.toString(),parser.token);
+        parser.token++;
+        decl.addHijo(variable);
+        parser.token++;
+        // Asigno el tipo
+        decl.addHijo((Nodo)t);
+        // Asigno el id
+        Nodo id=new Nodo("id",parser.token);
+        parser.token++;
+        id.addHijo(new Nodo(ide.toString(),parser.token));
+        decl.addHijo(id);
+        parser.token++;
+        // Asigno el valor
+        decl.addHijo((Nodo)f);
+
+        RESULT = decl;
 :};
 
 assig ::= ID:ide ASSIGNMENT valores:v PUNTOC
@@ -287,7 +308,23 @@ assig ::= ID:ide ASSIGNMENT valores:v PUNTOC
         decl.addHijo(id2);
         parser.token++;
         RESULT = decl;
-:};
+:}
+    | ID:ide ASSIGNMENT llamadaFunc:f PUNTOC
+{:  
+    Nodo decl = new Nodo("asignacion",  parser.token);
+        parser.token++;
+        // Asigno el id
+        Nodo id=new Nodo("id",parser.token);
+        parser.token++;
+        id.addHijo(new Nodo(ide.toString(),parser.token));
+        decl.addHijo(id);
+        parser.token++;
+        // Asigno el valor
+        decl.addHijo((Nodo)f);
+
+        RESULT = decl;
+:}
+;
 
 
 //bodyf= REPLY PARENTESISA parametro:p2 PARENTESISC BRACKETC
@@ -320,7 +357,7 @@ funciones::= FUNC type:t ID:ide PARENTESISA parametrosf:p PARENTESISC BRACKETA b
 :}
     |   FUNC type:t ID:ide PARENTESISA PARENTESISC BRACKETA bodyf:b BRACKETC
 {:
-    Nodo node= new Nodo("Funciones",parser.token);
+    Nodo node= new Nodo("declaración de funcion",parser.token);
     parser.token++;
 
     Nodo funciones=new Nodo("funcion",parser.token);
@@ -682,7 +719,7 @@ llamadaFunc ::= ID:ide PARENTESISA parametros:p PARENTESISC
     Nodo node=new Nodo("llamada a funcion",parser.token);
     parser.token++;
 
-    Nodo id=new Nodo("ID",parser.token);
+    Nodo id=new Nodo("id",parser.token);
     parser.token++;
 
     id.addHijo(ide.toString(),parser.token);
@@ -699,7 +736,7 @@ llamadaFunc ::= ID:ide PARENTESISA parametros:p PARENTESISC
     Nodo node=new Nodo("llamada a funcion",parser.token);
     parser.token++;
 
-    Nodo id=new Nodo("ID",parser.token);
+    Nodo id=new Nodo("id",parser.token);
     parser.token++;
 
     id.addHijo(ide.toString(),parser.token);

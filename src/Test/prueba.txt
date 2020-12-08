@@ -1,5 +1,11 @@
 start->[
-    var num variable;
-    var num numeron = 23;
-    numeron = variable;
+    
+    func letter funcion (letter Zeta)[
+    
+        reply(Zeta)
+    ]
+
+    var letter n;
+    var num numero = funcion(n);
+
 ]

@@ -45,18 +45,16 @@ public class temp_main {
         }
 
         System.out.println(" ==== Semántico ==== ");
-        System.out.println("TABLA DE SÍMBOLOS: ");
         for (Variables variable : tabla) {
             System.out.println(variable.toString());
         }
-        System.out.println("TABLA DE SÍMBOLOS DE FUNCIONES: ");
         for (Funcion funcion : funciones) {
             System.out.println(funcion.toString());
         }
         System.out.println("\n -------------------------------------- \n");
         System.out.println("ERRORES: ");
         for (String error : errores_semanticos) {
-            System.out.println(error);
+            System.out.println(error.toString());
         }
 
         System.out.println("\n -------------------------------------- \n");
@@ -152,11 +150,48 @@ public class temp_main {
                 String valor = hijo.getHijo(3).getHijo(0).getValor();
                 boolean pasa = false;
                 String tipoId = "";
+
+                boolean validFunc = true;
+                String idFunc;
+                String tipoFunc = "";
+                if (hijo.getHijo(3).getValor().equals("llamada a funcion")) {
+                    idFunc = hijo.getHijos().get(3).getHijo(0).getHijo(0).getValor(); // Obtener el ID
+                    ArrayList<Variables> parametros = new ArrayList();
+                    Funcion funcion;
+                    int cont = 0;
+                    if ((funcion = getFuncion(idFunc)) != null) { // Verifica si la función ya ha sido declarada
+                        tipoFunc = funcion.getTipo();
+                        for (Nodo h : hijo.getHijo(3).getHijo(1).getHijos()) {
+                            cont++;
+                            if (verificarVariable(h.getHijo(0).getValor(), ambito_actual)) { //Verifica Si la variable que se le está pasando existe
+                                parametros.add(getVariable(h.getHijo(0).getValor(), ambito_actual)); //Sí la variable existe se agrega a este arreglo
+                            } else {
+                                errores_semanticos.add("Error semántico: llamado a función, la variable " + h.getHijos().get(0).getValor() + " no existe en el ámbito " + ambito_actual);
+                                validFunc = false;
+                            }
+                        }
+                        if (cont != funcion.getParams().size()) {
+                            errores_semanticos.add("Error semántico: llamado de función incorrecta, se esperaban " + funcion.getParams().size() + " cantidad de parámetros en el llamado a la función " + id + " en el ámbito " + ambito_actual);
+                            validFunc = false;
+                        } else if (parametros.size() == funcion.getParams().size()) {
+                            for (int i = 0; i < parametros.size(); i++) {
+                                if (parametros.get(i).getTipo() != funcion.getParams().get(i).getTipo()) { // Verificar los tipos
+                                    errores_semanticos.add("Error semántico: llamado de función incorrecta, la variable " + parametros.get(i).getId() + " es de un tipo distinto, se esperaba un tipo " + funcion.getParams().get(i).getTipo() + " en el llamado a la función " + id + " en el ámbito " + ambito_actual);
+                                    validFunc = false;
+                                }
+                            }
+                        }
+                    } else {
+                        errores_semanticos.add("Error semántico: llamado de función incorrecta, la función " + idFunc + " no fue declarada con anterioridad");
+                        validFunc = false;
+                    }
+                }
+
                 switch (tipo) { //Aquí valido si se le asigna el tipo correcto
                     case "entero":
                         if (valor.equals("num")) {
                             pasa = true;
-                        } else if (valor.equals("id")) {
+                        } else if (hijo.getHijo(3).getValor().equals("id")) {
                             if ((tipoId = getTipoVariable(hijo.getHijo(3).getHijo(0).getValor(), ambito_actual)) != null) { // Valida si existe en el cuerpo de la función
                                 if (!tipoId.equals(tipo)) {
                                     errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, se esperaba un entero");
@@ -174,6 +209,12 @@ public class temp_main {
                                     }
                                 } else {
                                     errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, la variable " + hijo.getHijo(3).getHijo(0).getValor() + " no ha sido declarada en el ámbito " + ambito_actual);
+                                }
+                            }
+                        } else if (hijo.getHijo(3).getValor().equals("llamada a funcion")) {
+                            if (validFunc) {
+                                if (!tipoFunc.equals(tipo)) {
+                                    errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, se esperaba un tipo entero ");
                                 }
                             }
                         } else {
@@ -183,7 +224,7 @@ public class temp_main {
                     case "booleano":
                         if (valor.equals("bool")) {
                             pasa = true;
-                        } else if (valor.equals("id")) {
+                        } else if (hijo.getHijo(3).getValor().equals("id")) {
                             if ((tipoId = getTipoVariable(hijo.getHijo(3).getHijo(0).getValor(), ambito_actual)) != null) { // Valida si existe en el cuerpo de la función
                                 if (!tipoId.equals(tipo)) {
                                     errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, se esperaba un entero");
@@ -201,6 +242,12 @@ public class temp_main {
                                     }
                                 } else {
                                     errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, la variable " + hijo.getHijo(3).getHijo(0).getValor() + " no ha sido declarada en el ámbito " + ambito_actual);
+                                }
+                            }
+                        } else if (hijo.getHijo(3).getValor().equals("llamada a funcion")) {
+                            if (validFunc) {
+                                if (!tipoFunc.equals(tipo)) {
+                                    errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, se esperaba un tipo booleano");
                                 }
                             }
                         } else {
@@ -210,10 +257,10 @@ public class temp_main {
                     case "caracter":
                         if (valor.equals("letter")) {
                             pasa = true;
-                        } else if (valor.equals("id")) {
+                        } else if (hijo.getHijo(3).getValor().equals("id")) {
                             if ((tipoId = getTipoVariable(hijo.getHijo(3).getHijo(0).getValor(), ambito_actual)) != null) { // Valida si existe en el cuerpo de la función
                                 if (!tipoId.equals(tipo)) {
-                                    errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, se esperaba un entero");
+                                    errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, se esperaba un caracter");
                                 } else {
                                     pasa = true;
                                 }
@@ -222,12 +269,18 @@ public class temp_main {
                                 String funcionActual = array[array.length - 1];
                                 if ((tipoId = verificarParametroId(id, funcionActual)) != null) { //Segundo verificar si la variable no ha sido declarada en los parámetros de la función
                                     if (!tipoId.equals(tipo)) {
-                                        errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, se esperaba un entero");
+                                        errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, se esperaba un caracter");
                                     } else {
                                         pasa = true;
                                     }
                                 } else {
                                     errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, la variable " + hijo.getHijo(3).getHijo(0).getValor() + " no ha sido declarada en el ámbito " + ambito_actual);
+                                }
+                            }
+                        } else if (hijo.getHijo(3).getValor().equals("llamada a funcion")) {
+                            if (validFunc) {
+                                if (!tipoFunc.equals(tipo)) {
+                                    errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, se esperaba un tipo caracter ");
                                 }
                             }
                         } else {
@@ -237,10 +290,10 @@ public class temp_main {
                     case "string":
                         if (valor.equals("string")) {
                             pasa = true;
-                        } else if (valor.equals("id")) {
+                        } else if (hijo.getHijo(3).getValor().equals("id")) {
                             if ((tipoId = getTipoVariable(hijo.getHijo(3).getHijo(0).getValor(), ambito_actual)) != null) { // Valida si existe en el cuerpo de la función
                                 if (!tipoId.equals(tipo)) {
-                                    errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, se esperaba un entero");
+                                    errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, se esperaba un string");
                                 } else {
                                     pasa = true;
                                 }
@@ -249,12 +302,18 @@ public class temp_main {
                                 String funcionActual = array[array.length - 1];
                                 if ((tipoId = verificarParametroId(id, funcionActual)) != null) { //Segundo verificar si la variable no ha sido declarada en los parámetros de la función
                                     if (!tipoId.equals(tipo)) {
-                                        errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, se esperaba un entero");
+                                        errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, se esperaba un string");
                                     } else {
                                         pasa = true;
                                     }
                                 } else {
                                     errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, la variable " + hijo.getHijo(3).getHijo(0).getValor() + " no ha sido declarada en el ámbito " + ambito_actual);
+                                }
+                            }
+                        } else if (hijo.getHijo(3).getValor().equals("llamada a funcion")) {
+                            if (validFunc) {
+                                if (!tipoFunc.equals(tipo)) {
+                                    errores_semanticos.add("Error semántico: La variable " + id + " recibe un tipo incorrecto, se esperaba un tipo string ");
                                 }
                             }
                         } else {
@@ -319,7 +378,7 @@ public class temp_main {
                     tipo = "array(" + tipo + ")";
                 }
                 if (!verificarVariable(id, ambito_actual)) { //Verifica si ya existe el id
-                    if (currentNode.getHijos().size() > 2) { //Verifica si se le asigna arreglos
+                    if (currentNode.getHijos().size() == 3) { //Verifica si se le asigna arreglos
                         if (dimension == 1) {
                             if (currentNode.getHijos().get(2).getValor().equals("valores")) {
                                 tabla.add(new Variables(tipo, id, ambito_actual, getOffset(tipo, currentNode.getHijos().get(2))));
@@ -654,6 +713,19 @@ public class temp_main {
     // ===================================================
     // ===================================================
     // ===================================================
+    // ===================================================
+    // ============== Código intermedio ==================
+    // ===================================================
+    public String generarTemp() {
+        this.cont_temp++;
+        return "#t" + this.cont_temp;
+    }
+
+    public String nuevaEtiqueta() {
+        this.cont_etiq++;
+        return "etiq" + this.cont_etiq;
+    }
+
     public static void intermedio(Nodo node) {
         String id, valor;
         for (Nodo hijo : node.getHijos()) {
@@ -668,27 +740,30 @@ public class temp_main {
                     valor = hijo.getHijo(1).getValor();
                     if (valor.equals("id")) {
                         valor = hijo.getHijo(1).getHijo(0).getValor();
-                    }else{
+                    } else {
                         valor = hijo.getHijo(1).getHijo(0).getHijo(0).getValor();
                     }
                     cuadruplo.add(new Cuadruplo("=", valor, "", id));
                     break;
+                case "declaración de funcion":
+                    id = hijo.getHijo(2).getHijo(0).getValor();
+                    cuadruplo.add(new Cuadruplo("func", id, "", ""));
+                    intermedio(hijo.getHijo(4));
+                    cuadruplo.add(new Cuadruplo("end", "", "", ""));
+                    break;
+                case "declaración array":
+                    if (hijo.getHijos().size() == 3) {
+                        id = hijo.getHijo(0).getHijo(0).getValor();
+                        cuadruplo.add(new Cuadruplo("[]=", "", "", id));
+                    }
+                    break;
+                case "catch":
+                    id = hijo.getHijo(0).getHijo(0).getValor();
+                    cuadruplo.add(new Cuadruplo("catch", "", "", id));
+                    break;
                 default:
             }
         }
-    }
-
-    // ===================================================
-    // ============== Código intermedio ==================
-    // ===================================================
-    public String generarTemp() {
-        this.cont_temp++;
-        return "#t" + this.cont_temp;
-    }
-
-    public String nuevaEtiqueta() {
-        this.cont_etiq++;
-        return "etiq" + this.cont_etiq;
     }
 
     // ===================================================
