@@ -115,6 +115,9 @@ terminal NUM, LETTER, FUNC, START ,FLECHA,  VAR ,  NOT;
 terminal IN, PUNTO, CASE,DEFAULT, REPLY, ID;
 terminal ARRAY,NEW;
 terminal THROW,THROWDOWN,CATCH;
+terminal OPOR, OPAND;
+
+non terminal test;
 
 // Expresiones aritméticas
 non terminal nodeExpression;
@@ -467,7 +470,6 @@ assigExpression ::= ID:c ASSIGNMENT nodeExpression:n PUNTOC
         RESULT = decl;
 :};
 // Expresiones booleanas
-// Expresiones aritméticas
 booleanExpression ::= t_booleanExpression:t p_booleanExpression:p
 {:
     Nodo expr = new Nodo("expresión", parser.token++);
@@ -506,7 +508,15 @@ d_booleanExpression ::= OPEA_MULT:o f_booleanExpression:f d_booleanExpression:d
     expr.addHijo((Nodo)d);
     RESULT = expr;
 :}
-|
+    | OPER:o f_booleanExpression:f d_booleanExpression:d
+{:
+    Nodo expr = new Nodo(o.toString(), parser.token++);
+    parser.token++;
+    expr.addHijo((Nodo)f);
+    expr.addHijo((Nodo)d);
+    RESULT = expr;
+:}
+    |
 {:
     Nodo node =  new Nodo("#", parser.token++);
     parser.token++;
@@ -530,7 +540,7 @@ f_booleanExpression ::= NUM:n
     node.addHijo(valor);
     RESULT = node;
 :} 
-    | PARENTESISA nodeExpression:f PARENTESISC
+    | PARENTESISA booleanExpression:f PARENTESISC
 {:
     RESULT = (Nodo)f;
 :};
@@ -829,9 +839,17 @@ bodyf::= propositionf:p bodyf:b  {:
     
 :}; 
 
+test ::= CATCH:c ASSIGNMENT:a booleanExpression:b PUNTOC
+{:
+    Nodo node = new Nodo("awita",parser.token++);
+    parser.token++;
+
+    node.addHijo((Nodo)b);
+    RESULT = node;
+:};
 
 //propositionF
-propositionf::= WLE expression:e FLECHA ABRIRC body:b CERRARC
+propositionf::= WLE booleanExpression:e FLECHA ABRIRC body:b CERRARC
 {:
     Nodo node = new Nodo("declaración ciclo while",parser.token);
     parser.token++;
@@ -1004,6 +1022,10 @@ proposition::= WLE expression:e FLECHA ABRIRC body:b CERRARC
     node.addHijo((Nodo)b);
 
     RESULT= node;
+:}
+    | test:t
+{:
+    RESULT = (Nodo)t;
 :}
     | declara_simple:d
 {:
@@ -1338,7 +1360,7 @@ valores::= NUM:n
 :};
 
 //if
-ifState::= IF PARENTESISA expression:e PARENTESISC ABRIRC body:b CERRARC
+ifState::= IF PARENTESISA booleanExpression:e PARENTESISC ABRIRC body:b CERRARC
 {:
     Nodo node=new Nodo("declaración if",parser.token);
     parser.token++;
@@ -1349,7 +1371,7 @@ ifState::= IF PARENTESISA expression:e PARENTESISC ABRIRC body:b CERRARC
     if (b!=null) node.addHijo((Nodo)b);
     RESULT=node;
 :}
-| IF PARENTESISA expression:e PARENTESISC ABRIRC body:b CERRARC else_n:el
+| IF PARENTESISA booleanExpression:e PARENTESISC ABRIRC body:b CERRARC else_n:el
 {:
     Nodo node = new Nodo("declaración if",parser.token);
     parser.token++;
@@ -1361,7 +1383,7 @@ ifState::= IF PARENTESISA expression:e PARENTESISC ABRIRC body:b CERRARC
     node.addHijo((Nodo)el);
     RESULT=node;
 :}
-| IF PARENTESISA expression:e PARENTESISC ABRIRC body:b CERRARC elseif:el
+| IF PARENTESISA booleanExpression:e PARENTESISC ABRIRC body:b CERRARC elseif:el
 {:
     Nodo node = new Nodo("declaración if",parser.token);
     parser.token++;

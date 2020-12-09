@@ -35,6 +35,8 @@ public class sym {
   public static final int EIF = 24;
   public static final int ID = 40;
   public static final int EOF = 0;
+  public static final int OPAND = 47;
+  public static final int OPOR = 46;
   public static final int NEW = 42;
   public static final int error = 1;
   public static final int CADENA = 6;
@@ -100,7 +102,9 @@ public class sym {
   "NEW",
   "THROW",
   "THROWDOWN",
-  "CATCH"
+  "CATCH",
+  "OPOR",
+  "OPAND"
   };
 }
 
