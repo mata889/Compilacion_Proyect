@@ -982,8 +982,29 @@ class CUP$AnalizadorSintactico$actions {
         id.addHijo(new Nodo(ide.toString(),parser.token));
         decl.addHijo(id);
         parser.token++;
+        
         // Asigno el valor
-        decl.addHijo((Nodo)n);
+        // Aquí valido si solo se le asigna un id o un número
+        Nodo temp = (Nodo)n;
+        if (temp.getHijos().size() == 3){
+            String id1, id2, num;
+            num = temp.getHijo(0).getValor();
+            id1 = temp.getHijo(1).getValor();
+            id2 = temp.getHijo(2).getValor();
+            if(id1.equals("#") && id2.equals("#") && num.equals("num") ){
+                Nodo newNodo = new Nodo("valor",temp.getID());
+                newNodo.addHijo(temp.getHijo(0));
+                decl.addHijo(newNodo);
+                decl.setValor("declaracion y asignacion");
+            }else if (id1.equals("#") && id2.equals("#") && num.equals("id")){
+                decl.addHijo(temp.getHijo(0));
+                decl.setValor("declaracion y asignacion");
+            }else{
+                decl.addHijo((Nodo)n);
+            }
+        }else{
+            decl.addHijo((Nodo)n);
+        }
 
         RESULT = decl;
 
@@ -1156,7 +1177,28 @@ class CUP$AnalizadorSintactico$actions {
         parser.token++;
         decl.addHijo(id);
         // Asigno el valor
-        decl.addHijo((Nodo)n);
+        // Aquí valido si solo se le asigna un id o un número
+        Nodo temp = (Nodo)n;
+        if (temp.getHijos().size() == 3){
+            String id1, id2, num;
+            num = temp.getHijo(0).getValor();
+            id1 = temp.getHijo(1).getValor();
+            id2 = temp.getHijo(2).getValor();
+            if(id1.equals("#") && id2.equals("#") && num.equals("num") ){
+                Nodo newNodo = new Nodo("valor",temp.getID());
+                newNodo.addHijo(temp.getHijo(0));
+                decl.addHijo(newNodo);
+                decl.setValor("asignacion");
+            }else if (id1.equals("#") && id2.equals("#") && num.equals("id")){
+                decl.addHijo(temp.getHijo(0));
+                decl.setValor("asignacion");
+            }else{
+                decl.addHijo((Nodo)n);
+            }
+        }else{
+            decl.addHijo((Nodo)n);
+        }
+
 
         RESULT = decl;
 
@@ -1755,25 +1797,29 @@ class CUP$AnalizadorSintactico$actions {
         Nodo ciclo = new Nodo("declaración ciclo for",parser.token);
         parser.token++;
 
-        Nodo ID=new Nodo("id",parser.token);
+        // Expresión
+        Nodo expr = new Nodo("expresión for",parser.token);
         parser.token++;
-        ID.addHijo(ide.toString(),parser.token);
-        
-        ciclo.addHijo(ID);
+
+        Nodo id=new Nodo("id",parser.token);
         parser.token++;
- 
+        id.addHijo(ide.toString(),parser.token);
+        parser.token++;
+
         Nodo num1=new Nodo("num",parser.token);
         parser.token++;
         num1.addHijo(n.toString(),parser.token);
         parser.token++;
-        ciclo.addHijo(num1);
 
         Nodo num2=new Nodo("num",parser.token);
         parser.token++;
         num2.addHijo(n1.toString(),parser.token);
         parser.token++;
-        ciclo.addHijo(num2);
 
+        expr.addHijo(id);
+        expr.addHijo(num1);
+        expr.addHijo(num2);
+        ciclo.addHijo(expr);
         ciclo.addHijo((Nodo)b);
 
         RESULT= ciclo;

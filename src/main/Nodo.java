@@ -11,6 +11,7 @@ public class Nodo {
     public String valor;
     public int idNodo;
     public ArrayList<Nodo> hijos = new ArrayList<>();
+    public Nodo padre;
     
     //Intermedio
     public String siguiente;
@@ -54,20 +55,29 @@ public class Nodo {
     }
     
     public void addHijitos(ArrayList<Nodo> n){
+        for (Nodo nodo : n) {
+            nodo.setPadre(this);
+        }
         hijos.addAll(n);
     }
 
     //FUnciones importantes
     public void addHijo(Nodo hijo){
+        hijo.setPadre(this);
         hijos.add(hijo);
     }
 
     public void addHijo(String valor, int ref){
-        hijos.add(new Nodo(valor,ref));
+        Nodo node = new Nodo(valor,ref);
+        node.setPadre(this);
+        hijos.add(node);
     }
     
+    public void setPadre(Nodo n){
+        this.padre = n;
+    }
     // Intermedio 
-    public void setComiento(String comienzo){
+    public void setComienzo(String comienzo){
         this.comienzo = comienzo;
     }
     public String getComienzo(){

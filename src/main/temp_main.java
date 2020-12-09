@@ -549,13 +549,13 @@ public class temp_main {
                     errores_semanticos.add("Error semántico: la variable " + id + " no existe dentro del ámbito " + ambito_actual);
                 }
             } else if (hijo.getValor().equals("declaración ciclo for")) {
-                String id = hijo.getHijo(0).getHijo(0).getValor();
+                String id = hijo.getHijo(0).getHijo(0).getHijo(0).getValor();
                 if (verificarVariable(id, ambito_actual)) {
                     errores_semanticos.add("Error semántico: la variable " + id + " no se puede usar en el for ya fue declarada con anterioridad en el ámbito " + ambito_actual);
                 } else {
                     tabla.add(new Variables("entero", id, ambito_actual + "." + (cont++) + "_for_statement", getOffset("entero")));
                 }
-                recorrido(hijo.getHijo(3), ambito_actual + "." + (cont++) + "_for_statement");
+                recorrido(hijo.getHijo(1), ambito_actual + "." + (cont++) + "_for_statement");
             } else if (hijo.getValor().equals("declaración bloque switch")) {
                 ArrayList<String> arreglo = new ArrayList();
                 String id = hijo.getHijo(1).getHijo(0).getValor(), tipo, valor;
@@ -776,76 +776,103 @@ public class temp_main {
         return "etiq" + cont_etiq;
     }
 
-    public static void intermedio(Nodo node) {
+    public static void intermedio(Nodo body) {
         String id, valor;
-        for (Nodo hijo : node.getHijos()) {
-            switch (hijo.getValor()) {
-                case "declaracion y asignacion":
-                    id = hijo.getHijo(2).getHijo(0).getValor();
-                    valor = hijo.getHijo(3).getHijo(0).getHijo(0).getValor();
+        Nodo node = body;
+        if (node !=null) {
+            switch (node.getValor()) {
+                case "declaración de funcion":
+                    id = node.getHijo(2).getHijo(0).getValor();
+                    cuadruplo.add(new Cuadruplo("func", id, "", ""));
+                    for (Nodo n : node.getHijo(4).getHijos()) {
+                        intermedio(n);
+                    }
+                    cuadruplo.add(new Cuadruplo("end", "", "", ""));
+                    break;
+                case "body":
+                    node.setSiguiente(nuevaEtiqueta());
+                    for (Nodo hijo : node.getHijos()) {
+                        intermedio(hijo);
+                        if (hijo.getValor().equals("declaración ciclo for") || hijo.getValor().equals("declaración ciclo while")){
+                            cuadruplo.add(new Cuadruplo("etiq", node.getSiguiente(), "", ""));
+                            node.setSiguiente(nuevaEtiqueta());
+                        }
+                    }
+                    break;
+                case "declaración ciclo while":
+                    node.setComienzo(nuevaEtiqueta());
+                    node.getHijo(1).setVerdadero(nuevaEtiqueta());
+                    node.getHijo(1).setFalso(node.padre.getSiguiente());
+                    cuadruplo.add(new Cuadruplo("etiq", node.getComienzo(), "", ""));
+                    intermedio(node.getHijo(1));
+                    cuadruplo.add(new Cuadruplo("etiq",node.getHijo(1).getVerdadero(),"",""));
+                    intermedio(node.getHijo(2));
+                    cuadruplo.add(new Cuadruplo("GOTO", node.getComienzo(), "", ""));
+                    break;
+                case "declaración ciclo for":
+                    node.setComienzo(nuevaEtiqueta());
+                    intermedio(node.getHijo(0));
+                    
+                    break;
+                /*case "declaracion y asignacion":
+                    id = node.getHijo(2).getHijo(0).getValor();
+                    valor = node.getHijo(3).getHijo(0).getHijo(0).getValor();
                     cuadruplo.add(new Cuadruplo("=", valor, "", id));
                     break;
                 case "declaracion y asignacion expresión":
-                    id = hijo.getHijo(2).getHijo(0).getValor();
-                    valor = hijo.getHijo(3).getHijo(0).getHijo(0).getValor();
+                    id = node.getHijo(2).getHijo(0).getValor();
+                    valor = node.getHijo(3).getHijo(0).getHijo(0).getValor();
                     cuadruplo.add(new Cuadruplo("=", valor, "", id));
                     break;
                 case "asignacion":
-                    id = hijo.getHijo(0).getHijo(0).getValor();
-                    valor = hijo.getHijo(1).getValor();
+                    id = node.getHijo(0).getHijo(0).getValor();
+                    valor = node.getHijo(1).getValor();
                     if (valor.equals("id")) {
-                        valor = hijo.getHijo(1).getHijo(0).getValor();
+                        valor = node.getHijo(1).getHijo(0).getValor();
                     } else {
-                        valor = hijo.getHijo(1).getHijo(0).getHijo(0).getValor();
+                        valor = node.getHijo(1).getHijo(0).getHijo(0).getValor();
                     }
                     cuadruplo.add(new Cuadruplo("=", valor, "", id));
                     break;
                 case "asignación expresión":
-                    id = hijo.getHijo(0).getHijo(0).getValor();
-                    valor = hijo.getHijo(1).getValor();
+                    id = node.getHijo(0).getHijo(0).getValor();
+                    valor = node.getHijo(1).getValor();
                     if (valor.equals("id")) {
-                        valor = hijo.getHijo(1).getHijo(0).getValor();
+                        valor = node.getHijo(1).getHijo(0).getValor();
                     } else {
-                        valor = hijo.getHijo(1).getHijo(0).getHijo(0).getValor();
+                        valor = node.getHijo(1).getHijo(0).getHijo(0).getValor();
                     }
                     cuadruplo.add(new Cuadruplo("=", valor, "", id));
                     break;
                 case "catch":
-                    id = hijo.getHijo(0).getHijo(0).getValor();
+                    id = node.getHijo(0).getHijo(0).getValor();
                     cuadruplo.add(new Cuadruplo("catch", "", "", id));
                     break;
                 case "throw":
-                    id = hijo.getHijo(0).getHijo(0).getValor();
+                    id = node.getHijo(0).getHijo(0).getValor();
                     cuadruplo.add(new Cuadruplo("throw", id, "", ""));
                     break;
                 case "throwdown":
-                    id = hijo.getHijo(0).getHijo(0).getValor();
+                    id = node.getHijo(0).getHijo(0).getValor();
                     cuadruplo.add(new Cuadruplo("throwdown", id, "", ""));
                     break;
                 case "reply":
-                    id = hijo.getHijo(0).getHijo(0).getValor();
+                    id = node.getHijo(0).getHijo(0).getValor();
                     cuadruplo.add(new Cuadruplo("ret", id, "", ""));
                     break;
-                case "declaración de funcion":
-                    id = hijo.getHijo(2).getHijo(0).getValor();
-                    cuadruplo.add(new Cuadruplo("func", id, "", ""));
-                    intermedio(hijo.getHijo(4));
-                    cuadruplo.add(new Cuadruplo("end", "", "", ""));
-                    break;
+                
                 case "llamada a funcion":
-                    id = hijo.getHijo(2).getHijo(0).getValor();
+                    id = node.getHijo(2).getHijo(0).getValor();
                     cuadruplo.add(new Cuadruplo("func", id, "", ""));
-                    intermedio(hijo.getHijo(4));
+                    intermedio(node.getHijo(4));
                     cuadruplo.add(new Cuadruplo("end", "", "", ""));
                     break;
-                case "declaración ciclo while":
-                    hijo.setComiento(nuevaEtiqueta());
-                    hijo.getHijo(1).setVerdadero(nuevaEtiqueta());
-                    //hijo.getHijo(1).setFalso(valor);
-                    break;
+                */
                 default:
+                    System.out.println("EFE");
             }
         }
+
     }
 
     // ===================================================

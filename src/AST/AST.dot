@@ -1,26 +1,19 @@
 digraph {
-"37,Start" -> "36,body";
-"36,body" -> "33,declaración ciclo while";
-"33,declaración ciclo while" -> "34,while";
-"33,declaración ciclo while" -> "20,expresión";
-"20,expresión" -> "12,expresión";
-"12,expresión" -> "0,id";
-"0,id" -> "1,var2";
-"12,expresión" -> "6,<:";
-"6,<:" -> "2,id";
-"2,id" -> "3,var2";
-"6,<:" -> "4,#";
-"12,expresión" -> "10,#";
-"20,expresión" -> "14,#";
-"20,expresión" -> "18,#";
-"33,declaración ciclo while" -> "32,body";
-"32,body" -> "23,declaracion y asignacion";
-"23,declaracion y asignacion" -> "24,var";
-"23,declaracion y asignacion" -> "22,caracter";
-"23,declaracion y asignacion" -> "26,id";
-"26,id" -> "27,express";
-"23,declaracion y asignacion" -> "28,valor";
-"28,valor" -> "29,letter";
-"29,letter" -> "30,'w'";
+"35,Start" -> "34,body";
+"34,body" -> "11,declaracion y asignacion";
+"11,declaracion y asignacion" -> "12,var";
+"11,declaracion y asignacion" -> "0,entero";
+"11,declaracion y asignacion" -> "14,id";
+"14,id" -> "15,id1";
+"11,declaracion y asignacion" -> "9,valor";
+"9,valor" -> "1,num";
+"1,num" -> "2,23";
+"34,body" -> "27,declaracion y asignacion";
+"27,declaracion y asignacion" -> "28,var";
+"27,declaracion y asignacion" -> "16,caracter";
+"27,declaracion y asignacion" -> "30,id";
+"30,id" -> "31,letra";
+"27,declaracion y asignacion" -> "17,id";
+"17,id" -> "18,id2";
 
 }

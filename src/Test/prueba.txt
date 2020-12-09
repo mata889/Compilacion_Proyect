@@ -1,8 +1,4 @@
 start->[
-    
-    wle(var2 <: var2)->
-    <
-        var letter express = 'w';
-    >
-
+    var num id1 = 23;
+    var letter letra = id2;
 ]
