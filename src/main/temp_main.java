@@ -766,14 +766,14 @@ public class temp_main {
     // ===================================================
     // ============== Código intermedio ==================
     // ===================================================
-    public String generarTemp() {
-        this.cont_temp++;
-        return "#t" + this.cont_temp;
+    public static String generarTemp() {
+        cont_temp++;
+        return "#t" + cont_temp;
     }
 
-    public String nuevaEtiqueta() {
-        this.cont_etiq++;
-        return "etiq" + this.cont_etiq;
+    public static String nuevaEtiqueta() {
+        cont_etiq++;
+        return "etiq" + cont_etiq;
     }
 
     public static void intermedio(Nodo node) {
@@ -781,6 +781,11 @@ public class temp_main {
         for (Nodo hijo : node.getHijos()) {
             switch (hijo.getValor()) {
                 case "declaracion y asignacion":
+                    id = hijo.getHijo(2).getHijo(0).getValor();
+                    valor = hijo.getHijo(3).getHijo(0).getHijo(0).getValor();
+                    cuadruplo.add(new Cuadruplo("=", valor, "", id));
+                    break;
+                case "declaracion y asignacion expresión":
                     id = hijo.getHijo(2).getHijo(0).getValor();
                     valor = hijo.getHijo(3).getHijo(0).getHijo(0).getValor();
                     cuadruplo.add(new Cuadruplo("=", valor, "", id));
@@ -795,6 +800,32 @@ public class temp_main {
                     }
                     cuadruplo.add(new Cuadruplo("=", valor, "", id));
                     break;
+                case "asignación expresión":
+                    id = hijo.getHijo(0).getHijo(0).getValor();
+                    valor = hijo.getHijo(1).getValor();
+                    if (valor.equals("id")) {
+                        valor = hijo.getHijo(1).getHijo(0).getValor();
+                    } else {
+                        valor = hijo.getHijo(1).getHijo(0).getHijo(0).getValor();
+                    }
+                    cuadruplo.add(new Cuadruplo("=", valor, "", id));
+                    break;
+                case "catch":
+                    id = hijo.getHijo(0).getHijo(0).getValor();
+                    cuadruplo.add(new Cuadruplo("catch", "", "", id));
+                    break;
+                case "throw":
+                    id = hijo.getHijo(0).getHijo(0).getValor();
+                    cuadruplo.add(new Cuadruplo("throw", id, "", ""));
+                    break;
+                case "throwdown":
+                    id = hijo.getHijo(0).getHijo(0).getValor();
+                    cuadruplo.add(new Cuadruplo("throwdown", id, "", ""));
+                    break;
+                case "reply":
+                    id = hijo.getHijo(0).getHijo(0).getValor();
+                    cuadruplo.add(new Cuadruplo("ret", id, "", ""));
+                    break;
                 case "declaración de funcion":
                     id = hijo.getHijo(2).getHijo(0).getValor();
                     cuadruplo.add(new Cuadruplo("func", id, "", ""));
@@ -807,15 +838,10 @@ public class temp_main {
                     intermedio(hijo.getHijo(4));
                     cuadruplo.add(new Cuadruplo("end", "", "", ""));
                     break;
-                case "declaración array":
-                    if (hijo.getHijos().size() == 3) {
-                        id = hijo.getHijo(0).getHijo(0).getValor();
-                        cuadruplo.add(new Cuadruplo("[]=", "", "", id));
-                    }
-                    break;
-                case "catch":
-                    id = hijo.getHijo(0).getHijo(0).getValor();
-                    cuadruplo.add(new Cuadruplo("catch", "", "", id));
+                case "declaración ciclo while":
+                    hijo.setComiento(nuevaEtiqueta());
+                    hijo.getHijo(1).setVerdadero(nuevaEtiqueta());
+                    //hijo.getHijo(1).setFalso(valor);
                     break;
                 default:
             }

@@ -1008,7 +1008,7 @@ parametro ::= ID:id
 :};
 
 //proposciones
-proposition::= WLE expression:e FLECHA ABRIRC body:b CERRARC
+proposition::= WLE booleanExpression:e FLECHA ABRIRC body:b CERRARC
 {:
     Nodo node = new Nodo("declaración ciclo while",parser.token);
     parser.token++;

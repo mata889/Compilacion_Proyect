@@ -8,9 +8,17 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 //nodos de los arboles
 public class Nodo {
-    public String valor, etiqueta;
+    public String valor;
     public int idNodo;
     public ArrayList<Nodo> hijos = new ArrayList<>();
+    
+    //Intermedio
+    public String siguiente;
+    public String comienzo;
+    public String verdadero;
+    public String falso;
+    
+    
     
     Nodo(){
     }
@@ -57,15 +65,34 @@ public class Nodo {
     public void addHijo(String valor, int ref){
         hijos.add(new Nodo(valor,ref));
     }
-
-    public void setSiguiente(String etiq){
-        this.etiqueta = etiq;
-    }   
     
+    // Intermedio 
+    public void setComiento(String comienzo){
+        this.comienzo = comienzo;
+    }
+    public String getComienzo(){
+        return this.comienzo;
+    }
+    public void setSiguiente(String etiq){
+        this.siguiente = etiq;
+    }   
     public String getSiguiente(){
-        return this.etiqueta;
+        return this.siguiente;
+    }
+    public void setVerdadero(String verdadero) {
+        this.verdadero = verdadero;
+    }
+    public String getVerdadero() {
+        return verdadero;
+    }
+    public void setFalso(String falso) {
+        this.falso = falso;
+    }
+    public String getFalso() {
+        return falso;
     }
     
+    // 
     public void print(){
         System.out.println("ID Nodo: "+idNodo+" | Valor: "+valor);
         System.out.println("Hijos: ");

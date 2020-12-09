@@ -1,6 +1,8 @@
 start->[
-    var num awa = (id)+(3);
-    var num ewe = 3+3;
-    var letter letron = 'c';
-    numero = 3+3;
+    
+    wle(var2 <: var2)->
+    <
+        var letter express = 'w';
+    >
+
 ]
