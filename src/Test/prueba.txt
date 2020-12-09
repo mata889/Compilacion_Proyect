@@ -1,3 +1,6 @@
 start->[
-    catch = 1+2+3*3+awa+1;
+    var num awa = (id)+(3);
+    var num ewe = 3+3;
+    var letter letron = 'c';
+    numero = 3+3;
 ]

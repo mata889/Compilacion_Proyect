@@ -116,15 +116,19 @@ terminal IN, PUNTO, CASE,DEFAULT, REPLY, ID;
 terminal ARRAY,NEW;
 terminal THROW,THROWDOWN,CATCH;
 
-// Expresiones
-
+// Expresiones aritméticas
 non terminal nodeExpression;
 non terminal p_expression;
 non terminal t_expression;
 non terminal d_expression;
 non terminal f_expression;
 
-non terminal test;
+// Expresiones booleanas
+non terminal booleanExpression;
+non terminal p_booleanExpression;
+non terminal t_booleanExpression;
+non terminal d_booleanExpression;
+non terminal f_booleanExpression;
 
 //not terminales
 non terminal Program;
@@ -141,10 +145,12 @@ non terminal parametrof;
 non terminal parametros;
 non terminal parametro;
 //non terminal declara;
-non terminal declara_array;
 non terminal declara_simple;
 non terminal declara_assig;
+non terminal declara_assigExpression;
 non terminal assig;
+non terminal assigExpression;
+non terminal declara_array;
 
 non terminal eif;
 non terminal proposition;
@@ -188,8 +194,6 @@ Program ::= START  FLECHA BRACKETA body:b BRACKETC
     RESULT = start;
 :};
 
-//declara ::= VAR type ID ASSIGNMENT  valores  PUNTOC;
-
 declara_simple::= VAR:v type:t ID:ide PUNTOC
 {:
         // Declaro el nodo declaración de variables
@@ -211,7 +215,8 @@ declara_simple::= VAR:v type:t ID:ide PUNTOC
         RESULT = decl;
 :};
 
-declara_assig ::=  VAR:v type:t ID:ide ASSIGNMENT valores:va PUNTOC
+// ==== Declaraciones y asignaciones sin expresión
+declara_assig ::=  VAR:v type:t ID:ide ASSIGNMENT BOOL:b PUNTOC
 {:
         Nodo decl = new Nodo("declaracion y asignacion",  parser.token);
         parser.token++;
@@ -229,14 +234,21 @@ declara_assig ::=  VAR:v type:t ID:ide ASSIGNMENT valores:va PUNTOC
         decl.addHijo(id);
         parser.token++;
         // Asigno el valor
-        Nodo val=new Nodo("valor",parser.token);
+        Nodo value =new Nodo("valor",parser.token);
         parser.token++;
-        val.addHijo((Nodo)va);
-        decl.addHijo(val);
+
+        Nodo tipo=new Nodo("bool",parser.token);
+        parser.token++;
+        Nodo valor = new Nodo(""+b,parser.token);
+        parser.token++;
+        tipo.addHijo(valor);
+
+        value.addHijo(tipo);
+        decl.addHijo(value);
 
         RESULT = decl;
 :}
-    |  VAR:v type:t ID:ide ASSIGNMENT ID:ide2 PUNTOC
+    | VAR:v type:t ID:ide ASSIGNMENT LETTER:l PUNTOC
 {:
         Nodo decl = new Nodo("declaracion y asignacion",  parser.token);
         parser.token++;
@@ -254,14 +266,53 @@ declara_assig ::=  VAR:v type:t ID:ide ASSIGNMENT valores:va PUNTOC
         decl.addHijo(id);
         parser.token++;
         // Asigno el valor
-        Nodo id2=new Nodo("id",parser.token);
-        parser.token++;
-        id2.addHijo(new Nodo(ide2.toString(),parser.token));
-        decl.addHijo(id2);
+        Nodo value=new Nodo("valor",parser.token);
         parser.token++;
 
+        Nodo tipo=new Nodo("letter",parser.token);
+        parser.token++;
+        Nodo valor = new Nodo(""+l,parser.token);
+        parser.token++;
+        tipo.addHijo(valor);
+
+        value.addHijo(tipo);
+        decl.addHijo(value);
+
         RESULT = decl;
-:} |  VAR:v type:t ID:ide ASSIGNMENT llamadaFunc:f PUNTOC
+:}
+    | VAR:v type:t ID:ide ASSIGNMENT CADENA:c PUNTOC
+{:
+        Nodo decl = new Nodo("declaracion y asignacion",  parser.token);
+        parser.token++;
+        // Asigno var
+        Nodo variable=new Nodo(v.toString(),parser.token);
+        parser.token++;
+        decl.addHijo(variable);
+        parser.token++;
+        // Asigno el tipo
+        decl.addHijo((Nodo)t);
+        // Asigno el id
+        Nodo id=new Nodo("id",parser.token);
+        parser.token++;
+        id.addHijo(new Nodo(ide.toString(),parser.token));
+        decl.addHijo(id);
+        parser.token++;
+        // Asigno el valor
+        Nodo value=new Nodo("valor",parser.token);
+        parser.token++;
+
+        Nodo tipo=new Nodo("string",parser.token);
+        parser.token++;
+        Nodo valor = new Nodo(c.toString(),parser.token);
+        parser.token++;
+        tipo.addHijo(valor);
+
+        value.addHijo(tipo);
+        decl.addHijo(value);
+
+        RESULT = decl;
+:}
+    |  VAR:v type:t ID:ide ASSIGNMENT llamadaFunc:f PUNTOC
 {:
         Nodo decl = new Nodo("declaracion y asignacion",  parser.token);
         parser.token++;
@@ -283,104 +334,32 @@ declara_assig ::=  VAR:v type:t ID:ide ASSIGNMENT valores:va PUNTOC
 
         RESULT = decl;
 :};
-
-// Expresiones
-nodeExpression ::= t_expression:t p_expression:p
+// ==== Declaraciones y asignaciones con expresión
+declara_assigExpression ::= VAR:v type:t ID:ide ASSIGNMENT nodeExpression:n PUNTOC
 {:
-    Nodo expr = new Nodo("expresión", parser.token++);
-    parser.token++;
+    Nodo decl = new Nodo("declaracion y asignacion expresión",  parser.token);
+        parser.token++;
+        // Asigno var
+        Nodo variable=new Nodo(v.toString(),parser.token);
+        parser.token++;
+        decl.addHijo(variable);
+        parser.token++;
+        // Asigno el tipo
+        decl.addHijo((Nodo)t);
+        // Asigno el id
+        Nodo id=new Nodo("id",parser.token);
+        parser.token++;
+        id.addHijo(new Nodo(ide.toString(),parser.token));
+        decl.addHijo(id);
+        parser.token++;
+        // Asigno el valor
+        decl.addHijo((Nodo)n);
 
-    expr.addHijo((Nodo)t);
-
-    if ( p !=null ) {
-        expr.addHijo((Nodo)p);
-    }
-
-    RESULT = expr;
+        RESULT = decl;
 :};
-p_expression ::= OPEA_SUM:o t_expression:t p_expression:p
-{:
-    Nodo expr = new Nodo("E", parser.token++);
-    parser.token++;
 
-    expr.addHijo(new Nodo(o.toString(),parser.token));
-    parser.token++;
-
-    expr.addHijo((Nodo)t);
-    
-    if ( p!=null ) {
-        expr.addHijo((Nodo)p);
-    }
-    RESULT = expr;
-:}
-    | {:/*Vacío*/:};
-t_expression ::= f_expression:f d_expression:d
-{:
-    Nodo expr = new Nodo("E", parser.token++);
-    parser.token++;
-    expr.addHijo((Nodo)f);
-    if ( d !=null ) {
-        expr.addHijo((Nodo)d);
-    }
-    RESULT = expr;
-:};
-d_expression ::= OPEA_MULT:o f_expression:f d_expression:d
-{:
-    Nodo expr = new Nodo("E", parser.token++);
-    parser.token++;
-
-    expr.addHijo(new Nodo(o.toString(),parser.token));
-    parser.token++;
-
-    expr.addHijo((Nodo)f);
-    
-    if ( d!=null ) {
-        expr.addHijo((Nodo)d);
-    }
-    RESULT = expr;
-:}
-|{:/*Vacío owo*/:};
-f_expression ::= NUM:n
-{:
-    Nodo node=new Nodo("num",parser.token);
-    parser.token++;
-    Nodo valor = new Nodo(""+n,parser.token);
-    parser.token++;
-    node.addHijo(valor);
-    RESULT = node;
-:} 
-    | PARENTESISA NUM:n PARENTESISC
-{:
-    Nodo node=new Nodo("num",parser.token);
-    parser.token++;
-    Nodo valor = new Nodo(""+n,parser.token);
-    parser.token++;
-    node.addHijo(valor);
-    RESULT = node;
-:}
-    | ID:n
-{:
-    Nodo node=new Nodo("id",parser.token);
-    parser.token++;
-    Nodo valor = new Nodo(""+n,parser.token);
-    parser.token++;
-    node.addHijo(valor);
-    RESULT = node;
-:} 
-    | PARENTESISA ID:n PARENTESISC
-{:
-    Nodo node=new Nodo("id",parser.token);
-    parser.token++;
-    Nodo valor = new Nodo(""+n,parser.token);
-    parser.token++;
-    node.addHijo(valor);
-    RESULT = node;
-:}; 
-
-
-
-// ====
-assig ::= ID:ide ASSIGNMENT valores:v PUNTOC
+// ==== Asignaciones sin expresión
+assig ::= ID:ide ASSIGNMENT BOOL:b PUNTOC
 {:
     Nodo decl = new Nodo("asignacion",  parser.token);
         parser.token++;
@@ -390,14 +369,22 @@ assig ::= ID:ide ASSIGNMENT valores:v PUNTOC
         id.addHijo(new Nodo(ide.toString(),parser.token));
         decl.addHijo(id);
         parser.token++;
+
+        // Booleano
+        Nodo tipo =new Nodo("bool",parser.token);
+        parser.token++;
+        Nodo valor = new Nodo(""+b,parser.token);
+        parser.token++;
+        tipo.addHijo(valor);
+
         // Asigno el valor
         Nodo val=new Nodo("valor",parser.token);
         parser.token++;
-        val.addHijo((Nodo)v);
+        val.addHijo(tipo);
         decl.addHijo(val);
+
         RESULT = decl;
-:} 
-    |   ID:ide ASSIGNMENT ID:ide2 PUNTOC
+:}  | ID:ide ASSIGNMENT LETTER:b PUNTOC
 {:
     Nodo decl = new Nodo("asignacion",  parser.token);
         parser.token++;
@@ -407,14 +394,47 @@ assig ::= ID:ide ASSIGNMENT valores:v PUNTOC
         id.addHijo(new Nodo(ide.toString(),parser.token));
         decl.addHijo(id);
         parser.token++;
+
+        // letter
+        Nodo tipo =new Nodo("letter",parser.token);
+        parser.token++;
+        Nodo valor = new Nodo(""+b,parser.token);
+        parser.token++;
+        tipo.addHijo(valor);
+
         // Asigno el valor
-        Nodo id2=new Nodo("id",parser.token);
+        Nodo val=new Nodo("valor",parser.token);
         parser.token++;
-        id2.addHijo(new Nodo(ide2.toString(),parser.token));
-        decl.addHijo(id2);
-        parser.token++;
+        val.addHijo(tipo);
+        decl.addHijo(val);
+
         RESULT = decl;
-:}
+:}  | ID:ide ASSIGNMENT CADENA:b PUNTOC
+{:
+    Nodo decl = new Nodo("asignacion",  parser.token);
+        parser.token++;
+        // Asigno el id
+        Nodo id=new Nodo("id",parser.token);
+        parser.token++;
+        id.addHijo(new Nodo(ide.toString(),parser.token));
+        decl.addHijo(id);
+        parser.token++;
+
+        // string
+        Nodo tipo =new Nodo("string",parser.token);
+        parser.token++;
+        Nodo valor = new Nodo(b.toString(),parser.token);
+        parser.token++;
+        tipo.addHijo(valor);
+
+        // Asigno el valor
+        Nodo val=new Nodo("valor",parser.token);
+        parser.token++;
+        val.addHijo(tipo);
+        decl.addHijo(val);
+
+        RESULT = decl;
+:} 
     | ID:ide ASSIGNMENT llamadaFunc:f PUNTOC
 {:  
     Nodo decl = new Nodo("asignacion",  parser.token);
@@ -430,21 +450,157 @@ assig ::= ID:ide ASSIGNMENT valores:v PUNTOC
 
         RESULT = decl;
 :};
-
-test ::= CATCH:c ASSIGNMENT nodeExpression:n PUNTOC
+// ==== Asignaciones con expresión
+assigExpression ::= ID:c ASSIGNMENT nodeExpression:n PUNTOC
 {:
-    Nodo decl = new Nodo("awawawa",  parser.token);
+    Nodo decl = new Nodo("asignación expresión",  parser.token);
         parser.token++;
         // Asigno el id
         Nodo id=new Nodo("id",parser.token);
         parser.token++;
         id.addHijo(new Nodo(c.toString(),parser.token));
-        decl.addHijo(id);
         parser.token++;
+        decl.addHijo(id);
         // Asigno el valor
         decl.addHijo((Nodo)n);
 
         RESULT = decl;
+:};
+// Expresiones booleanas
+// Expresiones aritméticas
+booleanExpression ::= t_booleanExpression:t p_booleanExpression:p
+{:
+    Nodo expr = new Nodo("expresión", parser.token++);
+    parser.token++;
+    expr.addHijitos( ((Nodo)t).getHijos() );
+    expr.addHijo((Nodo)p);
+    RESULT = expr;
+:};
+p_booleanExpression ::= OPEA_SUM:o t_booleanExpression:t p_booleanExpression:p
+{:
+    Nodo expr = new Nodo(o.toString(), parser.token++);
+    parser.token++;
+    expr.addHijitos( ((Nodo)t).getHijos() );
+    expr.addHijo((Nodo)p);
+    RESULT = expr;
+:}
+    | 
+{:
+    Nodo node =  new Nodo("#", parser.token++);
+    parser.token++;
+    RESULT = node;
+:};
+t_booleanExpression ::= f_booleanExpression:f d_booleanExpression:d
+{:
+    Nodo expr = new Nodo("T", parser.token++);
+    parser.token++;
+    expr.addHijo((Nodo)f);
+    expr.addHijo((Nodo)d);
+    RESULT = expr;
+:};
+d_booleanExpression ::= OPEA_MULT:o f_booleanExpression:f d_booleanExpression:d
+{:
+    Nodo expr = new Nodo(o.toString(), parser.token++);
+    parser.token++;
+    expr.addHijo((Nodo)f);
+    expr.addHijo((Nodo)d);
+    RESULT = expr;
+:}
+|
+{:
+    Nodo node =  new Nodo("#", parser.token++);
+    parser.token++;
+    RESULT = node;
+:};
+f_booleanExpression ::= NUM:n
+{:
+    Nodo node=new Nodo("num",parser.token);
+    parser.token++;
+    Nodo valor = new Nodo(""+n,parser.token);
+    parser.token++;
+    node.addHijo(valor);
+    RESULT = node;
+:} 
+    | ID:n
+{:
+    Nodo node=new Nodo("id",parser.token);
+    parser.token++;
+    Nodo valor = new Nodo(""+n,parser.token);
+    parser.token++;
+    node.addHijo(valor);
+    RESULT = node;
+:} 
+    | PARENTESISA nodeExpression:f PARENTESISC
+{:
+    RESULT = (Nodo)f;
+:};
+
+// Expresiones aritméticas
+nodeExpression ::= t_expression:t p_expression:p
+{:
+    Nodo expr = new Nodo("expresión", parser.token++);
+    parser.token++;
+    expr.addHijitos( ((Nodo)t).getHijos() );
+    expr.addHijo((Nodo)p);
+    RESULT = expr;
+:};
+p_expression ::= OPEA_SUM:o t_expression:t p_expression:p
+{:
+    Nodo expr = new Nodo(o.toString(), parser.token++);
+    parser.token++;
+    expr.addHijitos( ((Nodo)t).getHijos() );
+    expr.addHijo((Nodo)p);
+    RESULT = expr;
+:}
+    | 
+{:
+    Nodo node =  new Nodo("#", parser.token++);
+    parser.token++;
+    RESULT = node;
+:};
+t_expression ::= f_expression:f d_expression:d
+{:
+    Nodo expr = new Nodo("T", parser.token++);
+    parser.token++;
+    expr.addHijo((Nodo)f);
+    expr.addHijo((Nodo)d);
+    RESULT = expr;
+:};
+d_expression ::= OPEA_MULT:o f_expression:f d_expression:d
+{:
+    Nodo expr = new Nodo(o.toString(), parser.token++);
+    parser.token++;
+    expr.addHijo((Nodo)f);
+    expr.addHijo((Nodo)d);
+    RESULT = expr;
+:}
+|
+{:
+    Nodo node =  new Nodo("#", parser.token++);
+    parser.token++;
+    RESULT = node;
+:};
+f_expression ::= NUM:n
+{:
+    Nodo node=new Nodo("num",parser.token);
+    parser.token++;
+    Nodo valor = new Nodo(""+n,parser.token);
+    parser.token++;
+    node.addHijo(valor);
+    RESULT = node;
+:} 
+    | ID:n
+{:
+    Nodo node=new Nodo("id",parser.token);
+    parser.token++;
+    Nodo valor = new Nodo(""+n,parser.token);
+    parser.token++;
+    node.addHijo(valor);
+    RESULT = node;
+:} 
+    | PARENTESISA nodeExpression:f PARENTESISC
+{:
+    RESULT = (Nodo)f;
 :};
 
 //bodyf= REPLY PARENTESISA parametro:p2 PARENTESISC BRACKETC
@@ -699,7 +855,15 @@ propositionf::= WLE expression:e FLECHA ABRIRC body:b CERRARC
 {:
     RESULT = (Nodo)da;
 :}
+    | declara_assigExpression:da
+{:
+    RESULT = (Nodo)da;
+:}
     | assig:a
+{:
+    RESULT = (Nodo)a;
+:}
+    | assigExpression:a
 {:
     RESULT = (Nodo)a;
 :}
@@ -849,7 +1013,15 @@ proposition::= WLE expression:e FLECHA ABRIRC body:b CERRARC
 {:
     RESULT = (Nodo)da;
 :}
+    | declara_assigExpression:da
+{:
+    RESULT = (Nodo)da;
+:}
     | assig:a
+{:
+    RESULT = (Nodo)a;
+:}
+    | assigExpression:a
 {:
     RESULT = (Nodo)a;
 :}
@@ -891,10 +1063,6 @@ proposition::= WLE expression:e FLECHA ABRIRC body:b CERRARC
     }
 
     RESULT = node;
-:} 
-    | test:t
-{:
-    RESULT = (Nodo)t;
 :};
 
 //llamada de funciones

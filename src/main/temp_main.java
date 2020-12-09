@@ -348,7 +348,9 @@ public class temp_main {
                         errores_semanticos.add("Error semántico: La variable " + id + " ha sido declarada con anterioridad, ámbito " + ambito_actual);
                     }
                 }
-            } else if (hijo.getValor().equals("asignacion")) {
+            }  else if (hijo.getValor().equals("declaracion y asignacion expresión")) {
+            /*AQUÍ*/
+            }else if (hijo.getValor().equals("asignacion")) {
                 String id = hijo.getHijo(0).getHijo(0).getValor(), value = hijo.getHijo(1).getHijo(0).getValor(), valor = hijo.getHijo(1).getValor(), tipo, tipoId;
                 if (verificarVariable(id, ambito_actual)) {
                     if (valor.equals("id")) {
@@ -415,7 +417,9 @@ public class temp_main {
                 } else {
                     errores_semanticos.add("Error semántico: La variable " + id + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
                 }
-            } else if (hijo.getValor().equals("declaración array")) {
+            } else if (hijo.getValor().equals("asignación expresión")) {
+            /*AQUÍ*/
+            }else if (hijo.getValor().equals("declaración array")) {
                 Nodo currentNode = hijo;
                 String id = currentNode.getHijos().get(0).getHijos().get(0).getValor();
                 int dimension = Integer.parseInt(currentNode.getHijos().get(1).getHijos().get(0).getValor());
