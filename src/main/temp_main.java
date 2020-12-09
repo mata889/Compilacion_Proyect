@@ -809,20 +809,18 @@ public class temp_main {
                     intermedio(node.getHijo(2));
                     cuadruplo.add(new Cuadruplo("GOTO", node.getComienzo(), "", ""));
                     break;
-                case "declaración ciclo for":
-                    node.setComienzo(nuevaEtiqueta());
-                    intermedio(node.getHijo(0));
-                    
-                    break;
-                /*case "declaracion y asignacion":
+                case "declaracion y asignacion":
                     id = node.getHijo(2).getHijo(0).getValor();
                     valor = node.getHijo(3).getHijo(0).getHijo(0).getValor();
                     cuadruplo.add(new Cuadruplo("=", valor, "", id));
                     break;
-                case "declaracion y asignacion expresión":
+                /*case "declaracion y asignacion expresión":
                     id = node.getHijo(2).getHijo(0).getValor();
                     valor = node.getHijo(3).getHijo(0).getHijo(0).getValor();
                     cuadruplo.add(new Cuadruplo("=", valor, "", id));
+                    break;*/
+                case "expresion":
+                    System.out.println("FALTA UNA EXPRESIÓN AAAAH");
                     break;
                 case "asignacion":
                     id = node.getHijo(0).getHijo(0).getValor();
@@ -834,7 +832,7 @@ public class temp_main {
                     }
                     cuadruplo.add(new Cuadruplo("=", valor, "", id));
                     break;
-                case "asignación expresión":
+                /*case "asignación expresión":
                     id = node.getHijo(0).getHijo(0).getValor();
                     valor = node.getHijo(1).getValor();
                     if (valor.equals("id")) {
@@ -843,7 +841,7 @@ public class temp_main {
                         valor = node.getHijo(1).getHijo(0).getHijo(0).getValor();
                     }
                     cuadruplo.add(new Cuadruplo("=", valor, "", id));
-                    break;
+                    break;*/
                 case "catch":
                     id = node.getHijo(0).getHijo(0).getValor();
                     cuadruplo.add(new Cuadruplo("catch", "", "", id));
@@ -860,16 +858,7 @@ public class temp_main {
                     id = node.getHijo(0).getHijo(0).getValor();
                     cuadruplo.add(new Cuadruplo("ret", id, "", ""));
                     break;
-                
-                case "llamada a funcion":
-                    id = node.getHijo(2).getHijo(0).getValor();
-                    cuadruplo.add(new Cuadruplo("func", id, "", ""));
-                    intermedio(node.getHijo(4));
-                    cuadruplo.add(new Cuadruplo("end", "", "", ""));
-                    break;
-                */
                 default:
-                    System.out.println("EFE");
             }
         }
 

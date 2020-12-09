@@ -1,6 +1,6 @@
 digraph {
-"35,Start" -> "34,body";
-"34,body" -> "11,declaracion y asignacion";
+"28,Start" -> "27,body";
+"27,body" -> "11,declaracion y asignacion";
 "11,declaracion y asignacion" -> "12,var";
 "11,declaracion y asignacion" -> "0,entero";
 "11,declaracion y asignacion" -> "14,id";
@@ -8,12 +8,13 @@ digraph {
 "11,declaracion y asignacion" -> "9,valor";
 "9,valor" -> "1,num";
 "1,num" -> "2,23";
-"34,body" -> "27,declaracion y asignacion";
-"27,declaracion y asignacion" -> "28,var";
-"27,declaracion y asignacion" -> "16,caracter";
-"27,declaracion y asignacion" -> "30,id";
-"30,id" -> "31,letra";
-"27,declaracion y asignacion" -> "17,id";
-"17,id" -> "18,id2";
+"27,body" -> "17,declaracion y asignacion";
+"17,declaracion y asignacion" -> "18,var";
+"17,declaracion y asignacion" -> "16,caracter";
+"17,declaracion y asignacion" -> "20,id";
+"20,id" -> "21,letra";
+"17,declaracion y asignacion" -> "22,valor";
+"22,valor" -> "23,letter";
+"23,letter" -> "24,'C'";
 
 }

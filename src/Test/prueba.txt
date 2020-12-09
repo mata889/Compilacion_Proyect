@@ -1,4 +1,4 @@
 start->[
     var num id1 = 23;
-    var letter letra = id2;
+    var letter letra = 'C';
 ]
