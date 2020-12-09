@@ -797,6 +797,12 @@ public class temp_main {
                     intermedio(hijo.getHijo(4));
                     cuadruplo.add(new Cuadruplo("end", "", "", ""));
                     break;
+                case "llamada a funcion":
+                    id = hijo.getHijo(2).getHijo(0).getValor();
+                    cuadruplo.add(new Cuadruplo("func", id, "", ""));
+                    intermedio(hijo.getHijo(4));
+                    cuadruplo.add(new Cuadruplo("end", "", "", ""));
+                    break;
                 case "declaración array":
                     if (hijo.getHijos().size() == 3) {
                         id = hijo.getHijo(0).getHijo(0).getValor();

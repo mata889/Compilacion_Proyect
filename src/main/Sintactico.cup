@@ -116,6 +116,16 @@ terminal IN, PUNTO, CASE,DEFAULT, REPLY, ID;
 terminal ARRAY,NEW;
 terminal THROW,THROWDOWN,CATCH;
 
+// Expresiones
+
+non terminal nodeExpression;
+non terminal p_expression;
+non terminal t_expression;
+non terminal d_expression;
+non terminal f_expression;
+
+non terminal test;
+
 //not terminales
 non terminal Program;
 non terminal ifState;
@@ -274,6 +284,102 @@ declara_assig ::=  VAR:v type:t ID:ide ASSIGNMENT valores:va PUNTOC
         RESULT = decl;
 :};
 
+// Expresiones
+nodeExpression ::= t_expression:t p_expression:p
+{:
+    Nodo expr = new Nodo("expresión", parser.token++);
+    parser.token++;
+
+    expr.addHijo((Nodo)t);
+
+    if ( p !=null ) {
+        expr.addHijo((Nodo)p);
+    }
+
+    RESULT = expr;
+:};
+p_expression ::= OPEA_SUM:o t_expression:t p_expression:p
+{:
+    Nodo expr = new Nodo("E", parser.token++);
+    parser.token++;
+
+    expr.addHijo(new Nodo(o.toString(),parser.token));
+    parser.token++;
+
+    expr.addHijo((Nodo)t);
+    
+    if ( p!=null ) {
+        expr.addHijo((Nodo)p);
+    }
+    RESULT = expr;
+:}
+    | {:/*Vacío*/:};
+t_expression ::= f_expression:f d_expression:d
+{:
+    Nodo expr = new Nodo("E", parser.token++);
+    parser.token++;
+    expr.addHijo((Nodo)f);
+    if ( d !=null ) {
+        expr.addHijo((Nodo)d);
+    }
+    RESULT = expr;
+:};
+d_expression ::= OPEA_MULT:o f_expression:f d_expression:d
+{:
+    Nodo expr = new Nodo("E", parser.token++);
+    parser.token++;
+
+    expr.addHijo(new Nodo(o.toString(),parser.token));
+    parser.token++;
+
+    expr.addHijo((Nodo)f);
+    
+    if ( d!=null ) {
+        expr.addHijo((Nodo)d);
+    }
+    RESULT = expr;
+:}
+|{:/*Vacío owo*/:};
+f_expression ::= NUM:n
+{:
+    Nodo node=new Nodo("num",parser.token);
+    parser.token++;
+    Nodo valor = new Nodo(""+n,parser.token);
+    parser.token++;
+    node.addHijo(valor);
+    RESULT = node;
+:} 
+    | PARENTESISA NUM:n PARENTESISC
+{:
+    Nodo node=new Nodo("num",parser.token);
+    parser.token++;
+    Nodo valor = new Nodo(""+n,parser.token);
+    parser.token++;
+    node.addHijo(valor);
+    RESULT = node;
+:}
+    | ID:n
+{:
+    Nodo node=new Nodo("id",parser.token);
+    parser.token++;
+    Nodo valor = new Nodo(""+n,parser.token);
+    parser.token++;
+    node.addHijo(valor);
+    RESULT = node;
+:} 
+    | PARENTESISA ID:n PARENTESISC
+{:
+    Nodo node=new Nodo("id",parser.token);
+    parser.token++;
+    Nodo valor = new Nodo(""+n,parser.token);
+    parser.token++;
+    node.addHijo(valor);
+    RESULT = node;
+:}; 
+
+
+
+// ====
 assig ::= ID:ide ASSIGNMENT valores:v PUNTOC
 {:
     Nodo decl = new Nodo("asignacion",  parser.token);
@@ -323,9 +429,23 @@ assig ::= ID:ide ASSIGNMENT valores:v PUNTOC
         decl.addHijo((Nodo)f);
 
         RESULT = decl;
-:}
-;
+:};
 
+test ::= CATCH:c ASSIGNMENT nodeExpression:n PUNTOC
+{:
+    Nodo decl = new Nodo("awawawa",  parser.token);
+        parser.token++;
+        // Asigno el id
+        Nodo id=new Nodo("id",parser.token);
+        parser.token++;
+        id.addHijo(new Nodo(c.toString(),parser.token));
+        decl.addHijo(id);
+        parser.token++;
+        // Asigno el valor
+        decl.addHijo((Nodo)n);
+
+        RESULT = decl;
+:};
 
 //bodyf= REPLY PARENTESISA parametro:p2 PARENTESISC BRACKETC
 funciones::= FUNC type:t ID:ide PARENTESISA parametrosf:p PARENTESISC BRACKETA bodyf:b BRACKETC
@@ -771,6 +891,10 @@ proposition::= WLE expression:e FLECHA ABRIRC body:b CERRARC
     }
 
     RESULT = node;
+:} 
+    | test:t
+{:
+    RESULT = (Nodo)t;
 :};
 
 //llamada de funciones
