@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.charset.CodingErrorAction;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -594,30 +595,30 @@ public class temp_main {
                         }
                     }
                 }
-            } else if (hijo.getValor().equals("declaración if") ) {
+            } else if (hijo.getValor().equals("declaración if")) {
                 Nodo currentNode = hijo, expresion = hijo.getHijo(1);
                 /*
                     Validar expresiones
-                */
+                 */
                 recorrido(currentNode.getHijo(2), ambito_actual + "." + (cont++) + "_if_statement"); //Cuerpo del if
-                if (currentNode.getHijos().size()==4){ //Verifico si tiene un else o un else if
+                if (currentNode.getHijos().size() == 4) { //Verifico si tiene un else o un else if
                     Nodo temp = new Nodo();
                     temp.addHijo(currentNode.getHijo(3));
-                    recorrido(temp, ambito_actual ); //Mando el else if o else CON EL MÍSMO ÁMBITO
+                    recorrido(temp, ambito_actual); //Mando el else if o else CON EL MÍSMO ÁMBITO
                 }
 
             } else if (hijo.getValor().equals("else if")) {
                 Nodo currentNode = hijo, expresion = hijo.getHijo(1);
                 /*
                     Validar expresiones
-                */
+                 */
                 recorrido(currentNode.getHijo(2), ambito_actual + "." + (cont++) + "_elseif_statement"); //Cuerpo del if
-                if (currentNode.getHijos().size()==4){ //Verifico si tiene un else o un else if
+                if (currentNode.getHijos().size() == 4) { //Verifico si tiene un else o un else if
                     Nodo temp = new Nodo();
                     temp.addHijo(currentNode.getHijo(3));
-                    recorrido(currentNode.getHijo(3), ambito_actual ); //Mando el else if o else CON EL MÍSMO ÁMBITO
+                    recorrido(currentNode.getHijo(3), ambito_actual); //Mando el else if o else CON EL MÍSMO ÁMBITO
                 }
-            } else if ( hijo.getValor().equals("else")) {
+            } else if (hijo.getValor().equals("else")) {
                 Nodo currentNode = hijo;
                 recorrido(currentNode.getHijo(0), ambito_actual + "." + (cont++) + "_else");
             } else if (hijo.getValor().equals("declaración ciclo while")) {
@@ -782,34 +783,73 @@ public class temp_main {
             switch (node.getValor()) {
                 case "declaración de funcion":
                     id = node.getHijo(2).getHijo(0).getValor();
-                    cuadruplo.add(new Cuadruplo("func", id, "", ""));
+                    cuadruplo.add(new Cuadruplo("Func", id, "", ""));
                     for (Nodo n : node.getHijo(4).getHijos()) {
                         intermedio(n);
                     }
-                    cuadruplo.add(new Cuadruplo("end", "", "", ""));
+                    cuadruplo.add(new Cuadruplo("End", "", "", ""));
                     break;
                 case "body":
                     node.setSiguiente(nuevaEtiqueta());
                     for (Nodo hijo : node.getHijos()) {
                         intermedio(hijo);
                         if (hijo.getValor().equals("declaración ciclo for") || hijo.getValor().equals("declaración ciclo while")) {
-                            cuadruplo.add(new Cuadruplo("etiq", node.getSiguiente(), "", ""));
+                            cuadruplo.add(new Cuadruplo("ETIQ", node.getSiguiente(), "", ""));
                             node.setSiguiente(nuevaEtiqueta());
                         }
                     }
                     break;
                 case "declaración if":
-
+                    /*if (node.getHijos().size() == 3) {
+                        node.getHijo(1).setVerdadero(nuevaEtiqueta());
+                        node.getHijo(1).setFalso(node.padre.getSiguiente());
+                        intermedio(node.getHijo(1));
+                        cuadruplo.add(new Cuadruplo("etiq", node.getHijo(1).getVerdadero(), "", ""));
+                        intermedio(node.getHijo(2));
+                    } else {
+                    
+                    }*/
                     break;
                 case "declaración ciclo while":
                     node.setComienzo(nuevaEtiqueta());
                     node.getHijo(1).setVerdadero(nuevaEtiqueta());
                     node.getHijo(1).setFalso(node.padre.getSiguiente());
-                    cuadruplo.add(new Cuadruplo("etiq", node.getComienzo(), "", ""));
+                    cuadruplo.add(new Cuadruplo("ETIQ", node.getComienzo(), "", ""));
                     intermedio(node.getHijo(1));
-                    cuadruplo.add(new Cuadruplo("etiq", node.getHijo(1).getVerdadero(), "", ""));
+                    cuadruplo.add(new Cuadruplo("ETIQ", node.getHijo(1).getVerdadero(), "", ""));
                     intermedio(node.getHijo(2));
                     cuadruplo.add(new Cuadruplo("GOTO", node.getComienzo(), "", ""));
+                    break;
+                case "expresión for":
+                    String etiquetaVerdadera = nuevaEtiqueta();
+                    node.padre.setVerdadero(etiquetaVerdadera);
+                    node.padre.setFalso(node.padre.padre.getSiguiente());
+                    // LA ASIGNACIÓN X = 0
+                    id = node.getHijo(0).getHijo(0).getValor();
+                    valor = node.getHijo(1).getHijo(0).getValor();
+                    cuadruplo.add(new Cuadruplo("=", valor, "", id));
+                    // === 
+                    cuadruplo.add(new Cuadruplo("ETIQ", node.padre.getComienzo(), "", ""));
+                    // LA CONDICIÓN X < Z
+                    String num = node.getHijo(2).getHijo(0).getValor();
+                    cuadruplo.add(new Cuadruplo("IF<", id, num, node.padre.getVerdadero()));
+                    cuadruplo.add(new Cuadruplo("GOTO", node.padre.getFalso(), "", ""));
+                    // ===
+                    String etiqueta = nuevaEtiqueta();
+                    cuadruplo.add(new Cuadruplo("ETIQ", etiqueta, "", ""));
+                    // LA SUMA  X = X + 1
+                    String temp = generarTemp();
+                    cuadruplo.add(new Cuadruplo("+", id, "1", temp));
+                    cuadruplo.add(new Cuadruplo("=", temp, "", id));
+                    // ===
+                    cuadruplo.add(new Cuadruplo("GOTO", node.padre.getComienzo(), "", ""));
+                    cuadruplo.add(new Cuadruplo("ETIQ", node.padre.getVerdadero(), "", ""));
+                    intermedio(node.padre.getHijo(1));
+                    cuadruplo.add(new Cuadruplo("GOTO", etiqueta, "", ""));
+                    break;
+                case "declaración ciclo for":
+                    node.setComienzo(nuevaEtiqueta());
+                    intermedio(node.getHijo(0));
                     break;
                 case "declaracion y asignacion":
                     id = node.getHijo(2).getHijo(0).getValor();
@@ -846,19 +886,19 @@ public class temp_main {
                     break;*/
                 case "catch":
                     id = node.getHijo(0).getHijo(0).getValor();
-                    cuadruplo.add(new Cuadruplo("catch", "", "", id));
+                    cuadruplo.add(new Cuadruplo("Catch", "", "", id));
                     break;
                 case "throw":
                     id = node.getHijo(0).getHijo(0).getValor();
-                    cuadruplo.add(new Cuadruplo("throw", id, "", ""));
+                    cuadruplo.add(new Cuadruplo("Throw", id, "", ""));
                     break;
                 case "throwdown":
                     id = node.getHijo(0).getHijo(0).getValor();
-                    cuadruplo.add(new Cuadruplo("throwdown", id, "", ""));
+                    cuadruplo.add(new Cuadruplo("Throwdown", id, "", ""));
                     break;
                 case "reply":
                     id = node.getHijo(0).getHijo(0).getValor();
-                    cuadruplo.add(new Cuadruplo("ret", id, "", ""));
+                    cuadruplo.add(new Cuadruplo("Ret", id, "", ""));
                     break;
                 default:
             }

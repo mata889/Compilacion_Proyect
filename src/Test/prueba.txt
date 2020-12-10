@@ -2,7 +2,6 @@ start->[
     var num numeron = 0;
     var num numero2 = 3+3;
     numeron =  3+3;
-    if ( x <: 3)<
-        var num numero = numeron;
+    for (i in 1...3) -> <
     >
 ]
