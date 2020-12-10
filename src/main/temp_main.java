@@ -594,33 +594,32 @@ public class temp_main {
                         }
                     }
                 }
-            } else if (hijo.getValor().equals("declaración if") || hijo.getValor().equals("else if")) {
+            } else if (hijo.getValor().equals("declaración if") ) {
+                Nodo currentNode = hijo, expresion = hijo.getHijo(1);
+                /*
+                    Validar expresiones
+                */
+                recorrido(currentNode.getHijo(2), ambito_actual + "." + (cont++) + "_if_statement"); //Cuerpo del if
+                if (currentNode.getHijos().size()==4){ //Verifico si tiene un else o un else if
+                    Nodo temp = new Nodo();
+                    temp.addHijo(currentNode.getHijo(3));
+                    recorrido(temp, ambito_actual ); //Mando el else if o else CON EL MÍSMO ÁMBITO
+                }
+
+            } else if (hijo.getValor().equals("else if")) {
+                Nodo currentNode = hijo, expresion = hijo.getHijo(1);
+                /*
+                    Validar expresiones
+                */
+                recorrido(currentNode.getHijo(2), ambito_actual + "." + (cont++) + "_elseif_statement"); //Cuerpo del if
+                if (currentNode.getHijos().size()==4){ //Verifico si tiene un else o un else if
+                    Nodo temp = new Nodo();
+                    temp.addHijo(currentNode.getHijo(3));
+                    recorrido(currentNode.getHijo(3), ambito_actual ); //Mando el else if o else CON EL MÍSMO ÁMBITO
+                }
+            } else if ( hijo.getValor().equals("else")) {
                 Nodo currentNode = hijo;
-                // Validar los parametros
-                if (currentNode.getHijos().get(1).getValor().equals("factor")) {
-                    String id = currentNode.getHijos().get(1).getHijos().get(0).getHijos().get(0).getValor();
-                    if (!verificarVariable(id, ambito_actual)) {
-                        errores_semanticos.add("Error semántico: no existe la variable " + id + " dentro del ámbito " + ambito_actual + " al usarlo dentro del bloque de decisión if");
-                    }
-                } else if (currentNode.getHijos().get(1).getValor().equals("expression simple")) {
-                    /*
-                    
-                        VALIDAR AQUI LAS EXPRESIONES
-                    
-                     */
-                }
-                if (hijo.getValor().equals("declaración if")) {
-                    recorrido(currentNode.getHijos().get(2), ambito_actual + "." + (cont++) + "_if_statement"); //Cuerpo del if
-                } else if (hijo.getValor().equals("else if")) {
-                    recorrido(currentNode.getHijos().get(2), ambito_actual + "." + (cont++) + "_elseif_statement"); // Cuerpo del if else
-                }
-                if (currentNode.getHijos().get(3).getValor().equals("else if") || currentNode.getHijos().get(3).getValor().equals("else")) {
-                    Nodo node = new Nodo();
-                    node.addHijo(currentNode.getHijos().get(3));
-                    recorrido(node, ambito_actual);
-                }
-            } else if (hijo.getValor().equals("else")) {
-                recorrido(hijo.getHijos().get(0), ambito_actual + "." + (cont++) + "_else");
+                recorrido(currentNode.getHijo(0), ambito_actual + "." + (cont++) + "_else");
             } else if (hijo.getValor().equals("declaración ciclo while")) {
                 /*
 
@@ -779,7 +778,7 @@ public class temp_main {
     public static void intermedio(Nodo body) {
         String id, valor;
         Nodo node = body;
-        if (node !=null) {
+        if (node != null) {
             switch (node.getValor()) {
                 case "declaración de funcion":
                     id = node.getHijo(2).getHijo(0).getValor();
@@ -793,11 +792,14 @@ public class temp_main {
                     node.setSiguiente(nuevaEtiqueta());
                     for (Nodo hijo : node.getHijos()) {
                         intermedio(hijo);
-                        if (hijo.getValor().equals("declaración ciclo for") || hijo.getValor().equals("declaración ciclo while")){
+                        if (hijo.getValor().equals("declaración ciclo for") || hijo.getValor().equals("declaración ciclo while")) {
                             cuadruplo.add(new Cuadruplo("etiq", node.getSiguiente(), "", ""));
                             node.setSiguiente(nuevaEtiqueta());
                         }
                     }
+                    break;
+                case "declaración if":
+
                     break;
                 case "declaración ciclo while":
                     node.setComienzo(nuevaEtiqueta());
@@ -805,7 +807,7 @@ public class temp_main {
                     node.getHijo(1).setFalso(node.padre.getSiguiente());
                     cuadruplo.add(new Cuadruplo("etiq", node.getComienzo(), "", ""));
                     intermedio(node.getHijo(1));
-                    cuadruplo.add(new Cuadruplo("etiq",node.getHijo(1).getVerdadero(),"",""));
+                    cuadruplo.add(new Cuadruplo("etiq", node.getHijo(1).getVerdadero(), "", ""));
                     intermedio(node.getHijo(2));
                     cuadruplo.add(new Cuadruplo("GOTO", node.getComienzo(), "", ""));
                     break;
