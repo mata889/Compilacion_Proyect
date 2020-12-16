@@ -348,8 +348,19 @@ public class temp_main {
                         errores_semanticos.add("Error semántico: La variable " + id + " ha sido declarada con anterioridad, ámbito " + ambito_actual);
                     }
                 }
-            } else if (hijo.getValor().equals("declaracion y asignacion expresión")) {
-                /*AQUÍ*/
+            } else if (hijo.getValor().equals("declaracion y asignacion expresión")) { //REVISAR AQUI -------------------------------
+                for (int i = 0; i < hijo.getHijos().size(); i++) {
+                    if(hijo.getHijo(i).equals("id")){
+                        if (verificarVariable(hijo.getHijo(i).getValor(), ambito_actual)) {
+                            String id = getTipoVariable(hijo.getHijo(i).getValor(), ambito_actual);
+//                          tabla.add(new Variables(id, hijo.getHijo(i).getValor(), ambito_actual, getOffset(id)));
+                            //entra a al cuadruplo
+                        }else{
+                            String id = getTipoVariable(hijo.getHijo(i).getValor(), ambito_actual);
+                            errores_semanticos.add("Error semántico: La variable " + id + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
+                        }     
+                    }
+                }
             } else if (hijo.getValor().equals("asignacion")) {
                 String id = hijo.getHijo(0).getHijo(0).getValor(), value = hijo.getHijo(1).getHijo(0).getValor(), valor = hijo.getHijo(1).getValor(), tipo, tipoId;
                 if (verificarVariable(id, ambito_actual)) {
@@ -418,7 +429,15 @@ public class temp_main {
                     errores_semanticos.add("Error semántico: La variable " + id + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
                 }
             } else if (hijo.getValor().equals("asignación expresión")) {
-                /*AQUÍ*/
+                Nodo currentNode = hijo.getHijo(0);
+                if(verificarVariable(currentNode.getValor(), ambito_actual)){
+                    String id = getTipoVariable(hijo.getHijo(0).getValor(), ambito_actual);
+                    //tabla.add(new Variables(id,currentNode.getValor(), ambito_actual, getOffset(id))); //REVISAR-------------------
+                    //Aqui se guarda en el cuadruplo
+                }else{
+                    String id = getTipoVariable(hijo.getHijo(0).getValor(), ambito_actual);
+                    errores_semanticos.add("Error semántico: La variable " + id + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
+                }
             } else if (hijo.getValor().equals("declaración array")) {
                 Nodo currentNode = hijo;
                 String id = currentNode.getHijos().get(0).getHijos().get(0).getValor();
