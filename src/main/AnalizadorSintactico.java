@@ -1865,7 +1865,7 @@ class CUP$AnalizadorSintactico$actions {
 		int bright = ((java_cup.runtime.Symbol)CUP$AnalizadorSintactico$stack.peek()).right;
 		Object b = (Object)((java_cup.runtime.Symbol) CUP$AnalizadorSintactico$stack.peek()).value;
 		
-    Nodo funciones=new Nodo("Funciones",parser.token);
+    Nodo funciones=new Nodo("body",parser.token);
     parser.token++;
 
     funciones.addHijo((Nodo)f);

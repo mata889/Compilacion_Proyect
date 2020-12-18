@@ -15,7 +15,7 @@ public class temp_main {
 
     Scanner leer = new Scanner(System.in);
 
-    static int offset = 0;
+    static int offset = -4;
 
     // Semántico
     static ArrayList<String> errores_semanticos = new ArrayList();
@@ -39,7 +39,7 @@ public class temp_main {
         if (root != null) {
             recorrido(root.getHijos().get(0), "Start");
             if (errores_semanticos.size() == 0) {
-                intermedio(root.getHijos().get(0));
+                intermedio(root.getHijo(0));
             }
         } else {
             System.out.println("ROOT NULO");
@@ -789,6 +789,16 @@ public class temp_main {
                     }
                     cuadruplo.add(new Cuadruplo("End", "", "", ""));
                     break;
+                case "llamada a funcion":
+                    String id_param;
+                    id = node.getHijo(0).getHijo(0).getValor();
+                    Nodo parametros = node.getHijo(1);
+                    for (Nodo parametro : parametros.getHijos()) {
+                        id_param = parametro.getHijo(0).getValor();
+                        cuadruplo.add(new Cuadruplo("Param", id_param, "", ""));
+                    }
+                    cuadruplo.add(new Cuadruplo("Call", id, "", ""));
+                    break;
                 case "body":
                     node.setSiguiente(nuevaEtiqueta());
                     for (Nodo hijo : node.getHijos()) {
@@ -853,8 +863,27 @@ public class temp_main {
                     break;
                 case "declaracion y asignacion":
                     id = node.getHijo(2).getHijo(0).getValor();
-                    valor = node.getHijo(3).getHijo(0).getHijo(0).getValor();
-                    cuadruplo.add(new Cuadruplo("=", valor, "", id));
+                    valor = node.getHijo(3).getValor();
+                    if (valor.equals("llamada a funcion")) {
+                        intermedio(node.getHijo(3));
+                        cuadruplo.add(new Cuadruplo("=", "RET", "", id));
+                    } else {
+                        valor = node.getHijo(3).getHijo(0).getHijo(0).getValor();
+                        cuadruplo.add(new Cuadruplo("=", valor, "", id));
+                    }
+                    break;
+                case "asignacion":
+                    id = node.getHijo(0).getHijo(0).getValor();
+                    valor = node.getHijo(1).getValor();
+                    if (valor.equals("id")) {
+                        valor = node.getHijo(1).getHijo(0).getValor();
+                    } else if (valor.equals("llamada a funcion")) {
+                        intermedio(node.getHijo(1));
+                        cuadruplo.add(new Cuadruplo("=", "RET", "", id));
+                    } else {
+                        valor = node.getHijo(1).getHijo(0).getHijo(0).getValor();
+                        cuadruplo.add(new Cuadruplo("=", valor, "", id));
+                    }
                     break;
                 /*case "declaracion y asignacion expresión":
                     id = node.getHijo(2).getHijo(0).getValor();
@@ -863,16 +892,6 @@ public class temp_main {
                     break;*/
                 case "expresion":
                     System.out.println("FALTA UNA EXPRESIÓN AAAAH");
-                    break;
-                case "asignacion":
-                    id = node.getHijo(0).getHijo(0).getValor();
-                    valor = node.getHijo(1).getValor();
-                    if (valor.equals("id")) {
-                        valor = node.getHijo(1).getHijo(0).getValor();
-                    } else {
-                        valor = node.getHijo(1).getHijo(0).getHijo(0).getValor();
-                    }
-                    cuadruplo.add(new Cuadruplo("=", valor, "", id));
                     break;
                 /*case "asignación expresión":
                     id = node.getHijo(0).getHijo(0).getValor();

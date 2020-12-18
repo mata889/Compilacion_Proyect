@@ -836,7 +836,7 @@ body::= proposition:p body:b  {:
 :} 
 |funciones:f body:b 
 {:
-    Nodo funciones=new Nodo("Funciones",parser.token);
+    Nodo funciones=new Nodo("body",parser.token);
     parser.token++;
 
     funciones.addHijo((Nodo)f);
