@@ -1,6 +1,6 @@
 digraph {
-"75,Start" -> "74,body";
-"74,body" -> "11,declaracion y asignacion";
+"83,Start" -> "82,body";
+"82,body" -> "11,declaracion y asignacion";
 "11,declaracion y asignacion" -> "12,var";
 "11,declaracion y asignacion" -> "0,entero";
 "11,declaracion y asignacion" -> "14,id";
@@ -8,7 +8,7 @@ digraph {
 "11,declaracion y asignacion" -> "9,valor";
 "9,valor" -> "1,num";
 "1,num" -> "2,0";
-"74,body" -> "35,declaracion y asignacion expresión";
+"82,body" -> "35,declaracion y asignacion expresión";
 "35,declaracion y asignacion expresión" -> "36,var";
 "35,declaracion y asignacion expresión" -> "16,entero";
 "35,declaracion y asignacion expresión" -> "38,id";
@@ -22,7 +22,7 @@ digraph {
 "23,num" -> "24,3";
 "31,+" -> "25,#";
 "31,+" -> "29,#";
-"74,body" -> "58,asignación expresión";
+"82,body" -> "58,asignación expresión";
 "58,asignación expresión" -> "59,id";
 "59,id" -> "60,numeron";
 "58,asignación expresión" -> "56,expresión";
@@ -34,14 +34,16 @@ digraph {
 "46,num" -> "47,3";
 "54,+" -> "48,#";
 "54,+" -> "52,#";
-"74,body" -> "62,declaración ciclo for";
-"62,declaración ciclo for" -> "63,expresión for";
-"63,expresión for" -> "64,id";
-"64,id" -> "65,i";
-"63,expresión for" -> "66,num";
-"66,num" -> "67,1";
-"63,expresión for" -> "68,num";
-"68,num" -> "69,3";
-"62,declaración ciclo for" -> "61,Vacio";
+"82,body" -> "76,declaración if";
+"76,declaración if" -> "77,if";
+"76,declaración if" -> "73,expresión";
+"73,expresión" -> "61,id";
+"61,id" -> "62,a";
+"73,expresión" -> "67,<:";
+"67,<:" -> "63,id";
+"63,id" -> "64,b";
+"67,<:" -> "65,#";
+"73,expresión" -> "71,#";
+"76,declaración if" -> "75,Vacio";
 
 }
