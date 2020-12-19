@@ -101,6 +101,7 @@ commentarios_der="/#"
     "throw"         { return new Symbol(sym.THROW,yycolumn,yyline,yytext()); }
     "throwDown"     { return new Symbol(sym.THROWDOWN,yycolumn,yyline,yytext()); }
     "Array"         { return new Symbol(sym.ARRAY,yycolumn,yyline,yytext()); }
+    "main"         { return new Symbol(sym.MAIN,yycolumn,yyline,yytext()); }
     {BOOL}          { return new Symbol(sym.BOOL,yycolumn,yyline,yytext()); }
     {LETTER}        { return new Symbol(sym.LETTER,yycolumn,yyline,yytext()); }
     {CADENA}        { return new Symbol(sym.CADENA,yycolumn,yyline,yytext()); }

@@ -1,4 +1,0 @@
-start->[
-	var num id;
-	var arr = new Array(1);	
-]
