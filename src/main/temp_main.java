@@ -114,7 +114,7 @@ public class temp_main {
     public static Nodo ejecutar() {
         Nodo root = null;
         try {
-            AnalizadorSintactico asin = new AnalizadorSintactico(new Lexico(new FileReader("src/Test/prueba.txt")));
+            AnalizadorSintactico asin = new AnalizadorSintactico(new Lexico(new FileReader("src/Test/omega.txt")));
             asin.parse();
             //arbol
             limpiar("");
@@ -551,12 +551,13 @@ public class temp_main {
                 }
             } else if (hijo.getValor().equals("declaración ciclo for")) {
                 String id = hijo.getHijo(0).getHijo(0).getHijo(0).getValor();
+                String ambito = ambito_actual + "." + (cont++) + "_for_statement";
                 if (verificarVariable(id, ambito_actual)) {
                     errores_semanticos.add("Error semántico: la variable " + id + " no se puede usar en el for ya fue declarada con anterioridad en el ámbito " + ambito_actual);
                 } else {
-                    tabla.add(new Variables("entero", id, ambito_actual + "." + (cont++) + "_for_statement", getOffset("entero")));
+                    tabla.add(new Variables("entero", id, ambito, getOffset("entero")));
                 }
-                recorrido(hijo.getHijo(1), ambito_actual + "." + (cont++) + "_for_statement");
+                recorrido(hijo.getHijo(1), ambito);
             } else if (hijo.getValor().equals("declaración bloque switch")) {
                 ArrayList<String> arreglo = new ArrayList();
                 String id = hijo.getHijo(1).getHijo(0).getValor(), tipo, valor;
@@ -604,6 +605,7 @@ public class temp_main {
                 if (currentNode.getHijos().size() == 4) { //Verifico si tiene un else o un else if
                     Nodo temp = new Nodo();
                     temp.addHijo(currentNode.getHijo(3));
+                    
                     recorrido(temp, ambito_actual); //Mando el else if o else CON EL MÍSMO ÁMBITO
                 }
 

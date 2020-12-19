@@ -1,0 +1,23 @@
+start->[
+    
+	## Creando funciones
+	func num suma(num numero1, num numero2)[
+       	var num suma = 0;
+		suma = numero1 + numero2;
+		reply(suma)
+	]
+
+	func void imprimir_respuesta(num variable)[
+		throw(variable);
+	]
+	
+	var num numero1;
+	var num numero2;
+	throw("numero");
+	catch(numero1);
+
+	throw("numero");
+	catch(numero2);
+	var num resultado = suma(numero1, numero2);
+	imprimir_respuesta(resultado);
+]
