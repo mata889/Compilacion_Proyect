@@ -1129,7 +1129,7 @@ public class temp_main {
                             if (isParameter(currentCuadruplo.getArgumento1(), codigoFinal)) {
                                 codigoFinal += "        move $v0, $s" + getParamIndex(parametros, currentCuadruplo.getArgumento1()) + "\n";
                             } else {
-                                if (isCharacter(currentCuadruplo.getArgumento1())) {
+                                if (isCharacterFunc(currentCuadruplo.getArgumento1())) {
                                     codigoFinal += "       lb $v0, -" + getOffsetVariable(currentCuadruplo.getArgumento1()) + "($fp)\n";
                                 } else {
                                     codigoFinal += "       lw $v0, -" + getOffsetVariable(currentCuadruplo.getArgumento1()) + "($fp)\n";
