@@ -810,14 +810,14 @@ public class temp_main {
                     }
                     break;
                 case "declaración if":
-                    /*if (node.getHijos().size() == 3) {
+                    if (node.getHijos().size() == 3) {
                         node.getHijo(1).setVerdadero(nuevaEtiqueta());
                         node.getHijo(1).setFalso(node.padre.getSiguiente());
                         intermedio(node.getHijo(1));
-                        cuadruplo.add(new Cuadruplo("etiq", node.getHijo(1).getVerdadero(), "", ""));
+                        cuadruplo.add(new Cuadruplo("ETIQ", node.getHijo(1).getVerdadero(), "", ""));
                         intermedio(node.getHijo(2));
-                    } else {
-                    
+                    }/* else {
+                        cuadruplo.add(new Cuadruplo("IF<", id, num, node.padre.getVerdadero()));
                     }*/
                     break;
                 case "declaración ciclo while":
@@ -885,24 +885,16 @@ public class temp_main {
                         cuadruplo.add(new Cuadruplo("=", valor, "", id));
                     }
                     break;
-                /*case "declaracion y asignacion expresión":
-                    id = node.getHijo(2).getHijo(0).getValor();
-                    valor = node.getHijo(3).getHijo(0).getHijo(0).getValor();
-                    cuadruplo.add(new Cuadruplo("=", valor, "", id));
-                    break;*/
+                case "declaracion y asignacion expresión":
+                    
+                    break;
+                case "asignación expresión":
+                    
+                    break;
                 case "expresion":
                     System.out.println("FALTA UNA EXPRESIÓN AAAAH");
                     break;
-                /*case "asignación expresión":
-                    id = node.getHijo(0).getHijo(0).getValor();
-                    valor = node.getHijo(1).getValor();
-                    if (valor.equals("id")) {
-                        valor = node.getHijo(1).getHijo(0).getValor();
-                    } else {
-                        valor = node.getHijo(1).getHijo(0).getHijo(0).getValor();
-                    }
-                    cuadruplo.add(new Cuadruplo("=", valor, "", id));
-                    break;*/
+                
                 case "catch":
                     id = node.getHijo(0).getHijo(0).getValor();
                     cuadruplo.add(new Cuadruplo("Catch", "", "", id));
