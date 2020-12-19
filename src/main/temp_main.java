@@ -23,6 +23,9 @@ public class temp_main {
     static ArrayList<Funcion> funciones = new ArrayList();
     static ArrayList<Funcion> decfunciones = new ArrayList();
     static ArrayList<Cuadruplo> cuadruplo = new ArrayList();
+    // Final
+    static ArrayList<String> mensajes = new ArrayList();
+
     static int cont = 0;
     static int cont_temp = 0, cont_etiq = 0;
 
@@ -39,7 +42,10 @@ public class temp_main {
         if (root != null) {
             recorrido(root.getHijos().get(0), "Start");
             if (errores_semanticos.size() == 0) {
+                // Ejecutar la parte de código intermedio
                 intermedio(root.getHijo(0));
+                // Ejecutar la parte de código final
+                codigo_final();
             }
         } else {
             System.out.println("ROOT NULO");
@@ -525,6 +531,8 @@ public class temp_main {
                             errores_semanticos.add("Error semántico: La variable " + id + " no ha sido declarada con anterioridad, ambito " + ambito_actual + " al usarlo en el método throw");
                         }
                     }
+                } else if (valor.equals("string")) {
+                    mensajes.add(hijo.getHijo(0).getHijo(0).getValor());
                 }
             } else if (hijo.getValor().equals("catch")) {
                 String id = hijo.getHijo(0).getHijo(0).getValor();
@@ -605,7 +613,7 @@ public class temp_main {
                 if (currentNode.getHijos().size() == 4) { //Verifico si tiene un else o un else if
                     Nodo temp = new Nodo();
                     temp.addHijo(currentNode.getHijo(3));
-                    
+
                     recorrido(temp, ambito_actual); //Mando el else if o else CON EL MÍSMO ÁMBITO
                 }
 
@@ -888,15 +896,15 @@ public class temp_main {
                     }
                     break;
                 case "declaracion y asignacion expresión":
-                    
+
                     break;
                 case "asignación expresión":
-                    
+
                     break;
                 case "expresion":
                     System.out.println("FALTA UNA EXPRESIÓN AAAAH");
                     break;
-                
+
                 case "catch":
                     id = node.getHijo(0).getHijo(0).getValor();
                     cuadruplo.add(new Cuadruplo("Catch", "", "", id));
@@ -917,6 +925,61 @@ public class temp_main {
             }
         }
 
+    }
+
+    // ===================================================
+    // ===================================================
+    // ===================================================
+    // ===================================================
+    // ===================================================
+    // ===================================================
+    // ===================================================
+    // ================= Código final ====================
+    // ===================================================
+    public static void codigo_final() {
+        System.out.println("AWA");
+        ArrayList<Temporal> temporales = new ArrayList();
+        ArrayList<Temporal> parametros = new ArrayList();
+        int arg = 0;
+        int contA = 0;
+        int contP = 0;
+        for (int i = 0; i < 10; i++) {
+            temporales.add(new Temporal(i, "", false));
+        }
+        String code = "";
+        code += ".data\n";
+        for (int i = 0; i < tabla.size(); i++) {
+            if (tabla.get(i).getAmbito().equals("Start")) {
+                if (tabla.get(i).getTipo().equals("caracter")) {
+                    code += "_" + tabla.get(i).getId() + ":      .byte 0\n";
+                } else {
+                    code += "_" + tabla.get(i).getId() + ":      .word 0\n";
+                }
+            }
+        }
+        for (int i = 0; i < mensajes.size(); i++) {
+            code += "_msg" + ((i-1) + 1) + ":     .asciiz \"" + mensajes.get(i) + "\"\n";
+        }
+        code += "   .text\n"
+                + "   .globl main\n";
+        for (Cuadruplo cuad : cuadruplo) {
+            switch (cuad.getOperador()) {
+                case "Throw":
+                    int valor = 0;
+                    for (int i = 0; i < mensajes.size(); i++) {
+                        if (cuad.getArgumento1().equals(mensajes.get(i))) {
+                            valor = i + 1;
+                        }
+                    }
+                    code += "       li $v0, 4\n"
+                            + "       la $a0, _msg" + valor + "\n"
+                            + "       syscall\n";
+                    break;
+                case "Throwdown":
+                    break;
+            }
+        }
+        System.out.println(code);
     }
 
     // ===================================================
