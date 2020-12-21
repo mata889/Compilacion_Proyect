@@ -11,7 +11,7 @@ public class sym {
   public static final int OPEA_SUM = 18;
   public static final int WORD = 5;
   public static final int ASSIGNMENT = 12;
-  public static final int THROWDOWN = 44;
+  public static final int THROWDOWN = 45;
   public static final int NUMERITO = 3;
   public static final int CASE = 37;
   public static final int ABRIRC = 10;
@@ -28,15 +28,16 @@ public class sym {
   public static final int BOOL = 20;
   public static final int COMMA = 15;
   public static final int VERDAD = 2;
-  public static final int THROW = 43;
+  public static final int THROW = 44;
   public static final int WLE = 22;
   public static final int NUM = 28;
+  public static final int MAIN = 43;
   public static final int IF = 23;
   public static final int EIF = 24;
   public static final int ID = 40;
   public static final int EOF = 0;
-  public static final int OPAND = 47;
-  public static final int OPOR = 46;
+  public static final int OPAND = 48;
+  public static final int OPOR = 47;
   public static final int NEW = 42;
   public static final int error = 1;
   public static final int CADENA = 6;
@@ -54,7 +55,7 @@ public class sym {
   public static final int END = 27;
   public static final int REPLY = 39;
   public static final int VAR = 33;
-  public static final int CATCH = 45;
+  public static final int CATCH = 46;
   public static final int CERRARC = 11;
   public static final String[] terminalNames = new String[] {
   "EOF",
@@ -100,6 +101,7 @@ public class sym {
   "ID",
   "ARRAY",
   "NEW",
+  "MAIN",
   "THROW",
   "THROWDOWN",
   "CATCH",

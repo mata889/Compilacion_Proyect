@@ -113,11 +113,18 @@ terminal PUNTOC, PARENTESISA, PARENTESISC, ABRIRC, CERRARC , ASSIGNMENT, BRACKET
 terminal OPER, OPEA_SUM, OPEA_MULT, BOOL,  FOR, WLE, IF, EIF, ELSE ,BLOCK, END;
 terminal NUM, LETTER, FUNC, START ,FLECHA,  VAR ,  NOT;
 terminal IN, PUNTO, CASE,DEFAULT, REPLY, ID;
-terminal ARRAY,NEW;
+terminal ARRAY,NEW, MAIN;
 terminal THROW,THROWDOWN,CATCH;
 terminal OPOR, OPAND;
 
 non terminal test;
+
+// Cuerpo de start
+non terminal body_start;
+non terminal main;
+non terminal func_list;
+non terminal prop_list;
+non terminal global_props;
 
 // Expresiones aritméticas
 non terminal nodeExpression;
@@ -184,15 +191,13 @@ non terminal llamadaFunc;
 start with Program;
 
 //program
-Program ::= START  FLECHA BRACKETA body:b BRACKETC
+Program ::= START FLECHA BRACKETA body_start:b BRACKETC
 {:
     Nodo start = new Nodo("Start",token);
     parser.token ++;
 
     start.addHijo((Nodo)b);
  
-    
-
     parser.arbol = start;
     RESULT = start;
 :};
@@ -821,6 +826,105 @@ CicloFor::= FOR PARENTESISA ID:ide IN NUM:n PUNTO PUNTO PUNTO NUM:n1 PARENTESISC
         RESULT= ciclo;
 :};
 
+// Proposiciones globales
+global_props ::= declara_simple:d 
+{:
+    RESULT = (Nodo)d;
+:} 
+    | declara_assig:da
+{:
+    RESULT = (Nodo)da;
+:}
+    | declara_assigExpression:da
+{:
+    RESULT = (Nodo)da;
+:};
+
+
+// Lista de proposiciones
+prop_list ::= global_props:d prop_list:pl
+{:  
+    Nodo node = new Nodo("lista de proposiciones", parser.token);
+    parser.token++;
+    // Añadir la proposición
+    node.addHijo((Nodo)d);
+    if(pl!=null) node.addHijitos( ((Nodo)pl).getHijos() );                      
+    RESULT = node;
+:}
+ | {:/*Vacío*/:};
+    
+
+// Cuerpo del start
+body_start ::=  prop_list:pl main:m func_list:f
+{:
+    Nodo body=new Nodo("body",parser.token);
+    parser.token++;
+
+    if(pl!=null){
+        body.addHijitos(  ((Nodo)pl).getHijos() );
+    }
+
+    if(f!=null){
+        body.addHijitos(  ((Nodo)f).getHijos() );
+    }
+
+    body.addHijo( (Nodo)m );
+
+    RESULT= body;
+:};
+    
+/*
+    
+*/
+
+func_list::= funciones:f func_list:fl
+{:      
+    // CURRENT NODE
+    Nodo node = new Nodo("FUNCTION_LIST", parser.token);
+    parser.token++;
+
+    // FUNCTION
+    node.addHijo((Nodo)f);
+
+    if(fl!=null) node.addHijitos( ((Nodo)fl).getHijos() );                      
+  
+    RESULT = node;
+:} 
+| {:/*vacío*/:};     
+
+main::= FUNC VOID:t MAIN:ide PARENTESISA PARENTESISC BRACKETA body:b BRACKETC
+{:
+    Nodo node= new Nodo("declaración de funcion",parser.token);
+    parser.token++;
+
+    Nodo funciones=new Nodo("función",parser.token);
+    parser.token++;
+    node.addHijo(funciones);
+
+    node.addHijo(t.toString(),parser.token);
+    parser.token++;
+
+    Nodo id=new Nodo("id",parser.token);
+    parser.token++;
+
+    id.addHijo(ide.toString(),parser.token);
+    node.addHijo(id);
+    parser.token++;
+
+    Nodo vacio = new Nodo("Vacio",parser.token);
+    parser.token++;
+
+    Nodo parametros = new Nodo("parametros",parser.token);
+    parser.token++;
+    parametros.addHijo(vacio);
+    
+    node.addHijo(parametros);
+
+    node.addHijo((Nodo)b);
+
+    RESULT= node;
+:};
+
 //body
 body::= proposition:p body:b  {:
         Nodo bodyn = new Nodo("body",  parser.token);
@@ -833,27 +937,12 @@ body::= proposition:p body:b  {:
 
         RESULT = bodyn;
                 
-:} 
-|funciones:f body:b 
-{:
-    Nodo funciones=new Nodo("Funciones",parser.token);
-    parser.token++;
-
-    funciones.addHijo((Nodo)f);
-
-    if(b!=null){
-        funciones.addHijitos(((Nodo)b).getHijos());
-    }
-
-    RESULT= funciones;
-:}    
+:}     
 |{:
     Nodo node=new Nodo("Vacio",parser.token);
     parser.token++;
     RESULT=node;
-:}
-;
-
+:};
 
 
 //body 
@@ -1099,7 +1188,7 @@ proposition::= WLE booleanExpression:e FLECHA ABRIRC body:b CERRARC
 :}
     |   llamadaFunc:lf PUNTOC
 {:
-        RESULT=lf;
+    RESULT=lf;
 :}
     |   ifState:ife
 {:
