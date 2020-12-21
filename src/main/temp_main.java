@@ -1293,24 +1293,6 @@ public class temp_main {
                         cuadruplo.add(new Cuadruplo("=", valor, "", id));
                     }
                     break;
-                case "asignacion":
-                    id = node.getHijo(0).getHijo(0).getValor();
-                    valor = node.getHijo(1).getValor();
-                    if (valor.equals("id")) {
-                        valor = node.getHijo(1).getHijo(0).getValor();
-                    } else if (valor.equals("llamada a funcion")) {
-                        intermedio(node.getHijo(1));
-                        String etq = generarTemp();
-                        cuadruplo.add(new Cuadruplo("=", "RET", "", etq));
-                        cuadruplo.add(new Cuadruplo("=", etq, "", id));
-                    } else {
-                        valor = node.getHijo(1).getHijo(0).getHijo(0).getValor();
-                        cuadruplo.add(new Cuadruplo("=", valor, "", id));
-                    }
-                    break;
-                case "declaracion y asignacion expresión":
-
-                    break;
                 case "asignación expresión":
 
                     break;
