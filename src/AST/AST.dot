@@ -36,5 +36,4 @@ digraph {
 "32,llamada a funcion" -> "33,id";
 "33,id" -> "34,imprimir";
 "32,llamada a funcion" -> "35,Vacio";
-
 }

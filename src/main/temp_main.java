@@ -11,6 +11,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 public class temp_main {
 
     Scanner leer = new Scanner(System.in);
@@ -357,7 +358,74 @@ public class temp_main {
                     }
                 }
             } else if (hijo.getValor().equals("declaracion y asignacion expresión")) {
-                /*AQUÍ*/
+                String tipo = hijo.getHijo(1).getValor();
+                for (int i = 0; i < hijo.getHijos().size(); i++) {
+                    if(hijo.getHijo(i).getValor().equals("id")){
+                        if (!verificarVariable(hijo.getHijo(i).getHijo(0).getValor(), ambito_actual)) { //se revisa si el id ha sido invocado
+                            //String id = getTipoVariable(hijo.getHijo(i).getHijo(0).getValor(), ambito_actual);
+                            String id =hijo.getHijo(i).getHijo(0).getValor();
+                            tabla.add(new Variables(tipo,id, ambito_actual,getOffset(tipo)));
+                        }    
+                    }
+
+                    else if(hijo.getHijo(i).getValor().equals("expresión")){//algunas veces se encuentran variables en expresiones se debe revisar eso
+                        String tipoId;
+                        Boolean pasa; 
+                        for (int j=0; j<hijo.getHijo(i).getHijos().size();j++){
+                            Nodo nodo_actual=hijo.getHijo(i).getHijo(j);
+                            if(nodo_actual.getValor().equals("expresión")){
+                                for (int k=0; k<nodo_actual.getHijos().size();k++){
+                                    if(nodo_actual.getHijo(k).getValor().equals("id")){
+                                        String id_exp;
+                                        if (!verificarVariable(nodo_actual.getHijo(k).getValor(), ambito_actual)) {
+                                            id_exp = nodo_actual.getHijo(k).getHijo(0).getValor();
+                                            errores_semanticos.add("Error semántico: La variable " + id_exp + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
+                                            //System.out.print("no existe la variable"+nodo_actual.getHijo(k).getHijo(0).getValor());
+                                        }
+                                    }
+                                }
+                                
+                            }else if(nodo_actual.getValor().equals("id")){
+                                String valor = nodo_actual.getHijo(0).getValor();
+                                System.out.println("Entra a la A");
+                                if ((tipoId = getTipoVariable(valor, ambito_actual)) != null) { // Valida si existe en el cuerpo de la función
+                                    if (!tipoId.equals(tipo)) {
+                                        errores_semanticos.add("Error semántico: La variable " + valor + " recibe un tipo incorrecto, se esperaba un entero");
+                                    } else {
+                                        pasa = true;
+                                    }
+                                } else {
+                                    String[] array = ambito_actual.split("\\.");
+                                    String funcionActual = array[array.length - 1];
+                                    if ((tipoId = verificarParametroId(valor, funcionActual)) != null) { //Segundo verificar si la variable no ha sido declarada en los parámetros de la función
+                                        if (!tipoId.equals(tipo)) {
+                                            errores_semanticos.add("Error semántico: La variable " + valor + " recibe un tipo incorrecto, se esperaba un entero");
+                                        } else {
+                                            pasa = true;
+                                        }
+                                    } else {
+                                        errores_semanticos.add("Error semántico: La variable " + valor + " recibe un tipo incorrecto, la variable " + hijo.getHijo(3).getHijo(0).getValor() + " no ha sido declarada en el ámbito " + ambito_actual);
+                                    }
+                                }
+                                
+                            }
+                            Nodo presente=hijo.getHijo(i).getHijo(j);
+                            while(presente.getValor().equals(":=") ||presente.getValor().equals("<:") || presente.getValor().equals(":>") || presente.getValor().equals("~")|| presente.getValor().equals(">=") || presente.getValor().equals("<=") || presente.getValor().equals("||") || presente.getValor().equals("=/=")){
+                                Nodo id_while = presente.getHijo(0).getHijo(0);
+                                if(!verificarVariable(id_while.getValor(), ambito_actual)){
+                                    
+                                    errores_semanticos.add("Error semántico: La variable " + id_while.getValor() + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
+                                }else{
+                                    System.out.print("existe la variabale"+id_while.getValor());
+                                }
+                                presente=presente.getHijo(1);
+                            } 
+                        }
+                        //String porAhora=RecursivaExpresion(temp,temp.getValor()); esto es para intermedio
+                    }
+                }
+            }else if(hijo.getValor().equals("expresión")){
+                
             } else if (hijo.getValor().equals("asignacion")) {
                 String id = hijo.getHijo(0).getHijo(0).getValor(), value = hijo.getHijo(1).getHijo(0).getValor(), valor = hijo.getHijo(1).getValor(), tipo, tipoId;
                 if (verificarVariable(id, ambito_actual)) {
@@ -607,9 +675,49 @@ public class temp_main {
                 }
             } else if (hijo.getValor().equals("declaración if")) {
                 Nodo currentNode = hijo, expresion = hijo.getHijo(1);
-                /*
-                    Validar expresiones
-                 */
+                for(int i=0; i<hijo.getHijos().size();i++){
+                    if(hijo.getHijo(i).getValor().equals("expresión")){
+                        String tipoId;
+                        Boolean pasa; 
+                        for (int j=0; j<hijo.getHijo(i).getHijos().size();j++){
+                            Nodo nodo_actual=hijo.getHijo(i).getHijo(j);
+                            if(nodo_actual.getValor().equals("expresión")){
+                                for (int k=0; k<nodo_actual.getHijos().size();k++){
+                                    if(nodo_actual.getHijo(k).getValor().equals("id")){
+                                        String id_exp;
+                                        if (!verificarVariable(nodo_actual.getHijo(k).getValor(), ambito_actual)) {
+                                            id_exp = nodo_actual.getHijo(k).getHijo(0).getValor();
+                                            errores_semanticos.add("Error semántico: La variable " + id_exp + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
+                                            //System.out.print("no existe la variable"+nodo_actual.getHijo(k).getHijo(0).getValor());
+                                        }
+                                    }
+                                } 
+                            }else if(nodo_actual.getValor().equals("id")){
+                                String valor = nodo_actual.getHijo(0).getValor();
+                                System.out.println("Entra a la A");
+                                if(!verificarVariable(valor, ambito_actual)){
+                                    
+                                    errores_semanticos.add("Error semántico: La variable " + valor + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
+                                }else{
+                                    System.out.print("existe la variabale"+valor);
+                                }
+                                
+                            }
+                            Nodo presente=hijo.getHijo(i).getHijo(j);
+                            while(presente.getValor().equals(":=") ||presente.getValor().equals("<:") || presente.getValor().equals(":>") || presente.getValor().equals("~")|| presente.getValor().equals(">=") || presente.getValor().equals("<=") || presente.getValor().equals("||") || presente.getValor().equals("=/=")){
+                                Nodo id_while = presente.getHijo(0).getHijo(0);
+                                if(!verificarVariable(id_while.getValor(), ambito_actual)){
+                                    
+                                    errores_semanticos.add("Error semántico: La variable " + id_while.getValor() + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
+                                }else{
+                                    System.out.print("existe la variabale"+id_while.getValor());
+                                }
+                                presente=presente.getHijo(1);
+                            }
+                        }
+                    }
+                }
+
                 recorrido(currentNode.getHijo(2), ambito_actual + "." + (cont++) + "_if_statement"); //Cuerpo del if
                 if (currentNode.getHijos().size() == 4) { //Verifico si tiene un else o un else if
                     Nodo temp = new Nodo();
@@ -619,10 +727,52 @@ public class temp_main {
                 }
 
             } else if (hijo.getValor().equals("else if")) {
+                
                 Nodo currentNode = hijo, expresion = hijo.getHijo(1);
-                /*
-                    Validar expresiones
-                 */
+                for(int i=0; i<hijo.getHijos().size();i++){
+                    if(hijo.getHijo(i).getValor().equals("expresión")){
+                        String tipoId;
+                        Boolean pasa; 
+                        for (int j=0; j<hijo.getHijo(i).getHijos().size();j++){
+                            Nodo nodo_actual=hijo.getHijo(i).getHijo(j);
+                            if(nodo_actual.getValor().equals("expresión")){
+                                for (int k=0; k<nodo_actual.getHijos().size();k++){
+                                    if(nodo_actual.getHijo(k).getValor().equals("id")){
+                                        String id_exp;
+                                        if (!verificarVariable(nodo_actual.getHijo(k).getValor(), ambito_actual)) {
+                                            id_exp = nodo_actual.getHijo(k).getHijo(0).getValor();
+                                            errores_semanticos.add("Error semántico: La variable " + id_exp + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
+                                            //System.out.print("no existe la variable"+nodo_actual.getHijo(k).getHijo(0).getValor());
+                                        }
+                                    }
+                                } 
+                            }else if(nodo_actual.getValor().equals("id")){
+                                String valor = nodo_actual.getHijo(0).getValor();
+                                System.out.println("Entra a la A");
+                                if(!verificarVariable(valor, ambito_actual)){
+                                    
+                                    errores_semanticos.add("Error semántico: La variable " + valor + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
+                                }else{
+                                    System.out.print("existe la variabale"+valor);
+                                }
+                                
+                            }
+                            Nodo presente=hijo.getHijo(i).getHijo(j);
+                            while(presente.getValor().equals(":=") ||presente.getValor().equals("<:") || presente.getValor().equals(":>") || presente.getValor().equals("~")|| presente.getValor().equals(">=") || presente.getValor().equals("<=") || presente.getValor().equals("||") || presente.getValor().equals("=/=")){
+                                Nodo id_while = presente.getHijo(0).getHijo(0);
+                                if(!verificarVariable(id_while.getValor(), ambito_actual)){
+                                    
+                                    errores_semanticos.add("Error semántico: La variable " + id_while.getValor() + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
+                                }else{
+                                    System.out.print("existe la variabale"+id_while.getValor());
+                                }
+                                presente=presente.getHijo(1);
+                            }
+                        }
+                    }
+                }
+
+                 
                 recorrido(currentNode.getHijo(2), ambito_actual + "." + (cont++) + "_elseif_statement"); //Cuerpo del if
                 if (currentNode.getHijos().size() == 4) { //Verifico si tiene un else o un else if
                     Nodo temp = new Nodo();
@@ -633,14 +783,91 @@ public class temp_main {
                 Nodo currentNode = hijo;
                 recorrido(currentNode.getHijo(0), ambito_actual + "." + (cont++) + "_else");
             } else if (hijo.getValor().equals("declaración ciclo while")) {
-                /*
-
-                    VALIDAR LAS EXPRESIONES
-                
-                 */
+                Nodo currentNode = hijo, expresion = hijo.getHijo(1);
+                for(int i=0; i<hijo.getHijos().size();i++){
+                    if(hijo.getHijo(i).getValor().equals("expresión")){
+                        String tipoId;
+                        Boolean pasa; 
+                        for (int j=0; j<hijo.getHijo(i).getHijos().size();j++){
+                            Nodo nodo_actual=hijo.getHijo(i).getHijo(j);
+                            if(nodo_actual.getValor().equals("expresión")){
+                                for (int k=0; k<nodo_actual.getHijos().size();k++){
+                                    if(nodo_actual.getHijo(k).getValor().equals("id")){
+                                        String id_exp;
+                                        if (!verificarVariable(nodo_actual.getHijo(k).getValor(), ambito_actual)) {
+                                            id_exp = nodo_actual.getHijo(k).getHijo(0).getValor();
+                                            errores_semanticos.add("Error semántico: La variable " + id_exp + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
+                                            //System.out.print("no existe la variable"+nodo_actual.getHijo(k).getHijo(0).getValor());
+                                        }
+                                    }
+                                } 
+                            }else if(nodo_actual.getValor().equals("id")){
+                                String valor = nodo_actual.getHijo(0).getValor();
+                                System.out.println("Entra a la A");
+                                if(!verificarVariable(valor, ambito_actual)){
+                                    
+                                    errores_semanticos.add("Error semántico: La variable " + valor + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
+                                }else{
+                                    System.out.print("existe la variabale"+valor);
+                                }
+                                
+                            }
+                            Nodo presente=hijo.getHijo(i).getHijo(j);
+                            while(presente.getValor().equals(":=") ||presente.getValor().equals("<:") || presente.getValor().equals(":>") || presente.getValor().equals("~")|| presente.getValor().equals(">=") || presente.getValor().equals("<=") || presente.getValor().equals("||") || presente.getValor().equals("=/=")){
+                                Nodo id_while = presente.getHijo(0).getHijo(0);
+                                if(!verificarVariable(id_while.getValor(), ambito_actual)){
+                                    
+                                    errores_semanticos.add("Error semántico: La variable " + id_while.getValor() + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
+                                }else{
+                                    System.out.print("existe la variabale"+id_while.getValor());
+                                }
+                                presente=presente.getHijo(1);
+                            }
+                        }
+                    }
+                }
                 recorrido(hijo.getHijo(2), ambito_actual + "." + (cont++) + "_while_statement"); // Cuerpo del while
             }
         }
+    }
+    public static String RecursivaExpresion(Nodo n,String signo){
+        int data1=0;
+        String dat1="";
+        String dat2="";
+        System.out.println(n.getHijo(0).getValor());
+        for(int i=0;i< n.getHijos().size();i++){
+            if(n.getHijo(i).getValor().equals("expresión")){
+
+            }else if(n.getHijo(i).getValor().equals("num")){
+                dat1 = n.getHijo(i).getHijo(0).getValor();
+                for(int j=0;j<= n.getHijos().size();j++){
+                    Nodo buscar_signo = n.getHijo(j);
+                    switch(buscar_signo.getValor()){
+                        case "+":
+                        case "-":
+                        case "/":
+                        case "*":
+                            for(int k=0;k<buscar_signo.getHijos().size();k++){
+                                if(buscar_signo.getHijo(k).getValor().equals("num")){
+                                    dat2 =buscar_signo.getHijo(0).getHijo(0).getValor();
+                                    
+                                }else if(buscar_signo.getHijo(k).getValor().equals("num"))
+                                {
+    
+                                }
+                            }
+                            
+                    }
+                }
+            }
+        }
+        
+        
+        
+
+        int data2 =0;
+        int retVal =0;
+        return signo;
     }
 
     public static int getOffset(String tipo, Nodo valores) {
