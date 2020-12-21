@@ -1,7 +1,7 @@
 start->[
     var letter aja=c;
     var arr = new Array(1);
-    var id2= new Array(2)[[1,2],[3,4]];
+    var id2= new Array(2);
     if(cont :>0 ~ ejemplo:<69 )<
         throwDown(mayor);
     >eif(cont:=2)<

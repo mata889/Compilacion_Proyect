@@ -48,7 +48,10 @@ equals = ":="
 not = "=/="
 //and = "~"
 or="||"
-OpeR = {not}|{equals}|":<"|":>"|"<="|">=" |"~"|{or}
+and = "&&"
+
+Oprel= {not}|{equals}|"<:"|":>"|"<="|">=" |"~"|{or}|{and}
+
 OpeA_sum = "+"|-
 OpeA_mult = "*"|"/"
 //MOD = "MOD"
@@ -81,6 +84,7 @@ commentarios_der="/#"
     "letter "       { return new Symbol(sym.LETRA,yycolumn,yyline,yytext()); }
     "word"          { return new Symbol(sym.WORD,yycolumn,yyline,yytext()); }
     "bool"          { return new Symbol(sym.VERDAD,yycolumn,yyline,yytext()); }
+    "void"          { return new Symbol(sym.VOID,yycolumn,yyline,yytext()); }
     "var"           { return new Symbol(sym.VAR,yycolumn,yyline,yytext()); }
     "new"           { return new Symbol(sym.NEW,yycolumn,yyline,yytext()); }
     "for"           { return new Symbol(sym.FOR,yycolumn,yyline,yytext()); }
@@ -106,7 +110,7 @@ commentarios_der="/#"
     //{valorChar}     { return new Symbol(sym.VALORCHAR,yycolumn,yyline,yytext()); }
     {not}           { return new Symbol(sym.NOT,yycolumn,yyline,yytext()); }
     
-    {OpeR}          { return new Symbol(sym.OPER,yycolumn,yyline,yytext()); }
+    {Oprel}          { return new Symbol(sym.OPER,yycolumn,yyline,yytext()); }
     //{equals}        { return new Symbol(sym.EQUALS,yycolumn,yyline,yytext()); }
     //operador aritmeticos
     {OpeA_sum}      { return new Symbol(sym.OPEA_SUM,yycolumn,yyline,yytext()); }
