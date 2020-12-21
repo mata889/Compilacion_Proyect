@@ -773,7 +773,7 @@ public class temp_main {
 
                             }
                             Nodo presente = hijo.getHijo(i).getHijo(j);
-                            while (presente.getValor().equals(":=") || presente.getValor().equals("<:") || presente.getValor().equals(":>") || presente.getValor().equals("~") || presente.getValor().equals(">=") || presente.getValor().equals("<=") || presente.getValor().equals("||") || presente.getValor().equals("=/=")) {
+                            while (presente.getValor().equals(":=") || presente.getValor().equals("<:") || presente.getValor().equals(":>") || presente.getValor().equals("~") || presente.getValor().equals(">=") || presente.getValor().equals("<=") || presente.getValor().equals("||") || presente.getValor().equals("=/=")|| presente.getValor().equals("&&")) {
                                 Nodo id_while = presente.getHijo(0).getHijo(0);
                                 if (!verificarVariable(id_while.getValor(), ambito_actual) && !isNumeric(id_while.getValor())) {
                                     
@@ -827,7 +827,7 @@ public class temp_main {
 
                             }
                             Nodo presente = hijo.getHijo(i).getHijo(j);
-                            while (presente.getValor().equals(":=") || presente.getValor().equals("<:") || presente.getValor().equals(":>") || presente.getValor().equals("~") || presente.getValor().equals(">=") || presente.getValor().equals("<=") || presente.getValor().equals("||") || presente.getValor().equals("=/=")) {
+                            while (presente.getValor().equals(":=") || presente.getValor().equals("<:") || presente.getValor().equals(":>") || presente.getValor().equals("~") || presente.getValor().equals(">=") || presente.getValor().equals("<=") || presente.getValor().equals("||") || presente.getValor().equals("=/=")|| presente.getValor().equals("&&")) {
                                 Nodo id_while = presente.getHijo(0).getHijo(0);
                                 
                                 if (!verificarVariable(id_while.getValor(), ambito_actual) && !isNumeric(id_while.getValor())) {
@@ -882,7 +882,7 @@ public class temp_main {
 
                             }
                             Nodo presente = hijo.getHijo(i).getHijo(j);
-                            while (presente.getValor().equals(":=") || presente.getValor().equals("<:") || presente.getValor().equals(":>") || presente.getValor().equals("~") || presente.getValor().equals(">=") || presente.getValor().equals("<=") || presente.getValor().equals("||") || presente.getValor().equals("=/=")) {
+                            while (presente.getValor().equals(":=") || presente.getValor().equals("<:") || presente.getValor().equals(":>") || presente.getValor().equals("~") || presente.getValor().equals(">=") || presente.getValor().equals("<=") || presente.getValor().equals("||") || presente.getValor().equals("=/=")|| presente.getValor().equals("&&")) {
                                 Nodo id_while = presente.getHijo(0).getHijo(0);
                                 System.out.println(isNumeric(id_while.getValor()));
                                 if (!verificarVariable(id_while.getValor(), ambito_actual) ) {
@@ -1158,15 +1158,39 @@ public class temp_main {
                     }
                     break;
                 case "declaración if":
-                    if (node.getHijos().size() == 3) {
+                        String id_principal ="";
+                        String temporal_prin="";
+                        String temporalTemp1="";
+                        String temporalTemp2="";
+                        String temporalTemp3="";
+                        for(int i=0;i<node.getHijos().size();i++){
+                            if(node.getHijo(i).getValor().equals("expresión")){
+                                for(int j=0;j<node.getHijo(i).getHijos().size();j++){
+                                    Nodo presente= node.getHijo(i).getHijo(j);
+                                    if(presente.getValor().equals("id")){
+                                        id_principal=node.getHijo(i).getHijo(j).getHijo(0).getValor();
+                                        
+                                    }else if(presente.getValor().equals("num")){
+                                        id_principal=node.getHijo(i).getHijo(j).getHijo(0).getValor();
+                                    }while(presente.getValor().equals(":=") || presente.getValor().equals("<:") || presente.getValor().equals(":>") || presente.getValor().equals("~") || presente.getValor().equals(">=") || presente.getValor().equals("<=") || presente.getValor().equals("||") || presente.getValor().equals("=/=")|| presente.getValor().equals("&&")){
+                                        String signo = presente.getValor();
+                                        temporalTemp2=generarTemp();
+                                        String numerito = presente.getHijo(0).getHijo(0).getValor();
+                                        cuadruplo.add(new Cuadruplo(signo,numerito,temporalTemp3,temporalTemp2));
+                                        presente=presente.getHijo(1);
+                                        temporalTemp3=temporalTemp2;
+                                        temporalTemp1=temporalTemp2;
+                                    }
+                                }
+                            }
+                        }
+                        cuadruplo.add(new Cuadruplo("=",temporalTemp1,"",id_principal));
                         node.getHijo(1).setVerdadero(nuevaEtiqueta());
                         node.getHijo(1).setFalso(node.padre.getSiguiente());
                         intermedio(node.getHijo(1));
                         cuadruplo.add(new Cuadruplo("ETIQ", node.getHijo(1).getVerdadero(), "", ""));
                         intermedio(node.getHijo(2));
-                    }/* else {
-                        cuadruplo.add(new Cuadruplo("IF<", id, num, node.padre.getVerdadero()));
-                    }*/
+                    
                     break;
                 case "declaración ciclo while":
                     node.setComienzo(nuevaEtiqueta());
@@ -1222,7 +1246,7 @@ public class temp_main {
                     String tempTemporal2 = "";
                     String tempTemporal3 = "";
                     String tempTemporal4 = "";
-                    String id_principal = node.getHijo(2).getHijo(0).getValor();
+                    id_principal = node.getHijo(2).getHijo(0).getValor();
                     for (int i = 0; i < node.getHijo(3).getHijos().size(); i++) {
                         id = node.getHijo(3).getHijo(i).getValor();
                         System.out.println(id);
@@ -1342,6 +1366,7 @@ public class temp_main {
                     for (int i = 0; i < node.getHijos().size(); i++) {
                         id = node.getHijo(i).getValor();
                         //System.out.println(id);
+                        
                         if (id.equals("expresión")) {
                             for (int j = 0; j < node.getHijo(i).getHijos().size(); j++) {
                                 String id2 = node.getHijo(i).getHijo(j).getValor();
@@ -1390,7 +1415,8 @@ public class temp_main {
                                     }
                                 } else if (id2.equals("id")) {
                                     System.out.println("Ya llegamos al id2");
-                                    String numero = node.getHijo(i).getHijo(j).getHijo(0).getValor();
+                                    String numero = node.getHijo(i).getHijo(0).getHijo(0).getValor();
+                                    System.out.println("Ya llegamos al id2"+numero);
                                     String nuevo2 = node.getHijo(i).getHijo(1).getValor();
                                     String nuevo3 = node.getHijo(i).getHijo(2).getValor();
                                     if (nuevo2.equals("+") || nuevo2.equals("-") || nuevo2.equals("*") || nuevo2.equals("/")) {
@@ -1405,6 +1431,28 @@ public class temp_main {
                                         String numero2 = node.getHijo(i).getHijo(2).getHijo(0).getHijo(0).getValor();
                                         tempTemporal2 = generarTemp();
                                         cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
+                                    }else if(nuevo2.equals(":=") || nuevo2.equals("<:") || nuevo2.equals(":>") || nuevo2.equals("~") || nuevo2.equals(">=") || nuevo2.equals("<=") || nuevo2.equals("||") || nuevo2.equals("=/=")|| nuevo2.equals("&&")){
+                                        Nodo presente=node.getHijo(i).getHijo(1);
+                                        String signo ="";
+                                        while(presente.getValor().equals(":=") || presente.getValor().equals("<:") || presente.getValor().equals(":>") || presente.getValor().equals("~") || presente.getValor().equals(">=") || presente.getValor().equals("<=") || presente.getValor().equals("||") || presente.getValor().equals("=/=")|| presente.getValor().equals("&&")){
+                                            signo = presente.getValor();
+                                            String numerin = presente.getHijo(0).getHijo(0).getValor();
+                                            tempTemporal3=generarTemp();
+                                            cuadruplo.add(new Cuadruplo(signo,numerin,"",tempTemporal3));
+                                            presente=presente.getHijo(1);
+                                            tempTemporal2=tempTemporal3;
+                                        }
+                                        System.out.println("A ver que tiene esto: " + nuevo2);
+                                        signo = nuevo2;
+                                        String numero2 = node.getHijo(i).getHijo(1).getHijo(0).getHijo(0).getValor();
+                                        tempTemporal2 = generarTemp();
+                                        cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
+                                    }else if(nuevo3.equals(":=") || nuevo3.equals("<:") || nuevo3.equals(":>") || nuevo3.equals("~") || nuevo3.equals(">=") || nuevo3.equals("<=") || nuevo3.equals("||") || nuevo3.equals("=/=")|| nuevo3.equals("&&")){
+                                        System.out.println("A ver que tiene esto: " + nuevo2);
+                                        String signo = nuevo3;
+                                        String numero2 = node.getHijo(i).getHijo(2).getHijo(0).getHijo(0).getValor();
+                                        tempTemporal2 = generarTemp();
+                                        cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
                                     }
                                 }
                                 
@@ -1412,7 +1460,46 @@ public class temp_main {
                         } else if (id.equals("num")) {
                             
                         } else if (id.equals("id")) {
-                            System.out.println("Ya llegamos al id");
+                                    
+                                    String numero = node.getHijo(i).getHijo(0).getValor();
+                                    System.out.println("Ya llegamos al id1"+numero);
+                                    String nuevo2 = node.getHijo(1).getValor();
+                                    String nuevo3 = node.getHijo(2).getValor();
+                                    if (nuevo2.equals("+") || nuevo2.equals("-") || nuevo2.equals("*") || nuevo2.equals("/")) {
+                                        System.out.println("A ver que tiene esto: " + nuevo2);
+                                        String signo = nuevo2;
+                                        String numero2 = node.getHijo(i).getHijo(1).getHijo(0).getHijo(0).getValor();
+                                        tempTemporal2 = generarTemp();
+                                        cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
+                                    } else if (nuevo3.equals("+") || nuevo3.equals("-") || nuevo3.equals("*") || nuevo3.equals("/")) {
+                                        System.out.println("A ver que tiene esto: " + nuevo3);
+                                        String signo = nuevo3;
+                                        String numero2 = node.getHijo(2).getHijo(0).getHijo(0).getValor();
+                                        tempTemporal2 = generarTemp();
+                                        cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
+                                    }else if(nuevo2.equals(":=") || nuevo2.equals("<:") || nuevo2.equals(":>") || nuevo2.equals("~") || nuevo2.equals(">=") || nuevo2.equals("<=") || nuevo2.equals("||") || nuevo2.equals("=/=")|| nuevo2.equals("&&")){
+                                        Nodo presente=node.getHijo(1);
+                                        String signo ="";
+                                        while(presente.getValor().equals(":=") || presente.getValor().equals("<:") || presente.getValor().equals(":>") || presente.getValor().equals("~") || presente.getValor().equals(">=") || presente.getValor().equals("<=") || presente.getValor().equals("||") || presente.getValor().equals("=/=")|| presente.getValor().equals("&&")){
+                                            signo = presente.getValor();
+                                            String numerin = presente.getHijo(0).getHijo(0).getValor();
+                                            tempTemporal3=generarTemp();
+                                            cuadruplo.add(new Cuadruplo(signo,numerin,"",tempTemporal3));
+                                            presente=presente.getHijo(1);
+                                            tempTemporal2=tempTemporal3;
+                                        }
+                                        System.out.println("A ver que tiene esto: " + nuevo2);
+                                        signo = nuevo2;
+                                        String numero2 = node.getHijo(1).getHijo(0).getHijo(0).getValor();
+                                        tempTemporal2 = generarTemp();
+                                        cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
+                                    }else if(nuevo3.equals(":=") || nuevo3.equals("<:") || nuevo3.equals(":>") || nuevo3.equals("~") || nuevo3.equals(">=") || nuevo3.equals("<=") || nuevo3.equals("||") || nuevo3.equals("=/=")|| nuevo3.equals("&&")){
+                                        System.out.println("A ver que tiene esto: " + nuevo2);
+                                        String signo = nuevo3;
+                                        String numero2 = node.getHijo(2).getHijo(0).getHijo(0).getValor();
+                                        tempTemporal2 = generarTemp();
+                                        cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
+                                    }
                         } else if (id.equals("+") || id.equals("-") || id.equals("*") || id.equals("/")) {
                             
                             for(int r=0;r<node.getHijo(3).getHijo(i).getHijos().size();r++){
