@@ -1,19 +1,9 @@
 start->[
-    
-    ## Aquí la variable exp es un tipo letter cuando tiene que ser num
-    var letter exp = 3+3;    
-
-    ## Expresión correcta
-    var num numero = (2+2)*3;
-
-    ## Aquí la variable numero ya fue declarada anteriormente una vez y numero1 no existe
-    var num numero = (numero1+2)*3+5-5;
-
-    ## a y b no existen
-    if ( a <: b ~ c :> d )<
-    >
-
-    ## validar si a existe y es un booleano
-    if ( a)<
-    >
+	func void main()[
+		var num a = 0;
+		var num b = 0;
+		imprimir();
+	]
+	func void imprimir()[
+	]
 ]
