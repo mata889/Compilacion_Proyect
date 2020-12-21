@@ -1356,7 +1356,7 @@ public class temp_main {
                     cuadruplo.add(new Cuadruplo("=",tempTemporal1,"",id_principal));
                     
                     break;
-                case "expresión":
+                case "expresión":                                                                           // EXPRESIONES SEMANTICO
                     tempTemporal_prin = " ";
                     tempTemporal1 = "";
                     tempTemporal2 = "";
@@ -1367,15 +1367,15 @@ public class temp_main {
                         id = node.getHijo(i).getValor();
                         //System.out.println(id);
                         
-                        if (id.equals("expresión")) {
+                        if (id.equals("expresión")) {                                       //expresiones
                             for (int j = 0; j < node.getHijo(i).getHijos().size(); j++) {
                                 String id2 = node.getHijo(i).getHijo(j).getValor();
                                 System.out.println(id2);
-                                if (id2.equals("expresión")) {
+                                if (id2.equals("expresión")) {                          //expresiones de 1 grado
                                     for (int k = 0; k < node.getHijo(3).getHijo(i).getHijo(j).getHijos().size(); k++) {
                                         String id3 = node.getHijo(3).getHijo(i).getHijo(j).getHijo(k).getValor();
                                         System.out.println(id3);
-                                        if (id3.equals("expresión")) {
+                                        if (id3.equals("expresión")) {                          //expresiones de 2 grado
                                             for (int l = 0; l < node.getHijo(3).getHijo(i).getHijo(j).getHijo(k).getHijos().size(); l++) {
                                                 String id4 = node.getHijo(3).getHijo(i).getHijo(j).getHijo(k).getHijo(l).getValor();
                                                 System.out.println(id4);
@@ -1395,7 +1395,7 @@ public class temp_main {
                                             System.out.println("Ya estamos en simbolos3");
                                         }
                                     }
-                                } else if (id2.equals("num")) {
+                                } else if (id2.equals("num")) {             //se encuentra num en segundo grado
                                     System.out.println("Ya es el num2");
                                     String numero = node.getHijo(3).getHijo(i).getHijo(j).getHijo(0).getValor();
                                     String nuevo2 = node.getHijo(3).getHijo(i).getHijo(1).getValor();
@@ -1413,7 +1413,7 @@ public class temp_main {
                                         tempTemporal2 = generarTemp();
                                         cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
                                     }
-                                } else if (id2.equals("id")) {
+                                } else if (id2.equals("id")) {          //se encuentra id en segundo grado
                                     System.out.println("Ya llegamos al id2");
                                     String numero = node.getHijo(i).getHijo(0).getHijo(0).getValor();
                                     System.out.println("Ya llegamos al id2"+numero);
@@ -1458,7 +1458,45 @@ public class temp_main {
                                 
                             }
                         } else if (id.equals("num")) {
-                            
+                                    String numero = node.getHijo(i).getHijo(0).getValor();
+                                    System.out.println("Ya llegamos al id1"+numero);
+                                    String nuevo2 = node.getHijo(1).getValor();
+                                    String nuevo3 = node.getHijo(2).getValor();
+                                    if (nuevo2.equals("+") || nuevo2.equals("-") || nuevo2.equals("*") || nuevo2.equals("/")) {
+                                        System.out.println("A ver que tiene esto: " + nuevo2);
+                                        String signo = nuevo2;
+                                        String numero2 = node.getHijo(i).getHijo(1).getHijo(0).getHijo(0).getValor();
+                                        tempTemporal2 = generarTemp();
+                                        cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
+                                    } else if (nuevo3.equals("+") || nuevo3.equals("-") || nuevo3.equals("*") || nuevo3.equals("/")) {
+                                        System.out.println("A ver que tiene esto: " + nuevo3);
+                                        String signo = nuevo3;
+                                        String numero2 = node.getHijo(2).getHijo(0).getHijo(0).getValor();
+                                        tempTemporal2 = generarTemp();
+                                        cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
+                                    }else if(nuevo2.equals(":=") || nuevo2.equals("<:") || nuevo2.equals(":>") || nuevo2.equals("~") || nuevo2.equals(">=") || nuevo2.equals("<=") || nuevo2.equals("||") || nuevo2.equals("=/=")|| nuevo2.equals("&&")){
+                                        Nodo presente=node.getHijo(1);
+                                        String signo ="";
+                                        while(presente.getValor().equals(":=") || presente.getValor().equals("<:") || presente.getValor().equals(":>") || presente.getValor().equals("~") || presente.getValor().equals(">=") || presente.getValor().equals("<=") || presente.getValor().equals("||") || presente.getValor().equals("=/=")|| presente.getValor().equals("&&")){
+                                            signo = presente.getValor();
+                                            String numerin = presente.getHijo(0).getHijo(0).getValor();
+                                            tempTemporal3=generarTemp();
+                                            cuadruplo.add(new Cuadruplo(signo,numerin,"",tempTemporal3));
+                                            presente=presente.getHijo(1);
+                                            tempTemporal2=tempTemporal3;
+                                        }
+                                        System.out.println("A ver que tiene esto: " + nuevo2);
+                                        signo = nuevo2;
+                                        String numero2 = node.getHijo(1).getHijo(0).getHijo(0).getValor();
+                                        tempTemporal2 = generarTemp();
+                                        cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
+                                    }else if(nuevo3.equals(":=") || nuevo3.equals("<:") || nuevo3.equals(":>") || nuevo3.equals("~") || nuevo3.equals(">=") || nuevo3.equals("<=") || nuevo3.equals("||") || nuevo3.equals("=/=")|| nuevo3.equals("&&")){
+                                        System.out.println("A ver que tiene esto: " + nuevo2);
+                                        String signo = nuevo3;
+                                        String numero2 = node.getHijo(2).getHijo(0).getHijo(0).getValor();
+                                        tempTemporal2 = generarTemp();
+                                        cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
+                                    }
                         } else if (id.equals("id")) {
                                     
                                     String numero = node.getHijo(i).getHijo(0).getValor();
