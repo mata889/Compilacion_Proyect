@@ -11,7 +11,7 @@ start->[
 		var letter varExeter = 'a';
 		var bool varEchelon = True;
 		var num x = 5 + varchar/(5-2);
-		var num x;
+		
 
 		wle (x <: 3)-><
 			var letter letra = 'x';
@@ -27,10 +27,7 @@ start->[
 			throw(x);
 		>
 
-		if ( x:>3 && x:>0 && x:>4 || x:>10 )<
-			throwDown(x);
-			throwDown("awa");
-		>
+		
 
 
 		for (i in 0...6) ->

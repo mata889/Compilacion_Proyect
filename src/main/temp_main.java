@@ -376,8 +376,9 @@ public class temp_main {
                                     if (nodo_actual.getHijo(k).getValor().equals("id")) {
                                         String id_exp;
                                         if (verificarVariable(nodo_actual.getHijo(k).getValor(), ambito_actual)) {
-                                            System.out.println("MATA QUE HICISTE");
+                                            
                                             id_exp = nodo_actual.getHijo(k).getHijo(0).getValor();
+                                            
                                             errores_semanticos.add("Error semántico: La variable " + id_exp + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
                                             //System.out.print("no existe la variable"+nodo_actual.getHijo(k).getHijo(0).getValor());
                                         }
@@ -412,7 +413,7 @@ public class temp_main {
                             while (presente.getValor().equals(":=") || presente.getValor().equals("<:") || presente.getValor().equals(":>") || presente.getValor().equals("~") || presente.getValor().equals(">=") || presente.getValor().equals("<=") || presente.getValor().equals("||") || presente.getValor().equals("=/=")) {
                                 Nodo id_while = presente.getHijo(0).getHijo(0);
                                 if (!verificarVariable(id_while.getValor(), ambito_actual)) {
-
+                                    
                                     errores_semanticos.add("Error semántico: La variable " + id_while.getValor() + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
                                 } else {
                                     System.out.print("existe la variabale" + id_while.getValor());
@@ -423,6 +424,76 @@ public class temp_main {
                         //String porAhora=RecursivaExpresion(temp,temp.getValor()); esto es para intermedio
                     }
                 }
+            }else if (hijo.getValor().equals("expresión")){
+                String tipo = hijo.getHijo(1).getValor();
+                System.out.println("este tipo esta: "+tipo);
+                for (int i = 0; i < hijo.getHijos().size(); i++) {
+                    if (hijo.getHijo(i).getValor().equals("id")) {
+                        if (!verificarVariable(hijo.getHijo(i).getHijo(0).getValor(), ambito_actual)) { //se revisa si el id ha sido invocado
+                            //String id = getTipoVariable(hijo.getHijo(i).getHijo(0).getValor(), ambito_actual);
+                            String id = hijo.getHijo(i).getHijo(0).getValor();
+                            tabla.add(new Variables(tipo, id, ambito_actual, getOffset(tipo)));
+                        }
+                    } else if (hijo.getHijo(i).getValor().equals("expresión")) {   //algunas veces se encuentran variables en expresiones se debe revisar eso
+                        String tipoId;
+                        Boolean pasa;
+                        for (int j = 0; j < hijo.getHijo(i).getHijos().size(); j++) {
+                            Nodo nodo_actual = hijo.getHijo(i).getHijo(j);
+                            if (nodo_actual.getValor().equals("expresión")) {
+                                for (int k = 0; k < nodo_actual.getHijos().size(); k++) {
+                                    if (nodo_actual.getHijo(k).getValor().equals("id")) {
+                                        String id_exp;
+                                        if (!verificarVariable(nodo_actual.getHijo(k).getValor(), ambito_actual)) {
+                                            System.out.println("esta aqui");
+                                            id_exp = nodo_actual.getHijo(k).getHijo(0).getValor();
+                                            
+                                            errores_semanticos.add("Error semántico: La variable " + id_exp + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
+                                            //System.out.print("no existe la variable"+nodo_actual.getHijo(k).getHijo(0).getValor());
+                                        }
+                                    }
+                                }
+
+                            } else if (nodo_actual.getValor().equals("id")) {
+                                String valor = nodo_actual.getHijo(0).getValor();
+                                System.out.println("Entra a la A");
+                                if ((tipoId = getTipoVariable(valor, ambito_actual)) != null) { // Valida si existe en el cuerpo de la función
+                                    if (!tipoId.equals(tipo)) {
+                                        errores_semanticos.add("Error semántico: La variable " + valor + " recibe un tipo incorrecto, se esperaba un entero");
+                                    } else {
+                                        pasa = true;
+                                    }
+                                } else {
+                                    String[] array = ambito_actual.split("\\.");
+                                    String funcionActual = array[array.length - 1];
+                                    if ((tipoId = verificarParametroId(valor, funcionActual)) != null) { //Segundo verificar si la variable no ha sido declarada en los parámetros de la función
+                                        if (!tipoId.equals(tipo)) {
+                                            errores_semanticos.add("Error semántico: La variable " + valor + " recibe un tipo incorrecto, se esperaba un entero");
+                                        } else {
+                                            pasa = true;
+                                        }
+                                    } else {
+                                        errores_semanticos.add("Error semántico: La variable " + valor + " recibe un tipo incorrecto, la variable " + hijo.getHijo(3).getHijo(0).getValor() + " no ha sido declarada en el ámbito " + ambito_actual);
+                                    }
+                                }
+
+                            }
+                            Nodo presente = hijo.getHijo(i).getHijo(j);
+                            while (presente.getValor().equals(":=") || presente.getValor().equals("<:") || presente.getValor().equals(":>") || presente.getValor().equals("~") || presente.getValor().equals(">=") || presente.getValor().equals("<=") || presente.getValor().equals("||") || presente.getValor().equals("=/=")|| presente.getValor().equals("&&")) {
+                                Nodo id_while = presente.getHijo(0).getHijo(0);
+                                System.out.println(id_while.getValor());
+                                if (!verificarVariable(id_while.getValor(), ambito_actual)) {
+                                    System.out.println("esta aqui");
+                                    errores_semanticos.add("Error semántico: La variable " + id_while.getValor() + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
+                                } else {
+                                    System.out.print("existe la variabale" + id_while.getValor());
+                                }
+                                presente = presente.getHijo(1);
+                            }
+                        }
+                        //String porAhora=RecursivaExpresion(temp,temp.getValor()); esto es para intermedio
+                    }
+                }
+                
             } else if (hijo.getValor().equals("asignacion")) {
                 String id = hijo.getHijo(0).getHijo(0).getValor(), value = hijo.getHijo(1).getHijo(0).getValor(), valor = hijo.getHijo(1).getValor(), tipo, tipoId;
                 if (verificarVariable(id, ambito_actual)) {
@@ -682,8 +753,9 @@ public class temp_main {
                                 for (int k = 0; k < nodo_actual.getHijos().size(); k++) {
                                     if (nodo_actual.getHijo(k).getValor().equals("id")) {
                                         String id_exp;
-                                        if (!verificarVariable(nodo_actual.getHijo(k).getValor(), ambito_actual)) {
+                                        if (verificarVariable(nodo_actual.getHijo(k).getValor(), ambito_actual)) {
                                             id_exp = nodo_actual.getHijo(k).getHijo(0).getValor();
+                                            
                                             errores_semanticos.add("Error semántico: La variable " + id_exp + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
                                             //System.out.print("no existe la variable"+nodo_actual.getHijo(k).getHijo(0).getValor());
                                         }
@@ -703,8 +775,8 @@ public class temp_main {
                             Nodo presente = hijo.getHijo(i).getHijo(j);
                             while (presente.getValor().equals(":=") || presente.getValor().equals("<:") || presente.getValor().equals(":>") || presente.getValor().equals("~") || presente.getValor().equals(">=") || presente.getValor().equals("<=") || presente.getValor().equals("||") || presente.getValor().equals("=/=")) {
                                 Nodo id_while = presente.getHijo(0).getHijo(0);
-                                if (!verificarVariable(id_while.getValor(), ambito_actual)) {
-
+                                if (!verificarVariable(id_while.getValor(), ambito_actual) && !isNumeric(id_while.getValor())) {
+                                    
                                     errores_semanticos.add("Error semántico: La variable " + id_while.getValor() + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
                                 } else {
                                     System.out.print("existe la variabale" + id_while.getValor());
@@ -757,8 +829,9 @@ public class temp_main {
                             Nodo presente = hijo.getHijo(i).getHijo(j);
                             while (presente.getValor().equals(":=") || presente.getValor().equals("<:") || presente.getValor().equals(":>") || presente.getValor().equals("~") || presente.getValor().equals(">=") || presente.getValor().equals("<=") || presente.getValor().equals("||") || presente.getValor().equals("=/=")) {
                                 Nodo id_while = presente.getHijo(0).getHijo(0);
-                                if (!verificarVariable(id_while.getValor(), ambito_actual)) {
-
+                                
+                                if (!verificarVariable(id_while.getValor(), ambito_actual) && !isNumeric(id_while.getValor())) {
+                                    
                                     errores_semanticos.add("Error semántico: La variable " + id_while.getValor() + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
                                 } else {
                                     System.out.print("existe la variabale" + id_while.getValor());
@@ -790,7 +863,7 @@ public class temp_main {
                                 for (int k = 0; k < nodo_actual.getHijos().size(); k++) {
                                     if (nodo_actual.getHijo(k).getValor().equals("id")) {
                                         String id_exp;
-                                        if (!verificarVariable(nodo_actual.getHijo(k).getValor(), ambito_actual)) {
+                                        if (verificarVariable(nodo_actual.getHijo(k).getValor(), ambito_actual)) {
                                             id_exp = nodo_actual.getHijo(k).getHijo(0).getValor();
                                             errores_semanticos.add("Error semántico: La variable " + id_exp + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
                                             //System.out.print("no existe la variable"+nodo_actual.getHijo(k).getHijo(0).getValor());
@@ -811,7 +884,8 @@ public class temp_main {
                             Nodo presente = hijo.getHijo(i).getHijo(j);
                             while (presente.getValor().equals(":=") || presente.getValor().equals("<:") || presente.getValor().equals(":>") || presente.getValor().equals("~") || presente.getValor().equals(">=") || presente.getValor().equals("<=") || presente.getValor().equals("||") || presente.getValor().equals("=/=")) {
                                 Nodo id_while = presente.getHijo(0).getHijo(0);
-                                if (!verificarVariable(id_while.getValor(), ambito_actual)) {
+                                System.out.println(isNumeric(id_while.getValor()));
+                                if (!verificarVariable(id_while.getValor(), ambito_actual) ) {
 
                                     errores_semanticos.add("Error semántico: La variable " + id_while.getValor() + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
                                 } else {
@@ -826,7 +900,14 @@ public class temp_main {
             }
         }
     }
-
+    public static boolean isNumeric(String str) {
+        try {
+            Integer.parseInt(str);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
     public static String RecursivaExpresion(Nodo n, String signo) {
         int data1 = 0;
         String dat1 = "";
@@ -1249,48 +1330,135 @@ public class temp_main {
                     }
                     tempTemporal_prin= generarTemp();
                     cuadruplo.add(new Cuadruplo("=",tempTemporal1,"",id_principal));
-//                    String tempGen = "";
-//                    for (int i = 0; i < node.getHijo(3).getHijos().size(); i++) {
-//                        id = node.getHijo(3).getHijo(i).getValor();
-//                        System.out.println(id);
-//                        if (id.equals("expresión")){
-//                            
-//                        }
-//                        if (id.equals("+")||id.equals("-")||id.equals("*")||id.equals("/")) {
-//                            valor = node.getHijo(3).getHijo(i).getValor();
-//                            System.out.println("Este es el signo: "+valor);
-//                            String temporal = RecursivaExpresion(node.getHijo(3), valor);
-//                            tempGen = generarTemp();
-//                            if(!temporal.equals("")){
-//                                cuadruplo.add(new Cuadruplo("=", temporal,"",tempGen));
-//                            }
-//                            cuadruplo.add(new Cuadruplo("=", tempGen,"", node.getHijo(2).getHijo(0).getValor()));
-//                        }
-//                    }
-//=============================================================================================================================================================================================================FIN DE LA MUERTE (EL SUFRIMIENTO NUNCA TERMINA) [AUXILIO ME SECUESTRARON PARA HACER ESTE PROYECTO Y NI ME ESTAN PAGANDO]
-//                    valor = node.getHijo(3).getHijo(0).getHijo(0).getValor();
-//                    cuadruplo.add(new Cuadruplo("=", valor, "", id));
-//                    break;
-//HOLA SI SE ACTUALIZA EN TIEMPO REAL
+                    
                     break;
                 case "expresión":
-                    System.out.println("FALTA UNA EXPRESIÓN AAAAH");
-                    for (int i = 0; i < node.getHijo(3).getHijos().size(); i++) {
+                    tempTemporal_prin = " ";
+                    tempTemporal1 = "";
+                    tempTemporal2 = "";
+                    tempTemporal3 = "";
+                    tempTemporal4 = "";
+                    
+                    for (int i = 0; i < node.getHijos().size(); i++) {
                         id = node.getHijo(i).getValor();
-                        if (id.equals("+") || id.equals("-") || id.equals("*") || id.equals("/")) {
-                            valor = node.getHijo(i).getValor();
-                            RecursivaExpresion(node.getHijo(3), valor);
+                        //System.out.println(id);
+                        if (id.equals("expresión")) {
+                            for (int j = 0; j < node.getHijo(i).getHijos().size(); j++) {
+                                String id2 = node.getHijo(i).getHijo(j).getValor();
+                                System.out.println(id2);
+                                if (id2.equals("expresión")) {
+                                    for (int k = 0; k < node.getHijo(3).getHijo(i).getHijo(j).getHijos().size(); k++) {
+                                        String id3 = node.getHijo(3).getHijo(i).getHijo(j).getHijo(k).getValor();
+                                        System.out.println(id3);
+                                        if (id3.equals("expresión")) {
+                                            for (int l = 0; l < node.getHijo(3).getHijo(i).getHijo(j).getHijo(k).getHijos().size(); l++) {
+                                                String id4 = node.getHijo(3).getHijo(i).getHijo(j).getHijo(k).getHijo(l).getValor();
+                                                System.out.println(id4);
+                                                if (id4.equals("num")) {
+                                                    System.out.println("Ya es el num4");
+                                                } else if (id4.equals("id")) {
+                                                    System.out.println("Ya llegamos al id4");
+                                                } else if (id4.equals("+") || id.equals("-") || id.equals("*") || id.equals("/")) {
+                                                    System.out.println("Ya estamos en simbolos4");
+                                                }
+                                            }
+                                        } else if (id3.equals("num")) {
+                                            System.out.println("Ya es el num3");
+                                        } else if (id3.equals("id")) {
+                                            System.out.println("Ya llegamos al id3");
+                                        } else if (id3.equals("+") || id.equals("-") || id.equals("*") || id.equals("/")) {
+                                            System.out.println("Ya estamos en simbolos3");
+                                        }
+                                    }
+                                } else if (id2.equals("num")) {
+                                    System.out.println("Ya es el num2");
+                                    String numero = node.getHijo(3).getHijo(i).getHijo(j).getHijo(0).getValor();
+                                    String nuevo2 = node.getHijo(3).getHijo(i).getHijo(1).getValor();
+                                    String nuevo3 = node.getHijo(3).getHijo(i).getHijo(2).getValor();
+                                    if (nuevo2.equals("+") || nuevo2.equals("-") || nuevo2.equals("*") || nuevo2.equals("/")) {
+                                        System.out.println("A ver que tiene esto: " + nuevo2);
+                                        String signo = nuevo2;
+                                        String numero2 = node.getHijo(3).getHijo(i).getHijo(1).getHijo(0).getHijo(0).getValor();
+                                        tempTemporal2 = generarTemp();
+                                        cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
+                                    } else if (nuevo3.equals("+") || nuevo3.equals("-") || nuevo3.equals("*") || nuevo3.equals("/")) {
+                                        System.out.println("A ver que tiene esto: " + nuevo3);
+                                        String signo = nuevo3;
+                                        String numero2 = node.getHijo(3).getHijo(i).getHijo(2).getHijo(0).getHijo(0).getValor();
+                                        tempTemporal2 = generarTemp();
+                                        cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
+                                    }
+                                } else if (id2.equals("id")) {
+                                    System.out.println("Ya llegamos al id2");
+                                    String numero = node.getHijo(i).getHijo(j).getHijo(0).getValor();
+                                    String nuevo2 = node.getHijo(i).getHijo(1).getValor();
+                                    String nuevo3 = node.getHijo(i).getHijo(2).getValor();
+                                    if (nuevo2.equals("+") || nuevo2.equals("-") || nuevo2.equals("*") || nuevo2.equals("/")) {
+                                        System.out.println("A ver que tiene esto: " + nuevo2);
+                                        String signo = nuevo2;
+                                        String numero2 = node.getHijo(i).getHijo(1).getHijo(0).getHijo(0).getValor();
+                                        tempTemporal2 = generarTemp();
+                                        cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
+                                    } else if (nuevo3.equals("+") || nuevo3.equals("-") || nuevo3.equals("*") || nuevo3.equals("/")) {
+                                        System.out.println("A ver que tiene esto: " + nuevo3);
+                                        String signo = nuevo3;
+                                        String numero2 = node.getHijo(i).getHijo(2).getHijo(0).getHijo(0).getValor();
+                                        tempTemporal2 = generarTemp();
+                                        cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
+                                    }
+                                }
+                                
+                            }
+                        } else if (id.equals("num")) {
+                            
+                        } else if (id.equals("id")) {
+                            System.out.println("Ya llegamos al id");
+                        } else if (id.equals("+") || id.equals("-") || id.equals("*") || id.equals("/")) {
+                            
+                            for(int r=0;r<node.getHijo(3).getHijo(i).getHijos().size();r++){
+                                String signo_for= node.getHijo(3).getHijo(i).getHijo(r).getValor();
+                                if(signo_for.equals("expresión")){                  //si se encuentra una expresion adentro de los signos
+                                    String numero = node.getHijo(i).getHijo(r).getHijo(0).getHijo(0).getValor();
+                                    String signo =  node.getHijo(i).getHijo(r).getHijo(1).getValor();
+                                    String numero2 =  node.getHijo(i).getHijo(r).getHijo(1).getHijo(0).getValor();
+                                    tempTemporal4=generarTemp();
+                                    cuadruplo.add(new Cuadruplo(signo,numero,numero2,tempTemporal4));
+                                } else if(signo_for.equals("+") || signo_for.equals("-") || signo_for.equals("*") || signo_for.equals("/")){ //signos despues de la expresion
+                                    if(node.getHijo(3).getHijo(i).getHijo(r).getHijo(1).getHijos().size() == 1){   //se mira si hay signos adentro de los signos
+                                    String numero = node.getHijo(i).getHijo(r).getHijo(0).getHijo(0).getValor();
+                                    String signo =  node.getHijo(i).getHijo(r).getHijo(1).getValor();
+                                    tempTemporal3 = generarTemp();
+                                    cuadruplo.add(new Cuadruplo(signo,numero,tempTemporal4,tempTemporal3));
+                                    tempTemporal4 = tempTemporal3;
+                                    
+                                }
+                            }
                         }
+                        }
+                        if(id.equals("+") || id.equals("-") || id.equals("*") || id.equals("/")){
+                            String signo =id;
+                            String numero_sig=node.getHijo(i).getHijo(0).getHijo(0).getValor();
+                            tempTemporal1 = generarTemp();
+                            cuadruplo.add(new Cuadruplo(signo,tempTemporal2,numero_sig,tempTemporal1));
+
+                        }
+
                     }
+                    tempTemporal_prin= generarTemp();
+                    cuadruplo.add(new Cuadruplo("=",tempTemporal1,"",""));
+                    
                     break;
                 case "asignacion":
-                    id = node.getHijo(0).getHijo(0).getValor();
-                    valor = node.getHijo(1).getValor();
-                    if (valor.equals("id")) {
-                        valor = node.getHijo(1).getHijo(0).getValor();
-                    } else {
-                        valor = node.getHijo(3).getHijo(0).getHijo(0).getValor();
+                    valor="";
+                    id="";
+                    for (int i=0;i<node.getHijos().size();i++){
+                        if(node.getHijo(i).getValor().equals("id")){
+                            id = node.getHijo(i).getHijo(0).getValor();
+                        }else if(node.getHijo(i).getValor().equals("valor")){
+                            valor = node.getHijo(i).getHijo(0).getHijo(0).getValor();
+                        }
                         cuadruplo.add(new Cuadruplo("=", valor, "", id));
+                       
                     }
                     break;
                 case "asignación expresión":
