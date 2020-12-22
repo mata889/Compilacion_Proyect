@@ -27,7 +27,10 @@ start->[
 			throw(x);
 		>
 
-		
+		if ( x:>3 && x:>0 && x:>4 || x:>10 )<
+			throwDown(x);
+			throwDown("awa");
+		>
 
 
 		for (i in 0...6) ->
