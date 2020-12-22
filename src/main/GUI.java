@@ -40,11 +40,11 @@ public class GUI extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         ta_output = new javax.swing.JTextArea();
         jPanel6 = new javax.swing.JPanel();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        tf_Cuadrupla = new javax.swing.JTextArea();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jt_cuadruplos = new javax.swing.JTable();
         jPanel7 = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
-        tf_TablaSimbolo = new javax.swing.JTextArea();
+        jt_simbolos = new javax.swing.JTable();
         jPanel5 = new javax.swing.JPanel();
         tf_ruta = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
@@ -70,7 +70,6 @@ public class GUI extends javax.swing.JFrame {
 
         jb_ejecutar.setBackground(new java.awt.Color(255, 255, 255));
         jb_ejecutar.setText("Ejecutar Archivo");
-        jb_ejecutar.setEnabled(false);
         jb_ejecutar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 jb_ejecutarMouseClicked(evt);
@@ -91,17 +90,17 @@ public class GUI extends javax.swing.JFrame {
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jb_ejecutar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
                 .addComponent(jButton3)
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Escribir codigo", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Times New Roman", 3, 14))); // NOI18N
 
         ta_Codigo.setColumns(20);
-        ta_Codigo.setFont(new java.awt.Font("Arial", 0, 18)); // NOI18N
         ta_Codigo.setRows(5);
         jScrollPane2.setViewportView(ta_Codigo);
 
@@ -111,7 +110,7 @@ public class GUI extends javax.swing.JFrame {
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 751, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 422, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -143,7 +142,7 @@ public class GUI extends javax.swing.JFrame {
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 525, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 622, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -174,11 +173,23 @@ public class GUI extends javax.swing.JFrame {
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
 
-        tf_Cuadrupla.setEditable(false);
-        tf_Cuadrupla.setColumns(20);
-        tf_Cuadrupla.setLineWrap(true);
-        tf_Cuadrupla.setRows(5);
-        jScrollPane5.setViewportView(tf_Cuadrupla);
+        jt_cuadruplos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "Operador", "Arg 1", "Arg 2", "Resultado"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane4.setViewportView(jt_cuadruplos);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -186,14 +197,13 @@ public class GUI extends javax.swing.JFrame {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -201,24 +211,37 @@ public class GUI extends javax.swing.JFrame {
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
 
-        tf_TablaSimbolo.setColumns(20);
-        tf_TablaSimbolo.setRows(5);
-        jScrollPane3.setViewportView(tf_TablaSimbolo);
+        jt_simbolos.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+                "variable", "Tipo", "Ambito", "Offset"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane3.setViewportView(jt_simbolos);
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+            .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 561, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 658, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 407, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 420, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -272,12 +295,15 @@ public class GUI extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 590, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(jTabbedPane1)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -288,9 +314,10 @@ public class GUI extends javax.swing.JFrame {
                         .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
-                        .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jTabbedPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -298,7 +325,7 @@ public class GUI extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -319,7 +346,7 @@ public class GUI extends javax.swing.JFrame {
     private void jb_fileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jb_fileMouseClicked
         // Boton para seleccionar el archivo---------------------------------------------------------------------
         // Consigue el archivo
-        temp_main tm = new temp_main();
+        
         int returnVal = fc.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
              fl = fc.getSelectedFile();
@@ -327,21 +354,6 @@ public class GUI extends javax.swing.JFrame {
           // What to do with the file, e.g. display it in a TextArea
           this.ta_Codigo.read( new FileReader( fl.getAbsolutePath() ), null );
           this.tf_ruta.setText(fl.getAbsolutePath());
-          String[] arguments = new String[] {""};
-          arguments[0] = fl.getAbsolutePath();
-          tm.main(arguments);
-          ArrayList<Cuadruplo> cuadruplo = tm.cuadruplo;
-          ArrayList<Variables> tabla = tm.tabla;
-          String Simbolos = "";
-          String Cuadruplos = "";
-          for (Variables variable : tabla) {
-            Simbolos += variable.toString() + "\n";
-          }
-          for (Cuadruplo cuad : cuadruplo) {
-            Cuadruplos += cuad.toString() + "\n";
-          }
-          tf_Cuadrupla.setText(Cuadruplos);
-          tf_TablaSimbolo.setText(Simbolos);
         } catch (Exception ex) {
           //System.out.println("problem accessing file"+file.getAbsolutePath());
         }
@@ -378,54 +390,39 @@ public class GUI extends javax.swing.JFrame {
             PrintWriter tempora=new PrintWriter("temporal.txt");
             tempora.println(ta_Codigo.getText());
             tempora.close();
-            System.out.println("NO EXPLOTO");
+            
+             // Parte léxica y sintáctica:
+            AnalizadorSintactico p = new AnalizadorSintactico(new Lexico(new FileReader("temporal.txt")));
+            p.parse();
+            if((Lexico.errores == 0)){ // && (AnalizadorSIntactico.syntacticErrors ==0)
+                Nodo root = AnalizadorSintactico.arbol;
+                limpiar("");
+                escribirArchivo(print(root));
+                ta_output.setText("Funciono");
+            }else{
+                 ta_output.setText("No funciono. Si fue un error irecuperable porfavor cerrar y abrir el visual otra vez");
+            }
+            
+            // Parte semántica:
+            
         }catch(Exception e){
-            ta_output.setText("No funciono. Si fue un error irrecuperable porfavor cerrar y abrir el visual otra vez");
-            System.out.println("EXPLOTO");
+            e.printStackTrace();
         }
-        temp_main tm2 = new temp_main();  
-        String[] arguments = new String[] {""};
-        arguments[0] = "temporal.txt";
-        System.out.println("LLEGO HASTA AQUI");
-        tm2.main(arguments);
-        ArrayList<Cuadruplo> cuadruplo = tm2.cuadruplo;
-        ArrayList<Variables> tabla = tm2.tabla;
-        String Simbolos = "";
-        String Cuadruplos = "";
-        for (Variables variable : tabla) {
-          Simbolos += variable.toString() + "\n";
-        }
-        for (Cuadruplo cuad : cuadruplo) {
-          Cuadruplos += cuad.toString() + "\n";
-        }
-        tf_Cuadrupla.setText(Cuadruplos);
-        tf_TablaSimbolo.setText(Simbolos);
-//        try{
-//            PrintWriter tempora=new PrintWriter("temporal.txt");
-//            tempora.println(ta_Codigo.getText());
-//            tempora.close();
-//            
-//             // Parte léxica y sintáctica:
-//            AnalizadorSintactico p = new AnalizadorSintactico(new Lexico(new FileReader("temporal.txt")));
-//            p.parse();
-//            if((Lexico.errores == 0)){ // && (AnalizadorSIntactico.syntacticErrors ==0)
-//                Nodo root = AnalizadorSintactico.arbol;
-//                limpiar("");
-//                escribirArchivo(print(root));
-//                ta_output.setText("Funciono");
-//            }else{
-//                 ta_output.setText("No funciono. Si fue un error irecuperable porfavor cerrar y abrir el visual otra vez");
-//            }
-//            
-//            // Parte semántica:
-//            
-//        }catch(Exception e){
-//            e.printStackTrace();
-//        }
     }//GEN-LAST:event_jButton3MouseClicked
 
     private void jTabbedPane1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTabbedPane1MouseClicked
         //lenar tabla
+        temp_main m2 = new temp_main();
+        DefaultTableModel simbolos = (DefaultTableModel) jt_simbolos.getModel();
+        ArrayList<Variables> lista = m2.tabla;
+        Object rowData[] = new Object[4];
+        for (int i = 0; i < lista.size(); i++) {
+            rowData[0] = lista.get(i).tipo;
+            rowData[1] = lista.get(i).id;
+            rowData[2] = lista.get(i).ambito;
+            rowData[3] = lista.get(i).offset;
+            simbolos.addRow(rowData);
+        }
     }//GEN-LAST:event_jTabbedPane1MouseClicked
 
 
@@ -593,14 +590,14 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JButton jb_ejecutar;
     private javax.swing.JButton jb_file;
+    private javax.swing.JTable jt_cuadruplos;
+    private javax.swing.JTable jt_simbolos;
     private javax.swing.JTextArea ta_Codigo;
     private javax.swing.JTextArea ta_output;
-    private javax.swing.JTextArea tf_Cuadrupla;
-    private javax.swing.JTextArea tf_TablaSimbolo;
     private javax.swing.JTextField tf_ruta;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,43 +1,41 @@
 start->[
-	var num numGlobal;
-	func void main()[
-		var num varchar;
-		varchar = 0;	
-		var letter varExeter = 'a';
-		var bool varEchelon = True;
-		var num x = 5 + varchar/(5-2);
-		wle (x <: 3)-><
-			var letter letra = 'x';
-			block (letra)->
-				case 'x' <
-					var num z;
-				>
-				case 'z' <
-					var num z;
-				>
-				default <>
-			end
-			throw(x);
-		>
+    var letter aja=c;
+    var arr = new Array(1)
+    var arr2 = new Array(2);
+    if(cont :>0 ~ ejemplo:< )<
+        throwDown(mayor);
+    >eif(cont:=2)<
+        throwDown(menor);
+    >else<
+        throwDown(imposible);
+    >
+    
+    for(initial in 1...3)->
+    <
+        catch(char,lectura),
+        throw(Hola);
+        throwDown(HolaComOEstas);
+        var num cont = 1;
+    >
+    func num Recursiva (letter Zeta)[
+        block(cont)->
+            case 0 <
+                var num Zeta=1;
+                throw(cont);
+            >
+            case 1<
+                var num Zeta=2;
+                throw(cont);
+            >
+            default<
+                throwDown(No);
+            >
+        end
+    reply(Zeta)
+    ]
+    wle(expresion)->
+    <
+        var num express=1;
+    >
 
-		if ( x:>3 && x:>0 && x:>4 || x:>10 )<
-			throwDown(x);
-			throwDown("awa");
-		>
-
-		for (i in 06) ->
-		<
-			if ( x<:3 || x :> 15 && x :> 10 )<
-				throwDown(x);
-			>else<
-				var letter letrita = 'c';
-				throw(i);
-			>
-		>
-	]
-	func num imprimir()[
-		var num ret = 0;
-		reply(ret)
-	]
-	
 ]

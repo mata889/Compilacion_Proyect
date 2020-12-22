@@ -1,10 +1,4 @@
 start->[
-	func void main()[
-		var num varchar;
-		varchar = 0	
-		var letter varExeter = 'a';
-		var bool varEchelon = True;
-		var num x = 5 + varchar/(5-2);
-	]
-	
+	var num id
+	var arr = new Array(1);	
 ]
