@@ -1,23 +1,17 @@
 start->[
     
-	## Creando funciones
-	func num suma(num numero1, num numero2)[
-       	var num suma = 0;
-		suma = numero1 + numero2;
-		reply(suma)
-	]
-
-	func void imprimir_respuesta(num variable)[
-		throw(variable);
-	]
 	
-	var num numero1;
-	var num numero2;
-	throw("numero");
-	catch(numero1);
+	func void main()[
+		var num parametro1 = 0;
+		var num parametro2 = 0;
+		var num parametro3 = 0;
+		var num parametro4 = 0;
+		var num parametro5 = 0;
+		var num parametro6 = 0;
+		awa(parametro1,parametro2,parametro3,parametro4,parametro5, parametro6);
+	]
 
-	throw("numero");
-	catch(numero2);
-	var num resultado = suma(numero1, numero2);
-	imprimir_respuesta(resultado);
+	func num awa(num par1,num par2,num par3,num par4, num par5, num asd)[
+		reply(par1)
+	]
 ]
