@@ -104,7 +104,7 @@ commentarios_der="/#"
     "main"         { return new Symbol(sym.MAIN,yycolumn,yyline,yytext()); }
     {BOOL}          { return new Symbol(sym.BOOL,yycolumn,yyline,yytext()); }
     {LETTER}        { return new Symbol(sym.LETTER,yycolumn,yyline,yytext()); }
-    {CADENA}        { return new Symbol(sym.CADENA,yycolumn,yyline,yytext()); }
+    ( "\""(.)*"\"" )    { return new Symbol(sym.CADENA,yycolumn,yyline,yytext()); }
     {NUM}           { return new Symbol(sym.NUM,yycolumn,yyline,yytext()); }
     {id}            { return new Symbol(sym.ID,yycolumn,yyline,yytext()); }
     //{valorChar}     { return new Symbol(sym.VALORCHAR,yycolumn,yyline,yytext()); }
