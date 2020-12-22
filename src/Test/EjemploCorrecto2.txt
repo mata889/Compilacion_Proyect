@@ -1,18 +1,35 @@
 start->[
-    var num id;
-    if(cont :>0 ~ ejemplo:<69 )<
-        throwDown(mayor);
-    >else if(cont:=2)<
-        throwDown(menor);
-    >else<
-        throwDown(imposible);
-    >
-    
-    for(initial in 1...3)->
-    <
-        catch(char,lectura);
-        throw(Hola);
-        throwDown(HolaComOEstas);
-        var num cont = 1;
-    >	
+	var num numGlobal;
+	func void main()[
+		var num varchar;
+		varchar = 0;	
+		var letter varExeter = 'a';
+		var bool varEchelon = True;
+		var num x = 5 + varchar/(5-2);
+
+		wle (x <: 3)-><
+			var letter letra = 'x';
+			block (letra)->
+				case 'x' <
+					var num z;
+				>
+				case 'z' <
+					var num z;
+				>
+				default <>
+			end
+			throw(x);
+		>
+
+		for (i in 0...6) ->
+		<
+			if ( x<:3 || x :> 15 && x :> 10 )<
+				throwDown(x);
+			>else<
+				var letter letrita = 'c';
+				throw(i);
+			>
+		>
+	]
+	
 ]

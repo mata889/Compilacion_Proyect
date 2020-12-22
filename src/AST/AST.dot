@@ -45,7 +45,7 @@ digraph {
 "13,num" -> "14,0";
 "279,body" -> "27,declaracion y asignacion";
 "27,declaracion y asignacion" -> "28,var";
-"27,declaracion y asignacion" -> "16,entero";
+"27,declaracion y asignacion" -> "26,caracter";
 "27,declaracion y asignacion" -> "30,id";
 "30,id" -> "31,varExeter";
 "27,declaracion y asignacion" -> "32,valor";
