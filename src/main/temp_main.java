@@ -30,10 +30,13 @@ public class temp_main {
     static ArrayList<String> mensajes = new ArrayList();
     static String ambito_siguiente = "";
     static String ambito_actual = "";
-
+    //File
+    static String camino = "";
     public static void main(String args[]) {
 
         //Ejecutar esto si se llegaron a hacer cambios:
+        System.out.println(args.length);
+        camino = args[0];
         compilar_archivos();
         boolean mvAl = moverArch("Lexico.java");
         boolean mvAS = moverArch("AnalizadorSintactico.java");
@@ -52,25 +55,25 @@ public class temp_main {
         } else {
             System.out.println("ROOT NULO");
         }
-
-        System.out.println(" ==== Semántico ==== ");
-        for (Variables variable : tabla) {
-            System.out.println(variable.toString());
-        }
-        for (Funcion funcion : funciones) {
-            System.out.println(funcion.toString());
-        }
-        System.out.println("\n -------------------------------------- \n");
-        System.out.println("ERRORES: ");
-        for (String error : errores_semanticos) {
-            System.out.println(error.toString());
-        }
-
-        System.out.println("\n -------------------------------------- \n");
-        System.out.println(" ==== Código intermedio ==== ");
-        for (Cuadruplo cuad : cuadruplo) {
-            System.out.println(cuad.toString());
-        }
+//
+//        System.out.println(" ==== Semántico ==== ");
+//        for (Variables variable : tabla) {
+//            System.out.println(variable.toString());
+//        }
+//        for (Funcion funcion : funciones) {
+//            System.out.println(funcion.toString());
+//        }
+//        System.out.println("\n -------------------------------------- \n");
+//        System.out.println("ERRORES: ");
+//        for (String error : errores_semanticos) {
+//            System.out.println(error.toString());
+//        }
+//
+//        System.out.println("\n -------------------------------------- \n");
+//        System.out.println(" ==== Código intermedio ==== ");
+//        for (Cuadruplo cuad : cuadruplo) {
+//            System.out.println(cuad.toString());
+//        }
     }
 
     public static void compilar_archivos() {
@@ -123,7 +126,9 @@ public class temp_main {
         Nodo root = null;
         try {
             //AnalizadorSintactico asin = new AnalizadorSintactico(new Lexico(new FileReader("src/Test/prueba.txt")));
-            AnalizadorSintactico asin = new AnalizadorSintactico(new Lexico(new FileReader("src/Test/alpha.txt")));
+
+            AnalizadorSintactico asin = new AnalizadorSintactico(new Lexico(new FileReader(camino)));
+
             asin.parse();
             //arbol
             limpiar("");
