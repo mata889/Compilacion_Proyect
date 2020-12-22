@@ -32,6 +32,7 @@ public class temp_main {
     static String ambito_actual = "";
     //File
     static String camino = "";
+
     public static void main(String args[]) {
 
         //Ejecutar esto si se llegaron a hacer cambios:
@@ -393,7 +394,7 @@ public class temp_main {
 
                             } else if (nodo_actual.getValor().equals("id")) {
                                 String valor = nodo_actual.getHijo(0).getValor();
-                               
+
                                 if ((tipoId = getTipoVariable(valor, ambito_actual)) != null) { // Valida si existe en el cuerpo de la función
                                     if (!tipoId.equals(tipo)) {
                                         errores_semanticos.add("Error semántico: La variable " + valor + " recibe un tipo incorrecto, se esperaba un entero");
@@ -432,7 +433,7 @@ public class temp_main {
                 }
             } else if (hijo.getValor().equals("expresión")) {
                 String tipo = hijo.getHijo(1).getValor();
-                
+
                 for (int i = 0; i < hijo.getHijos().size(); i++) {
                     if (hijo.getHijo(i).getValor().equals("id")) {
                         if (!verificarVariable(hijo.getHijo(i).getHijo(0).getValor(), ambito_actual)) { //se revisa si el id ha sido invocado
@@ -450,7 +451,7 @@ public class temp_main {
                                     if (nodo_actual.getHijo(k).getValor().equals("id")) {
                                         String id_exp;
                                         if (!verificarVariable(nodo_actual.getHijo(k).getValor(), ambito_actual)) {
-                                            
+
                                             id_exp = nodo_actual.getHijo(k).getHijo(0).getValor();
 
                                             errores_semanticos.add("Error semántico: La variable " + id_exp + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
@@ -461,7 +462,7 @@ public class temp_main {
 
                             } else if (nodo_actual.getValor().equals("id")) {
                                 String valor = nodo_actual.getHijo(0).getValor();
-                                
+
                                 if ((tipoId = getTipoVariable(valor, ambito_actual)) != null) { // Valida si existe en el cuerpo de la función
                                     if (!tipoId.equals(tipo)) {
                                         errores_semanticos.add("Error semántico: La variable " + valor + " recibe un tipo incorrecto, se esperaba un entero");
@@ -486,9 +487,9 @@ public class temp_main {
                             Nodo presente = hijo.getHijo(i).getHijo(j);
                             while (presente.getValor().equals(":=") || presente.getValor().equals("<:") || presente.getValor().equals(":>") || presente.getValor().equals("~") || presente.getValor().equals(">=") || presente.getValor().equals("<=") || presente.getValor().equals("||") || presente.getValor().equals("=/=") || presente.getValor().equals("&&")) {
                                 Nodo id_while = presente.getHijo(0).getHijo(0);
-                                
+
                                 if (!verificarVariable(id_while.getValor(), ambito_actual)) {
-                                    
+
                                     errores_semanticos.add("Error semántico: La variable " + id_while.getValor() + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
                                 } else {
                                     System.out.print("existe la variabale" + id_while.getValor());
@@ -769,7 +770,7 @@ public class temp_main {
                                 }
                             } else if (nodo_actual.getValor().equals("id")) {
                                 String valor = nodo_actual.getHijo(0).getValor();
-                                
+
                                 if (!verificarVariable(valor, ambito_actual)) {
 
                                     errores_semanticos.add("Error semántico: La variable " + valor + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
@@ -823,7 +824,7 @@ public class temp_main {
                                 }
                             } else if (nodo_actual.getValor().equals("id")) {
                                 String valor = nodo_actual.getHijo(0).getValor();
-                                
+
                                 if (!verificarVariable(valor, ambito_actual)) {
 
                                     errores_semanticos.add("Error semántico: La variable " + valor + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
@@ -878,7 +879,7 @@ public class temp_main {
                                 }
                             } else if (nodo_actual.getValor().equals("id")) {
                                 String valor = nodo_actual.getHijo(0).getValor();
-                                
+
                                 if (!verificarVariable(valor, ambito_actual)) {
 
                                     errores_semanticos.add("Error semántico: La variable " + valor + " no ha sido declarada con anterioridad, ámbito " + ambito_actual);
@@ -922,7 +923,7 @@ public class temp_main {
         String dat2 = "";
         String temporal = "";
         String temp = "";
-       
+
         for (int i = 0; i < n.getHijos().size(); i++) {
             System.out.println("El valor de este ciclo for es: " + n.getHijo(i).getValor());
             if (n.getHijo(i).getValor().equals("expresión")) {
@@ -1134,7 +1135,7 @@ public class temp_main {
         String id, valor;
         Nodo node = body;
         if (node != null) {
-            
+
             switch (node.getValor()) {
                 case "declaración de funcion":
                     id = node.getHijo(2).getHijo(0).getValor();
@@ -1242,7 +1243,7 @@ public class temp_main {
                     intermedio(node.getHijo(0));
                     break;
                 case "declaracion y asignacion":
-                    
+
                     id = node.getHijo(2).getHijo(0).getValor();
                     valor = node.getHijo(3).getHijo(0).getHijo(0).getValor();
                     cuadruplo.add(new Cuadruplo("=", valor, "", id));
@@ -1257,19 +1258,19 @@ public class temp_main {
                     id_principal = node.getHijo(2).getHijo(0).getValor();
                     for (int i = 0; i < node.getHijo(3).getHijos().size(); i++) {
                         id = node.getHijo(3).getHijo(i).getValor();
-                        
+
                         if (id.equals("expresión")) {
                             for (int j = 0; j < node.getHijo(3).getHijo(i).getHijos().size(); j++) {
                                 String id2 = node.getHijo(3).getHijo(i).getHijo(j).getValor();
-                                
+
                                 if (id2.equals("expresión")) {
                                     for (int k = 0; k < node.getHijo(3).getHijo(i).getHijo(j).getHijos().size(); k++) {
                                         String id3 = node.getHijo(3).getHijo(i).getHijo(j).getHijo(k).getValor();
-                                        
+
                                         if (id3.equals("expresión")) {
                                             for (int l = 0; l < node.getHijo(3).getHijo(i).getHijo(j).getHijo(k).getHijos().size(); l++) {
                                                 String id4 = node.getHijo(3).getHijo(i).getHijo(j).getHijo(k).getHijo(l).getValor();
-                                                
+
                                                 if (id4.equals("num")) {
                                                     System.out.println("Ya es el num4");
                                                 } else if (id4.equals("id")) {
@@ -1287,36 +1288,36 @@ public class temp_main {
                                         }
                                     }
                                 } else if (id2.equals("num")) {
-                                    
+
                                     String numero = node.getHijo(3).getHijo(i).getHijo(j).getHijo(0).getValor();
                                     String nuevo2 = node.getHijo(3).getHijo(i).getHijo(1).getValor();
                                     String nuevo3 = node.getHijo(3).getHijo(i).getHijo(2).getValor();
                                     if (nuevo2.equals("+") || nuevo2.equals("-") || nuevo2.equals("*") || nuevo2.equals("/")) {
-                                        
+
                                         String signo = nuevo2;
                                         String numero2 = node.getHijo(3).getHijo(i).getHijo(1).getHijo(0).getHijo(0).getValor();
                                         tempTemporal2 = generarTemp();
                                         cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
                                     } else if (nuevo3.equals("+") || nuevo3.equals("-") || nuevo3.equals("*") || nuevo3.equals("/")) {
-                                        
+
                                         String signo = nuevo3;
                                         String numero2 = node.getHijo(3).getHijo(i).getHijo(2).getHijo(0).getHijo(0).getValor();
                                         tempTemporal2 = generarTemp();
                                         cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
                                     }
                                 } else if (id2.equals("id")) {
-                                    
+
                                     String numero = node.getHijo(3).getHijo(i).getHijo(j).getHijo(0).getValor();
                                     String nuevo2 = node.getHijo(3).getHijo(i).getHijo(1).getValor();
                                     String nuevo3 = node.getHijo(3).getHijo(i).getHijo(2).getValor();
                                     if (nuevo2.equals("+") || nuevo2.equals("-") || nuevo2.equals("*") || nuevo2.equals("/")) {
-                                        
+
                                         String signo = nuevo2;
                                         String numero2 = node.getHijo(3).getHijo(i).getHijo(1).getHijo(0).getHijo(0).getValor();
                                         tempTemporal2 = generarTemp();
                                         cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
                                     } else if (nuevo3.equals("+") || nuevo3.equals("-") || nuevo3.equals("*") || nuevo3.equals("/")) {
-                                        
+
                                         String signo = nuevo3;
                                         String numero2 = node.getHijo(3).getHijo(i).getHijo(2).getHijo(0).getHijo(0).getValor();
                                         tempTemporal2 = generarTemp();
@@ -1328,7 +1329,7 @@ public class temp_main {
                         } else if (id.equals("num")) {
 
                         } else if (id.equals("id")) {
-                            
+
                         } else if (id.equals("+") || id.equals("-") || id.equals("*") || id.equals("/")) {
 
                             for (int r = 0; r < node.getHijo(3).getHijo(i).getHijos().size(); r++) {
@@ -1373,16 +1374,15 @@ public class temp_main {
 
                     for (int i = 0; i < node.getHijos().size(); i++) {
                         id = node.getHijo(i).getValor();
-                        
 
                         if (id.equals("expresión")) {                                       //expresiones
                             for (int j = 0; j < node.getHijo(i).getHijos().size(); j++) {
                                 String id2 = node.getHijo(i).getHijo(j).getValor();
-                                
+
                                 if (id2.equals("expresión")) {                          //expresiones de 1 grado
                                     for (int k = 0; k < node.getHijo(3).getHijo(i).getHijo(j).getHijos().size(); k++) {
                                         String id3 = node.getHijo(3).getHijo(i).getHijo(j).getHijo(k).getValor();
-                                        
+
                                         if (id3.equals("expresión")) {                          //expresiones de 2 grado
                                             for (int l = 0; l < node.getHijo(3).getHijo(i).getHijo(j).getHijo(k).getHijos().size(); l++) {
                                                 String id4 = node.getHijo(3).getHijo(i).getHijo(j).getHijo(k).getHijo(l).getValor();
@@ -1404,37 +1404,37 @@ public class temp_main {
                                         }
                                     }
                                 } else if (id2.equals("num")) {             //se encuentra num en segundo grado
-                                    
+
                                     String numero = node.getHijo(3).getHijo(i).getHijo(j).getHijo(0).getValor();
                                     String nuevo2 = node.getHijo(3).getHijo(i).getHijo(1).getValor();
                                     String nuevo3 = node.getHijo(3).getHijo(i).getHijo(2).getValor();
                                     if (nuevo2.equals("+") || nuevo2.equals("-") || nuevo2.equals("*") || nuevo2.equals("/")) {
-                                        
+
                                         String signo = nuevo2;
                                         String numero2 = node.getHijo(3).getHijo(i).getHijo(1).getHijo(0).getHijo(0).getValor();
                                         tempTemporal2 = generarTemp();
                                         cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
                                     } else if (nuevo3.equals("+") || nuevo3.equals("-") || nuevo3.equals("*") || nuevo3.equals("/")) {
-                                        
+
                                         String signo = nuevo3;
                                         String numero2 = node.getHijo(3).getHijo(i).getHijo(2).getHijo(0).getHijo(0).getValor();
                                         tempTemporal2 = generarTemp();
                                         cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
                                     }
                                 } else if (id2.equals("id")) {          //se encuentra id en segundo grado
-                                    
+
                                     String numero = node.getHijo(i).getHijo(0).getHijo(0).getValor();
-                                    
+
                                     String nuevo2 = node.getHijo(i).getHijo(1).getValor();
                                     String nuevo3 = node.getHijo(i).getHijo(2).getValor();
                                     if (nuevo2.equals("+") || nuevo2.equals("-") || nuevo2.equals("*") || nuevo2.equals("/")) {
-                                        
+
                                         String signo = nuevo2;
                                         String numero2 = node.getHijo(i).getHijo(1).getHijo(0).getHijo(0).getValor();
                                         tempTemporal2 = generarTemp();
                                         cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
                                     } else if (nuevo3.equals("+") || nuevo3.equals("-") || nuevo3.equals("*") || nuevo3.equals("/")) {
-                                        
+
                                         String signo = nuevo3;
                                         String numero2 = node.getHijo(i).getHijo(2).getHijo(0).getHijo(0).getValor();
                                         tempTemporal2 = generarTemp();
@@ -1450,13 +1450,13 @@ public class temp_main {
                                             presente = presente.getHijo(1);
                                             tempTemporal2 = tempTemporal3;
                                         }
-                                       
+
                                         signo = nuevo2;
                                         String numero2 = node.getHijo(i).getHijo(1).getHijo(0).getHijo(0).getValor();
                                         tempTemporal2 = generarTemp();
                                         cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
                                     } else if (nuevo3.equals(":=") || nuevo3.equals("<:") || nuevo3.equals(":>") || nuevo3.equals("~") || nuevo3.equals(">=") || nuevo3.equals("<=") || nuevo3.equals("||") || nuevo3.equals("=/=") || nuevo3.equals("&&")) {
-                                        
+
                                         String signo = nuevo3;
                                         String numero2 = node.getHijo(i).getHijo(2).getHijo(0).getHijo(0).getValor();
                                         tempTemporal2 = generarTemp();
@@ -1467,17 +1467,17 @@ public class temp_main {
                             }
                         } else if (id.equals("num")) {
                             String numero = node.getHijo(i).getHijo(0).getValor();
-                            
+
                             String nuevo2 = node.getHijo(1).getValor();
                             String nuevo3 = node.getHijo(2).getValor();
                             if (nuevo2.equals("+") || nuevo2.equals("-") || nuevo2.equals("*") || nuevo2.equals("/")) {
-                                
+
                                 String signo = nuevo2;
                                 String numero2 = node.getHijo(i).getHijo(1).getHijo(0).getHijo(0).getValor();
                                 tempTemporal2 = generarTemp();
                                 cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
                             } else if (nuevo3.equals("+") || nuevo3.equals("-") || nuevo3.equals("*") || nuevo3.equals("/")) {
-                                
+
                                 String signo = nuevo3;
                                 String numero2 = node.getHijo(2).getHijo(0).getHijo(0).getValor();
                                 tempTemporal2 = generarTemp();
@@ -1493,13 +1493,13 @@ public class temp_main {
                                     presente = presente.getHijo(1);
                                     tempTemporal2 = tempTemporal3;
                                 }
-                                
+
                                 signo = nuevo2;
                                 String numero2 = node.getHijo(1).getHijo(0).getHijo(0).getValor();
                                 tempTemporal2 = generarTemp();
                                 cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
                             } else if (nuevo3.equals(":=") || nuevo3.equals("<:") || nuevo3.equals(":>") || nuevo3.equals("~") || nuevo3.equals(">=") || nuevo3.equals("<=") || nuevo3.equals("||") || nuevo3.equals("=/=") || nuevo3.equals("&&")) {
-                                
+
                                 String signo = nuevo3;
                                 String numero2 = node.getHijo(2).getHijo(0).getHijo(0).getValor();
                                 tempTemporal2 = generarTemp();
@@ -1508,17 +1508,17 @@ public class temp_main {
                         } else if (id.equals("id")) {
 
                             String numero = node.getHijo(i).getHijo(0).getValor();
-                            
+
                             String nuevo2 = node.getHijo(1).getValor();
                             String nuevo3 = node.getHijo(2).getValor();
                             if (nuevo2.equals("+") || nuevo2.equals("-") || nuevo2.equals("*") || nuevo2.equals("/")) {
-                                
+
                                 String signo = nuevo2;
                                 String numero2 = node.getHijo(i).getHijo(1).getHijo(0).getHijo(0).getValor();
                                 tempTemporal2 = generarTemp();
                                 cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
                             } else if (nuevo3.equals("+") || nuevo3.equals("-") || nuevo3.equals("*") || nuevo3.equals("/")) {
-                                
+
                                 String signo = nuevo3;
                                 String numero2 = node.getHijo(2).getHijo(0).getHijo(0).getValor();
                                 tempTemporal2 = generarTemp();
@@ -1534,13 +1534,13 @@ public class temp_main {
                                     presente = presente.getHijo(1);
                                     tempTemporal2 = tempTemporal3;
                                 }
-                                
+
                                 signo = nuevo2;
                                 String numero2 = node.getHijo(1).getHijo(0).getHijo(0).getValor();
                                 tempTemporal2 = generarTemp();
                                 cuadruplo.add(new Cuadruplo(signo, numero, numero2, tempTemporal2));
                             } else if (nuevo3.equals(":=") || nuevo3.equals("<:") || nuevo3.equals(":>") || nuevo3.equals("~") || nuevo3.equals(">=") || nuevo3.equals("<=") || nuevo3.equals("||") || nuevo3.equals("=/=") || nuevo3.equals("&&")) {
-                                
+
                                 String signo = nuevo3;
                                 String numero2 = node.getHijo(2).getHijo(0).getHijo(0).getValor();
                                 tempTemporal2 = generarTemp();
@@ -1644,7 +1644,6 @@ public class temp_main {
             temporales.add(new Temporal(i, "", false));
         }
         String codigoFinal = "";
-        String ambitoActual = "";
         codigoFinal += ".data\n";
 
         // Variables globales: 
@@ -1818,6 +1817,27 @@ public class temp_main {
                         codigoFinal += "       b _fin_" + ambito_siguiente + "\n";
                     }
                     break;
+                case "Call":
+                    int contadorVivos = 0;
+                    for (int i = 0; i < parametros.size(); i++) {
+                        if (parametros.get(i).isVivo()) {
+                            contadorVivos += 4;
+                            codigoFinal += "       sw $t" + i + ",-" + contadorVivos + "($sp)\n";
+                        }
+                    }
+                    if (contadorVivos > 0) {
+                        codigoFinal += "       sub $sp, $sp, " + contadorVivos + "\n";
+                    }
+                    codigoFinal += "       jal _" + currentCuadruplo.getArgumento1() + "\n";
+                    for (int i = parametros.size() - 1; i >= 0; i--) {
+                        if (parametros.get(i).isVivo()) {
+                            codigoFinal += "       lw $t" + i + ",0($sp)\n"
+                                    + "       add $sp,$sp,4\n";
+                        }
+                    }
+                    arg = 0;
+                    contA = 0;
+                    break;
                 case "End":
                     if (ambito_siguiente.equals("main")) {
                         codigoFinal += "       li $v0,10\n"
@@ -1843,38 +1863,27 @@ public class temp_main {
                         codigoFinal += "       jr $ra\n";
                     }
                     break;
-                case "Call":
-                    int contadorVivos = 0;
-                    for (int i = 0; i < parametros.size(); i++) {
-                        if (parametros.get(i).isVivo()) {
-                            contadorVivos += 4;
-                            codigoFinal += "       sw $t" + i + ",-" + contadorVivos + "($sp)\n";
-                        }
-                    }
-                    if (contadorVivos > 0) {
-                        codigoFinal += "       sub $sp, $sp, " + contadorVivos + "\n";
-                    }
-                    codigoFinal += "       jal _" + currentCuadruplo.getArgumento1() + "\n";
-                    for (int i = parametros.size() - 1; i >= 0; i--) {
-                        if (parametros.get(i).isVivo()) {
-                            codigoFinal += "       lw $t" + i + ",0($sp)\n"
-                                    + "       add $sp,$sp,4\n";
-                        }
-                    }
-                    arg = 0;
-                    contA = 0;
-                    break;
-                case "ETIQ":
-                    codigoFinal += "_" + currentCuadruplo.getArgumento1() + ":\n";
-                    break;
-                case "GOTO":
-                    codigoFinal += "       b _" + currentCuadruplo.getArgumento1() + "\n";
-                    break;
-                case "Throwdown":
-                case "Throw":
+                case "catch":
                     String tipo = "";
                     codigoFinal += "\n       li $v0,";
                     String var = currentCuadruplo.getArgumento1();
+                    if ((tipo = getTipoVariableFinal(currentCuadruplo.getArgumento1(), "Start")) != null) { // Ver si la variable es global
+                        if (tipo.equals("entero")) {
+                            codigoFinal += " 1"
+                                    + "\n       syscall"
+                                    + "\n       sw $v0, _" + currentCuadruplo.getArgumento1() + "\n";
+                        } else if (tipo.equals("caracter")) {
+                            codigoFinal += " 12"
+                                    + "\n       syscall"
+                                    + "\n       sw $v0, _" + currentCuadruplo.getArgumento1();
+                        }
+                    }
+                    break;
+                case "Throwdown":
+                case "Throw":
+                    tipo = "";
+                    codigoFinal += "\n       li $v0,";
+                    var = currentCuadruplo.getArgumento1();
                     if (mensajes.contains(var)) {
                         codigoFinal += " 4"
                                 + "\n       la $a0, " + "_msg" + mensajes.indexOf(var)
@@ -1909,27 +1918,155 @@ public class temp_main {
 
                     }
                     break;
-                case "catch":
-                    tipo = "";
-                    codigoFinal += "\n       li $v0,";
-                    var = currentCuadruplo.getArgumento1();
-                    if ((tipo = getTipoVariableFinal(currentCuadruplo.getArgumento1(), "Start")) != null) { // Ver si la variable es global
-                        if (tipo.equals("entero")) {
-                            codigoFinal += " 1"
-                                    + "\n       syscall"
-                                    + "\n       sw $v0, _" + currentCuadruplo.getArgumento1()+ "\n";
-                        }  else if (tipo.equals("caracter")) {
-                            codigoFinal += " 12"
-                                    + "\n       syscall"
-                                    + "\n       sw $v0, _" + currentCuadruplo.getArgumento1();
+                case "ETIQ":
+                    codigoFinal += "_" + currentCuadruplo.getArgumento1() + ":\n";
+                    break;
+                case "GOTO":
+                    codigoFinal += "       b _" + currentCuadruplo.getArgumento1() + "\n";
+                    break;
+                case "*":
+                case "+":
+                case "-":
+                case "/":
+                    String numero = "[0-9]+";
+                    int t1 = 0;
+                    int t2 = 0;
+                    // Se verifica si el primer y segundo argumento es un temporal 
+                    if (currentCuadruplo.getArgumento1().contains("#t") && currentCuadruplo.getArgumento2().contains("#t")) {
+                        for (int i = 0; i < 10; i++) {
+                            if (currentCuadruplo.getArgumento1().equals(temporales.get(i).activado)) {
+                                t1 = i;
+                            }
+                            if (currentCuadruplo.getArgumento2().equals(temporales.get(i).activado)) {
+                                t2 = i;
+                            }
                         }
-                    } 
+                        // Se verifica si el primer argumento es un temporal 
+                    } else if (currentCuadruplo.getArgumento1().contains("#t")) {
+                        boolean chosen = false;
+                        for (int i = 0; i < 10; i++) {
+                            if (currentCuadruplo.getArgumento1().equals(temporales.get(i).activado)) {
+                                t1 = i;
+                            }
+                            if (!temporales.get(i).isVivo() && !chosen) {
+                                t2 = i;
+                                temporales.get(i).setVivo(true);
+                                chosen = true;
+                            }
+                        }
+                        if (currentCuadruplo.getArgumento2().matches(numero)) {
+                            codigoFinal += "       li $t" + t2 + ", " + currentCuadruplo.getArgumento2() + "\n";
+                        } else if (currentCuadruplo.getArgumento2() != "") {
+                            if (isLocalVariable(currentCuadruplo.getArgumento2())) {
+                                if (isParameter(currentCuadruplo.getArgumento2(), ambito_siguiente)) {
+                                    int par = getParamIndex(parametros, currentCuadruplo.getArgumento2());
+                                    codigoFinal += "       move $t" + t2 + ", $s" + par + "\n";
+                                } else {
+                                    codigoFinal += "       lw $t" + t2 + ", -" + getOffsetVariable(currentCuadruplo.getArgumento2()) + "($fp)\n";
+                                }
+                            } else {
+                                codigoFinal += "       lw $t" + t2 + ", _" + currentCuadruplo.getArgumento2() + "\n";
+                            }
+                        }
+                        // Se verifica si el segundo argumento es un temporal 
+                    } else if (currentCuadruplo.getArgumento2().contains("#t")) {
+                        boolean chosen = false;
+                        for (int i = 0; i < 10; i++) {
+                            if (currentCuadruplo.getArgumento2().equals(temporales.get(i).activado)) {
+                                t2 = i;
+                            }
+                            if (!temporales.get(i).isVivo() && !chosen) {
+                                t1 = i;
+                                temporales.get(i).setVivo(true);
+                                chosen = true;
+                            }
+                        }
+                        if (currentCuadruplo.getArgumento1().matches(numero)) {
+                            codigoFinal += "       li $t" + t1 + ", " + currentCuadruplo.getArgumento1() + "\n";
+                        } else if (currentCuadruplo.getArgumento1() != "") {
+                            if (isLocalVariable(currentCuadruplo.getArgumento1())) {
+                                if (isParameter(currentCuadruplo.getArgumento1(), ambito_siguiente)) {
+                                    int par = getParamIndex(parametros, currentCuadruplo.getArgumento1());
+                                    codigoFinal += "       move $t" + t1 + ", $s" + par + "\n";
+                                } else {
+                                    codigoFinal += "       lw $t" + t1 + ", -" + getOffsetVariable(currentCuadruplo.getArgumento1()) + "($fp)\n";
+                                }
+                            } else {
+                                codigoFinal += "       lw $t" + t1 + ", _" + currentCuadruplo.getArgumento1() + "\n";
+                            }
+                        }
+                    } else {
+                        for (int i = 0; i < 10; i++) {
+                            if (!temporales.get(i).isVivo()) {
+                                t1 = i;
+                                temporales.get(i).setVivo(true);
+                                break;
+                            }
+                        }
+                        for (int i = 0; i < 10; i++) {
+                            if (!temporales.get(i).isVivo()) {
+                                t2 = i;
+                                temporales.get(i).setVivo(true);
+                                break;
+                            }
+                        }
+                        if (currentCuadruplo.getArgumento1().matches(numero)) {
+                            codigoFinal += "       li $t" + t1 + ", " + currentCuadruplo.getArgumento1() + "\n";
+                        } else if (currentCuadruplo.getArgumento1() != "") {
+                            if (isLocalVariable(currentCuadruplo.getArgumento1())) {
+                                if (isParameter(currentCuadruplo.getArgumento1(), ambito_siguiente)) {
+                                    int par = getParamIndex(parametros, currentCuadruplo.getArgumento1());
+                                    codigoFinal += "       move $t" + t1 + ", $s" + par + "\n";
+                                } else {
+                                    codigoFinal += "       lw $t" + t1 + ", -" + getOffsetVariable(currentCuadruplo.getArgumento1()) + "($fp)\n";
+                                }
+                            } else {
+                                codigoFinal += "       lw $t" + t1 + ", _" + currentCuadruplo.getArgumento1() + "\n";
+                            }
+                        }
+                        if (currentCuadruplo.getArgumento2().matches(numero)) {
+                            codigoFinal += "       li $t" + t2 + ", " + currentCuadruplo.getArgumento2() + "\n";
+                        } else if (currentCuadruplo.getArgumento2() != "" ) {
+                            if (isLocalVariable(currentCuadruplo.getArgumento2())) {
+                                if (isParameter(currentCuadruplo.getArgumento2(), ambito_siguiente)) {
+                                    int par = getParamIndex(parametros, currentCuadruplo.getArgumento2());
+                                    codigoFinal += "       move $t" + t2 + ", $s" + par + "\n";
+                                } else {
+                                    codigoFinal += "       lw $t" + t2 + ", -" + getOffsetVariable(currentCuadruplo.getArgumento2()) + "($fp)\n";
+                                }
+                            }else {
+                                codigoFinal += "       lw $t" + t2 + ", _" + currentCuadruplo.getArgumento2() + "\n";
+                            }
+                        }
+                    }
+                    int t3 = 0;
+                    for (int i = 0; i < 10; i++) {
+                        if (!temporales.get(i).isVivo()) {
+                            t3 = i;
+                            temporales.get(i).setVivo(true);
+                            temporales.get(i).setActivado(currentCuadruplo.getResultado());
+                            break;
+                        }
+                    }
+                    if (currentCuadruplo.getOperador().equals("+")) {
+                        codigoFinal += "       add $t" + t3 + ", $t" + t1 + ", $t" + t2 + "\n";
+                    } else if (currentCuadruplo.getOperador().equals("-")) {
+                        codigoFinal += "       sub $t" + t3 + ", $t" + t1 + ", $t" + t2 + "\n";
+                    } else if (currentCuadruplo.getOperador().equals("*")) {
+                        codigoFinal += "       mul $t" + t3 + ", $t" + t1 + ", $t" + t2 + "\n";
+                    } else if (currentCuadruplo.getOperador().equals("/")) {
+                        codigoFinal += "       div $t" + t3 + ", $t" + t1 + ", $t" + t2 + "\n";
+                    }
+                    temporales.get(t1).setVivo(false);
+                    temporales.get(t1).setActivado("");
+                    temporales.get(t2).setVivo(false);
+                    temporales.get(t2).setActivado("");
                     break;
                 case "=":
-                /*String num = "[0-9]+";
+                    String num = "[0-9]+";
                     boolean pass = false;
                     int asig = 0;
-                    int temp = 0;
+                    int ntemp = 0;
                     for (int i = 0; i < 10; i++) {
                         if (temporales.get(i).isVivo() && temporales.get(i).getActivado().equals(currentCuadruplo.getArgumento1())) {
                             asig = i;
@@ -1938,7 +2075,7 @@ public class temp_main {
                     }
                     for (int i = 0; i < 10; i++) {
                         if (!temporales.get(i).isVivo()) {
-                            temp = i;
+                            ntemp = i;
                             break;
                         }
                     }
@@ -1964,45 +2101,57 @@ public class temp_main {
                         temporales.get(asig).setVivo(false);
                         temporales.get(asig).setActivado("");
                     } else if (currentCuadruplo.getArgumento1().matches(num)) {
-                        codigoFinal += "       li $t" + temp + ", " + currentCuadruplo.getArgumento1() + "\n";
+                        codigoFinal += "       li $t" + ntemp + ", " + currentCuadruplo.getArgumento1() + "\n";
                         if (isLocalVariable(currentCuadruplo.getResultado())) {
                             if (isParameter(currentCuadruplo.getResultado(), ambito_siguiente)) {
                                 int par = getParamIndex(parametros, currentCuadruplo.getResultado());
-                                codigoFinal += "       move $s" + par + ", $t" + temp + "\n";
+                                codigoFinal += "       move $s" + par + ", $t" + ntemp + "\n";
                             } else {
-                                codigoFinal += "       sw $t" + temp + ", -" + getOffsetVariable(currentCuadruplo.getResultado()) + "($fp)\n";
+                                codigoFinal += "       sw $t" + ntemp + ", -" + getOffsetVariable(currentCuadruplo.getResultado()) + "($fp)\n";
                             }
                         } else {
-                            codigoFinal += "       sw $t" + temp + ", _" + currentCuadruplo.getResultado() + "\n";
+                            codigoFinal += "       sw $t" + ntemp + ", _" + currentCuadruplo.getResultado() + "\n";
                         }
                     } else if (currentCuadruplo.getArgumento1().contains("'")) {
-                        codigoFinal += "       li $t" + temp + ", " + currentCuadruplo.getArgumento1() + "\n";
+                        codigoFinal += "       li $t" + ntemp + ", " + currentCuadruplo.getArgumento1() + "\n";
                         if (isLocalVariable(currentCuadruplo.getResultado())) {
                             if (isParameter(currentCuadruplo.getResultado(), ambito_siguiente)) {
                                 int par = getParamIndex(parametros, currentCuadruplo.getResultado());
-                                codigoFinal += "       move $s" + par + ", $t" + temp + "\n";
+                                codigoFinal += "       move $s" + par + ", $t" + ntemp + "\n";
                             } else {
-                                codigoFinal += "       sb $t" + temp + ", -" + getOffsetVariable(currentCuadruplo.getResultado()) + "($fp)\n";
+                                codigoFinal += "       sb $t" + ntemp + ", -" + getOffsetVariable(currentCuadruplo.getResultado()) + "($fp)\n";
                             }
                         } else {
-                            codigoFinal += "       sb $t" + temp + ", _" + currentCuadruplo.getResultado() + "\n";
+                            codigoFinal += "       sb $t" + ntemp + ", _" + currentCuadruplo.getResultado() + "\n";
                         }
                     } else if (currentCuadruplo.getArgumento1().equals("Ret")) {
-                        codigoFinal += "       move $t" + temp + ", $v0\n";
-                        temporales.get(temp).setVivo(true);
-                        temporales.get(temp).setActivado(currentCuadruplo.getResultado());
+                        codigoFinal += "       move $t" + ntemp + ", $v0\n";
+                        temporales.get(ntemp).setVivo(true);
+                        temporales.get(ntemp).setActivado(currentCuadruplo.getResultado());
                     } else {
-
+                        if (isLocalVariable(currentCuadruplo.getArgumento1())) {
+                            if (isParameter(currentCuadruplo.getArgumento1(), ambito_siguiente)) {
+                                int par = getParamIndex(parametros, currentCuadruplo.getArgumento1());
+                                codigoFinal += "       move $t" + ntemp + ", $s" + par + "\n";
+                            } else {
+                                codigoFinal += "       lw $t" + ntemp + ", -" + getOffsetVariable(currentCuadruplo.getArgumento1()) + "($fp)\n";
+                            }
+                        } else {
+                            codigoFinal += "       lw $t" + ntemp + ", _" + currentCuadruplo.getArgumento1() + "\n";
+                        }
                         if (isLocalVariable(currentCuadruplo.getResultado())) {
                             if (isParameter(currentCuadruplo.getResultado(), ambito_siguiente)) {
                                 int par = getParamIndex(parametros, currentCuadruplo.getResultado());
-                                codigoFinal += "       move $s" + par + ", $t" + temp + "\n";
+                                codigoFinal += "       move $s" + par + ", $t" + ntemp + "\n";
+                            } else {
+                                codigoFinal += "       sw $t" + ntemp + ", -" + getOffsetVariable(currentCuadruplo.getResultado()) + "($fp)\n";
                             }
                         } else {
-
+                            codigoFinal += "       sw $t" + ntemp + ", _" + currentCuadruplo.getResultado() + "\n";
                         }
-                    }*/
+                    }
                     break;
+
                 default:
                     if (currentCuadruplo.getOperador().contains("IF")) {
                         String op = currentCuadruplo.getOperador().substring(2, currentCuadruplo.getOperador().length());
@@ -2096,15 +2245,17 @@ public class temp_main {
                         temporales.get(t_izq).setVivo(false);
                         temporales.get(t_der).setVivo(false);
                     }
-                    
+
             }
         }
-        
+
         System.out.println(codigoFinal);
+
         guardar_archivo(codigoFinal);
     }
-    public static void guardar_archivo(String codigoFinal){
-    FileWriter fichero2 = null;
+
+    public static void guardar_archivo(String codigoFinal) {
+        FileWriter fichero2 = null;
         PrintWriter pw = null;
         try {
             fichero2 = new FileWriter("./MIPS.asm");
@@ -2123,6 +2274,7 @@ public class temp_main {
             }
         }
     }
+
     public static boolean isLocalVariable(String var) {
         for (Variables variable : tabla) {
             if (variable.getId().equals(var) && variable.getAmbito().equals(ambito_siguiente)) {
@@ -2158,31 +2310,31 @@ public class temp_main {
     }
 
     public static int getParamIndex(ArrayList<Temporal> parameters, String value) {
+        int retorbo = 0;
         for (int i = 0; i < parameters.size(); i++) {
             if (parameters.get(i).getActivado().equals(value)) {
-                return i;
+                retorbo = i;
             }
         }
-        return 0;
+        return retorbo;
     }
 
     public static boolean isCharacterFunc(String value) {
         int j = 0;
         boolean retorno = false;
         for (Variables variable : tabla) {
-            if (variable.getId().equals(value) && variable.getAmbito().equals(ambito_actual)) {
+            if (variable.getId().equals(value) && variable.getAmbito().contains(ambito_siguiente)) {
                 if (variable.getTipo().equals("caracter")) {
                     retorno = true;
                     j++;
                 }
             }
         }
-        if (j == 0) {
+        if (j == 0) { // Ver si está en las globales
             for (Variables variable : tabla) {
                 if (variable.getId().equals(value) && variable.getAmbito().equals("Start")) {
                     if (variable.getTipo().equals("caracter")) {
                         retorno = true;
-                        j++;
                     }
                 }
             }
