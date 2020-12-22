@@ -11,7 +11,7 @@ start->[
 		awa(parametro1,parametro2,parametro3,parametro4,parametro5, parametro6);
 	]
 
-	func void awa(num par1,num par2,num par3,num par4, num par5, num asd)[
-		
+	func num awa(num par1,num par2,num par3,num par4, num par5, num asd)[
+		reply(par1)
 	]
 ]
